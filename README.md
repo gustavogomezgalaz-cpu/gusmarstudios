@@ -51,6 +51,15 @@ Paquetes de las nueve:
 curl -s -o /dev/null -w "%{http_code}" "https://play.google.com/store/apps/details?id=PAQUETE"
 ```
 
+## Pendiente: la seccion de contacto
+
+Esta **comentada** en `index.html`, junto con el boton "Hablemos" de la cabecera.
+Sale de nuevo cuando `hola@gusmarstudios.com` exista de verdad: se crea como reenvio
+en el panel de Porkbun (los registros MX de fwd1/fwd2 ya estan puestos y apuntando).
+
+Una direccion publicada que rebota es peor que no tener ninguna, sobre todo si la
+pagina va a recibir trafico pagado.
+
 ## Iconos, marca y fuentes
 
 - **`iconos/*.webp`** — los iconos REALES de cada app, sacados de su `assets/icon.png` y
