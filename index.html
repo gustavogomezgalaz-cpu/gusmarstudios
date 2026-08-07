@@ -103,14 +103,11 @@
 }
 
 * { box-sizing: border-box; }
-html {
-  scroll-behavior: smooth;
-  /* Red de seguridad contra el scroll horizontal: el `clip` del body NO se
-     propaga a la ventana (se midio: html quedaba en `visible` y la pagina
-     seguia moviendose de lado). `clip` no crea contenedor de desplazamiento,
-     asi que la cabecera pegajosa sigue funcionando. */
-  overflow-x: clip;
-}
+/* Ojo: NO poner `overflow-x` en `html`. Se probo como red de seguridad contra
+   el scroll horizontal y se saco sin publicarlo: no se pudo verificar en un
+   navegador, y esa familia de propiedades es justo la que rompe la cabecera
+   pegajosa. El desborde se corta en su origen, en `.heroe`. */
+html { scroll-behavior: smooth; }
 body {
   margin: 0;
   background: var(--fondo);
