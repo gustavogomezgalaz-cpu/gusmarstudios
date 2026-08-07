@@ -574,13 +574,32 @@ a.estado:hover { color: #fff; }
       <p class="rotulo" data-rise>02 — Catálogo</p>
       <div class="cabeza-catalogo" data-rise>
         <h2 class="titulo">Las nueve apps.</h2>
-        <p>Las publicamos por etapas. El enlace a Google Play de cada una aparece aquí en cuanto la ficha está viva.</p>
+        <p>Las publicamos por etapas. Cinco ya están en prueba cerrada — ese enlace es para quienes participan de ella. El resto aparecerá aquí en cuanto llegue a Google Play.</p>
       </div>
 
-      <!-- Para poner un enlace de Play, cambiar el <span class="estado"> por:
-           <a class="estado" href="https://play.google.com/store/apps/details?id=PAQUETE">
-             <span class="punto"></span>Ver en Google Play</a>
-           Los paquetes estan en el README. -->
+      <!-- ═══════════════════════════════════════════════════════════════════
+           ESTADOS DE LAS TARJETAS. Hay TRES, y no son intercambiables:
+
+           1. "En desarrollo"  -> sin enlace. La app no esta en Play Console.
+           2. "Prueba cerrada" -> enlaza a play.google.com/apps/testing/PAQUETE
+                                  OJO: a quien no este en la lista de testers le
+                                  dice "no eres tester". Por eso la etiqueta lo
+                                  avisa; nunca disfrazarlo de "Ver en Google Play".
+           3. "Ver en Google Play" -> enlaza a la ficha publica:
+                                  play.google.com/store/apps/details?id=PAQUETE
+
+           🚨 AL PASAR UNA APP A PRODUCCION HAY QUE CAMBIARLE LA TARJETA:
+           el enlace /apps/testing/ deja de ser el correcto y hay que
+           reemplazarlo por el de la ficha. Si se olvida, la vitrina manda a
+           todo el mundo a una puerta que les dice que no pueden entrar.
+
+           Comprobar SIEMPRE que la ficha ya sea publica antes de cambiarla:
+             curl -s -o /dev/null -w "%{http_code}" \
+               "https://play.google.com/store/apps/details?id=PAQUETE"
+           Tiene que dar 200. En prueba cerrada da 404.
+
+           Los nueve paquetes estan en el README.
+           ═══════════════════════════════════════════════════════════════════ -->
       <ul class="catalogo">
 
         <li class="app" data-rise style="--tinte:#7C80FF;--tinte-borde:rgba(91,95,239,.6);--tinte-fondo:rgba(91,95,239,.1)">
@@ -589,7 +608,7 @@ a.estado:hover { color: #fff; }
             <div><h3>Matibu</h3><span class="edad">6 a 12 años</span></div>
           </div>
           <p>Matemáticas desde primero básico: tablas, operaciones y fracciones.</p>
-          <span class="estado"><span class="punto" aria-hidden="true"></span>Próximamente</span>
+          <a class="estado" href="https://play.google.com/apps/testing/cl.matibu.matematicas" rel="noopener"><span class="punto" aria-hidden="true"></span>Prueba cerrada · solo testers</a>
         </li>
 
         <li class="app" data-rise style="--tinte:#18A9A5;--tinte-borde:rgba(16,125,122,.6);--tinte-fondo:rgba(16,125,122,.12)">
@@ -598,7 +617,7 @@ a.estado:hover { color: #fff; }
             <div><h3>Silabu</h3><span class="edad">4 a 7 años</span></div>
           </div>
           <p>Aprender a leer en español, letra por letra y con la voz por delante.</p>
-          <span class="estado"><span class="punto" aria-hidden="true"></span>Próximamente</span>
+          <span class="estado"><span class="punto" aria-hidden="true"></span>En desarrollo</span>
         </li>
 
         <li class="app" data-rise style="--tinte:#E04A44;--tinte-borde:rgba(198,47,42,.6);--tinte-fondo:rgba(198,47,42,.12)">
@@ -634,7 +653,7 @@ a.estado:hover { color: #fff; }
             <div><h3>Lunabu</h3><span class="edad">hasta 6 años</span></div>
           </div>
           <p>Estimulación temprana con juegos por voz y dibujos. Gratis y completa.</p>
-          <span class="estado"><span class="punto" aria-hidden="true"></span>Próximamente</span>
+          <a class="estado" href="https://play.google.com/apps/testing/cl.lunabu.preescolar" rel="noopener"><span class="punto" aria-hidden="true"></span>Prueba cerrada · solo testers</a>
         </li>
 
         <li class="app" data-rise style="--tinte:#3C7186;--tinte-borde:rgba(60,113,134,.7);--tinte-fondo:rgba(44,84,100,.16)">
@@ -643,7 +662,7 @@ a.estado:hover { color: #fff; }
             <div><h3>Anticipa</h3><span class="edad">TDAH y TEA</span></div>
           </div>
           <p>Agenda visual de rutinas: qué toca ahora y qué viene después.</p>
-          <span class="estado"><span class="punto" aria-hidden="true"></span>Próximamente</span>
+          <a class="estado" href="https://play.google.com/apps/testing/cl.anticipa.rutinas" rel="noopener"><span class="punto" aria-hidden="true"></span>Prueba cerrada · solo testers</a>
         </li>
 
         <li class="app" data-rise style="--tinte:#12A0AC;--tinte-borde:rgba(18,160,172,.6);--tinte-fondo:rgba(14,124,134,.13)">
@@ -652,7 +671,7 @@ a.estado:hover { color: #fff; }
             <div><h3>Dilo Jugando</h3><span class="edad">6 a 12 años</span></div>
           </div>
           <p>Pronunciación, jugando. La voz del niño no queda grabada en ninguna parte.</p>
-          <span class="estado"><span class="punto" aria-hidden="true"></span>Próximamente</span>
+          <a class="estado" href="https://play.google.com/apps/testing/cl.dilojugando.pronunciacion" rel="noopener"><span class="punto" aria-hidden="true"></span>Prueba cerrada · solo testers</a>
         </li>
 
         <li class="app" data-rise style="--tinte:#3E88E8;--tinte-borde:rgba(62,136,232,.6);--tinte-fondo:rgba(42,111,204,.13)">
@@ -661,7 +680,7 @@ a.estado:hover { color: #fff; }
             <div><h3>Cavila</h3><span class="edad">desde 8 años</span></div>
           </div>
           <p>Acertijos de lógica para pensar despacio y con calma.</p>
-          <span class="estado"><span class="punto" aria-hidden="true"></span>Próximamente</span>
+          <a class="estado" href="https://play.google.com/apps/testing/cl.cavila.app" rel="noopener"><span class="punto" aria-hidden="true"></span>Prueba cerrada · solo testers</a>
         </li>
 
       </ul>

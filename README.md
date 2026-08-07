@@ -16,6 +16,28 @@ Mientras una app esta en prueba cerrada **no tiene ficha publica**: la URL de Pl
 devuelve 404 para cualquiera que no sea tester. Por eso todas las tarjetas arrancan
 en "Proximamente".
 
+### Los TRES estados de una tarjeta
+
+| Estado | Enlace | Cuando |
+|--------|--------|--------|
+| `En desarrollo` | ninguno | La app no esta en Play Console, o esta como borrador |
+| `Prueba cerrada · solo testers` | `play.google.com/apps/testing/PAQUETE` | La app tiene una prueba cerrada viva |
+| `Ver en Google Play` | `play.google.com/store/apps/details?id=PAQUETE` | La app esta en produccion |
+
+**Los dos enlaces NO son intercambiables:**
+
+- `/apps/testing/` es la puerta de la prueba cerrada. A quien esta en la lista de
+  testers le muestra el boton para descargarla; a cualquier otro le dice que no es
+  tester. **Es el unico que funciona mientras la app no este en produccion.**
+- `/store/apps/details` es la ficha publica. **Devuelve 404 mientras la app este solo
+  en prueba cerrada.**
+
+Al 2026-08-07 tienen prueba cerrada: Matibu, Lunabu, Anticipa, Cavila y Dilo Jugando.
+Cronobu esta como **borrador** en Play Console, asi que no le sirve ninguno de los dos.
+Silabu, Palabu y Terrabu ni siquiera estan creadas.
+
+### Al pasar una app a produccion
+
 Cuando una app llegue a produccion, en su tarjeta de `index.html` hay que cambiar:
 
 ```html
