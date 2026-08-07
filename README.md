@@ -19,16 +19,17 @@ en "Proximamente".
 Cuando una app llegue a produccion, en su tarjeta de `index.html` hay que cambiar:
 
 ```html
-<span class="estado">Proximamente</span>
+<span class="estado"><span class="punto" aria-hidden="true"></span>Proximamente</span>
 ```
 
 por:
 
 ```html
-<a class="estado" href="https://play.google.com/store/apps/details?id=PAQUETE">Ver en Google Play</a>
+<a class="estado" href="https://play.google.com/store/apps/details?id=PAQUETE">
+  <span class="punto" aria-hidden="true"></span>Ver en Google Play</a>
 ```
 
-En la tarjeta de Matibu quedo el comentario con la linea ya escrita.
+El comentario justo encima de la lista `.catalogo` lo repite.
 
 Paquetes de las nueve:
 
@@ -49,6 +50,22 @@ Paquetes de las nueve:
 ```
 curl -s -o /dev/null -w "%{http_code}" "https://play.google.com/store/apps/details?id=PAQUETE"
 ```
+
+## Iconos, marca y fuentes
+
+- **`iconos/*.webp`** — los iconos REALES de cada app, sacados de su `assets/icon.png` y
+  reducidos a 256 px con `sharp`: **21 KB los siete**, contra 730 KB los originales.
+  Palabu y Terrabu no tienen icono todavia (estan en desarrollo) y se quedan con su letra,
+  lo que ademas dice honestamente que faltan.
+- **`marca.svg`** — la marca del estudio: tres fichas en abanico, no una inicial en un
+  cuadrado. Cada `rect` nace centrado en el origen para poder rotarlo sobre SU centro y
+  recien despues moverlo; al reves las encima a las tres y solo se ve una. Verificada
+  RENDERIZANDOLA a 24, 28, 40, 64 y 160 px: con mas rotacion o mas separacion se empasta
+  al tamano de la cabecera. Va tambien como favicon.
+- **`fuentes/*.woff2`** — Bricolage Grotesque (variable, cubre 400/600/800), IBM Plex Sans
+  y IBM Plex Mono, solo subconjunto latino. **Se sirven desde aqui a proposito**: cargarlas
+  desde Google le mandaria la IP de cada visitante a un tercero, y esta pagina promete
+  justo lo contrario.
 
 ## Colores
 
