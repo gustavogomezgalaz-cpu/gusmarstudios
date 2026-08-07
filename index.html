@@ -103,7 +103,14 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  /* Red de seguridad contra el scroll horizontal: el `clip` del body NO se
+     propaga a la ventana (se midio: html quedaba en `visible` y la pagina
+     seguia moviendose de lado). `clip` no crea contenedor de desplazamiento,
+     asi que la cabecera pegajosa sigue funcionando. */
+  overflow-x: clip;
+}
 body {
   margin: 0;
   background: var(--fondo);
@@ -234,7 +241,14 @@ main { position: relative; z-index: 1; }
 
 /* ---------- Heroe ---------- */
 
-.heroe { padding-block: clamp(64px,11vw,132px) clamp(48px,7vw,88px); }
+.heroe {
+  padding-block: clamp(64px,11vw,132px) clamp(48px,7vw,88px);
+  /* El halo de `.mosaico::before` tiene `inset:-14%` y en el celular se salia
+     22 px por la izquierda: eso daba SCROLL HORIZONTAL en toda la pagina.
+     Medido apagando elementos: sin `.mosaico` el ancho bajaba de 397 a 375.
+     `clip` recorta sin volver esto un contenedor de desplazamiento. */
+  overflow-x: clip;
+}
 .heroe-rejilla {
   display: grid; grid-template-columns: minmax(0,1.05fr) minmax(0,.85fr);
   gap: clamp(32px,6vw,72px); align-items: center;
@@ -269,6 +283,13 @@ h1 {
 }
 
 .botones { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 36px; }
+/* En pantalla angosta los dos botones se apilaban con anchos distintos —cada
+   uno se ajustaba a su texto— y quedaba escalonado. Apilados y a todo el
+   ancho quedan parejos y con mas superficie para el dedo. */
+@media (max-width: 520px) {
+  .botones { flex-direction: column; align-items: stretch; }
+  .botones a { text-align: center; }
+}
 .boton-principal {
   padding: 15px 28px; border-radius: 999px;
   background: linear-gradient(140deg, #7C80FF, #4247D6); color: #fff;
