@@ -3,361 +3,736 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GusMar Studios — Apps educativas para niños</title>
-<meta name="description" content="Aplicaciones educativas para niños de 3 a 12 años. Sin publicidad, sin recolección de datos y funcionan sin internet.">
+<title>GusMar Studios — Apps educativas para niños de 3 a 12 años</title>
+<meta name="description" content="Estudio chileno de apps educativas para niños de 3 a 12 años. Nueve aplicaciones sin publicidad, sin recolección de datos y que funcionan sin internet.">
+<meta name="robots" content="index, follow, max-image-preview:large">
 <link rel="canonical" href="https://gusmarstudios.com/">
-<meta name="theme-color" content="#5B5FEF">
+<meta name="theme-color" content="#0A0B14">
 <meta property="og:type" content="website">
-<meta property="og:title" content="GusMar Studios">
-<meta property="og:description" content="Apps educativas para niños. Sin publicidad, sin datos y sin internet.">
+<meta property="og:site_name" content="GusMar Studios">
+<meta property="og:title" content="GusMar Studios — Apps educativas para niños">
+<meta property="og:description" content="Nueve apps para acompañar de los 3 a los 12 años. Sin publicidad, sin datos y sin internet.">
 <meta property="og:url" content="https://gusmarstudios.com/">
 <meta property="og:locale" content="es_CL">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%235B5FEF'/><text x='50' y='72' font-size='58' font-family='system-ui,sans-serif' font-weight='bold' fill='white' text-anchor='middle'>G</text></svg>">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="GusMar Studios — Apps educativas para niños">
+<meta name="twitter:description" content="Nueve apps para acompañar de los 3 a los 12 años. Sin publicidad, sin datos y sin internet.">
+<link rel="icon" href="marca.svg" type="image/svg+xml">
+<link rel="preload" href="fuentes/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fuentes/ibm-plex-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"Organization","@id":"https://gusmarstudios.com/#org","name":"GusMar Studios","url":"https://gusmarstudios.com/","description":"Estudio de aplicaciones educativas para niños de 3 a 12 años.","address":{"@type":"PostalAddress","addressLocality":"Santiago","addressCountry":"CL"}},
+{"@type":"WebSite","@id":"https://gusmarstudios.com/#web","url":"https://gusmarstudios.com/","name":"GusMar Studios","inLanguage":"es-CL","publisher":{"@id":"https://gusmarstudios.com/#org"}},
+{"@type":"ItemList","name":"Apps de GusMar Studios","itemListElement":[
+{"@type":"ListItem","position":1,"item":{"@type":"MobileApplication","name":"Matibu","applicationCategory":"EducationalApplication","operatingSystem":"Android","description":"Matemáticas desde primero básico: tablas, operaciones y fracciones."}},
+{"@type":"ListItem","position":2,"item":{"@type":"MobileApplication","name":"Silabu","applicationCategory":"EducationalApplication","operatingSystem":"Android","description":"Aprender a leer en español, letra por letra y con la voz por delante."}},
+{"@type":"ListItem","position":3,"item":{"@type":"MobileApplication","name":"Palabu","applicationCategory":"EducationalApplication","operatingSystem":"Android","description":"Lenguaje: leer, escribir y entender lo que se lee."}},
+{"@type":"ListItem","position":4,"item":{"@type":"MobileApplication","name":"Terrabu","applicationCategory":"EducationalApplication","operatingSystem":"Android","description":"Ciencias naturales: el cuerpo, los seres vivos y el planeta."}},
+{"@type":"ListItem","position":5,"item":{"@type":"MobileApplication","name":"Cronobu","applicationCategory":"EducationalApplication","operatingSystem":"Android","description":"Historia: el tiempo, el mundo y tu país."}},
+{"@type":"ListItem","position":6,"item":{"@type":"MobileApplication","name":"Lunabu","applicationCategory":"EducationalApplication","operatingSystem":"Android","description":"Estimulación temprana con juegos por voz y dibujos."}},
+{"@type":"ListItem","position":7,"item":{"@type":"MobileApplication","name":"Anticipa","applicationCategory":"EducationalApplication","operatingSystem":"Android","description":"Agenda visual de rutinas para TDAH y TEA."}},
+{"@type":"ListItem","position":8,"item":{"@type":"MobileApplication","name":"Dilo Jugando","applicationCategory":"EducationalApplication","operatingSystem":"Android","description":"Pronunciación, jugando, sin grabar la voz del niño."}},
+{"@type":"ListItem","position":9,"item":{"@type":"MobileApplication","name":"Cavila","applicationCategory":"EducationalApplication","operatingSystem":"Android","description":"Acertijos de lógica para pensar despacio y con calma."}}]},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"¿Las apps tienen publicidad?","acceptedAnswer":{"@type":"Answer","text":"No. Ninguna app de GusMar Studios muestra banners, vídeos ni interrupciones de ningún tipo."}},
+{"@type":"Question","name":"¿Recolectan datos de los niños?","acceptedAnswer":{"@type":"Answer","text":"No. Todo lo que hace el niño se queda en el teléfono. No hay cuentas ni servidores nuestros."}},
+{"@type":"Question","name":"¿Funcionan sin internet?","acceptedAnswer":{"@type":"Answer","text":"Sí. Todas funcionan completas sin conexión: en avión, en el metro o donde no llega la señal."}},
+{"@type":"Question","name":"¿En qué dispositivos funcionan?","acceptedAnswer":{"@type":"Answer","text":"En Android, publicadas en Google Play. Están hechas para funcionar bien en teléfonos de gama media y antiguos."}},
+{"@type":"Question","name":"¿Cuánto cuestan?","acceptedAnswer":{"@type":"Answer","text":"Lunabu es gratis y completa. El resto se publica por etapas; el precio de cada una aparece en su ficha de Google Play."}}]}
+]}
+</script>
+
 <style>
-  :root {
-    --fondo: #f6f7fb;
-    --tarjeta: #ffffff;
-    --texto: #14162b;
-    --suave: #565c7c;
-    /* Medido: #767c9a daba 4.10:1 sobre blanco y no llegaba a AA. */
-    --tenue: #696e89;
-    --linea: #e3e6f0;
-    --marca: #4247d6;
-    --sombra: 0 1px 2px rgba(20, 22, 43, .05), 0 8px 24px rgba(20, 22, 43, .05);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --fondo: #0d0f1e;
-      --tarjeta: #171a2e;
-      --texto: #f3f4fa;
-      --suave: #b0b6d2;
-      --tenue: #8b91b0;
-      --linea: #262a42;
-      --marca: #97aeff;
-      --sombra: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .25);
-    }
-  }
+/* ---------- Fuentes propias ----------
+   Se sirven desde este repositorio a proposito: cargarlas desde Google
+   le mandaria la IP de cada visitante a un tercero, y esta pagina promete
+   justo lo contrario. Solo el subconjunto latino. */
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  src: url('fuentes/bricolage-grotesque.woff2') format('woff2');
+  font-weight: 400 800; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  src: url('fuentes/ibm-plex-sans-400.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  src: url('fuentes/ibm-plex-sans-500.woff2') format('woff2');
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  src: url('fuentes/ibm-plex-sans-600.woff2') format('woff2');
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('fuentes/ibm-plex-mono-400.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('fuentes/ibm-plex-mono-500.woff2') format('woff2');
+  font-weight: 500; font-style: normal; font-display: swap;
+}
 
-  * { box-sizing: border-box; }
+:root {
+  --fondo: #0A0B14;
+  --texto: #EDEEF6;
+  --suave: #A7ACC6;
+  --tenue: #8890AD;
+  --mudo: #757C9C;
+  --acento: #6E72FF;
+  --acento-claro: #A8ABFF;
+  --menta: #5FE3B4;
+  --display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
 
-  body {
-    margin: 0;
-    background: var(--fondo);
-    color: var(--texto);
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    line-height: 1.65;
-    -webkit-font-smoothing: antialiased;
-  }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+a { color: var(--acento-claro); text-decoration: none; }
+a:hover { color: #fff; }
+::selection { background: var(--acento); color: #fff; }
+img { max-width: 100%; }
 
-  .envoltura {
-    max-width: 62rem;
-    margin: 0 auto;
-    padding: clamp(3rem, 9vw, 6rem) clamp(1.15rem, 4vw, 2rem) 4rem;
-  }
+:focus-visible {
+  outline: 2px solid var(--acento-claro);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
 
-  /* ---------- Cabecera ---------- */
+@keyframes gm-rise { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+@keyframes gm-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+@keyframes gm-drift { 0%,100% { transform: translate3d(0,0,0) scale(1); } 50% { transform: translate3d(4%,-6%,0) scale(1.15); } }
+@keyframes gm-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes gm-pulse { 0%,100% { opacity: .35; } 50% { opacity: 1; } }
 
-  .marca {
-    display: inline-flex;
-    align-items: center;
-    gap: .65rem;
-    font-size: 1.05rem;
-    font-weight: 700;
-    letter-spacing: -.01em;
-  }
-  .logotipo {
-    width: 1.9rem;
-    height: 1.9rem;
-    border-radius: .55rem;
-    background: #5B5FEF;
-    color: #fff;
-    display: grid;
-    place-items: center;
-    font-size: .95rem;
-    font-weight: 800;
-    flex: none;
-  }
+[data-rise] {
+  animation: gm-rise .9s cubic-bezier(.2,.7,.2,1) both;
+  animation-timeline: view();
+  animation-range: entry 4% cover 26%;
+}
 
-  h1 {
-    margin: 2.5rem 0 0;
-    font-size: clamp(1.9rem, 6vw, 3rem);
-    font-weight: 800;
-    letter-spacing: -.025em;
-    line-height: 1.15;
-    text-wrap: balance;
-    max-width: 20ch;
-  }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001s !important; transition-duration: .001s !important; }
+  html { scroll-behavior: auto; }
+}
 
-  .entrada {
-    margin: 1.15rem 0 0;
-    font-size: clamp(1.02rem, 2.6vw, 1.18rem);
-    color: var(--suave);
-    max-width: 46ch;
-    text-wrap: pretty;
-  }
+/* ---------- Estructura ---------- */
 
-  /* ---------- Promesas ---------- */
+.lienzo { position: relative; min-height: 100vh; isolation: isolate; }
+.ancho { max-width: 1180px; margin: 0 auto; padding-inline: 24px; }
 
-  .promesas {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-    gap: 1.5rem 2rem;
-    margin: 3.25rem 0 0;
-    padding: 1.75rem 0 0;
-    border-top: 1px solid var(--linea);
-    list-style: none;
-  }
-  .promesas h2 {
-    margin: 0 0 .2rem;
-    font-size: .95rem;
-    font-weight: 700;
-  }
-  .promesas p {
-    margin: 0;
-    font-size: .92rem;
-    color: var(--suave);
-  }
+.fondo-vivo { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.mancha-a {
+  position: absolute; top: -25vh; left: -10vw; width: 70vw; height: 70vw; border-radius: 50%;
+  background: radial-gradient(circle, rgba(110,114,255,.28), transparent 62%);
+  filter: blur(40px); animation: gm-drift 22s ease-in-out infinite;
+}
+.mancha-b {
+  position: absolute; top: 20vh; right: -20vw; width: 60vw; height: 60vw; border-radius: 50%;
+  background: radial-gradient(circle, rgba(14,124,134,.22), transparent 62%);
+  filter: blur(50px); animation: gm-drift 28s ease-in-out infinite reverse;
+}
+.retícula {
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000, transparent 75%);
+}
+.desvanecido {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 50% at 50% 100%, rgba(10,11,20,0), #0A0B14 92%);
+}
 
-  /* ---------- Apps ---------- */
+/* ---------- Cabecera ---------- */
 
-  .titulo-seccion {
-    margin: 4.5rem 0 .35rem;
-    font-size: 1.4rem;
-    font-weight: 800;
-    letter-spacing: -.015em;
-  }
-  .nota-seccion {
-    margin: 0 0 2rem;
-    color: var(--suave);
-    font-size: .95rem;
-    max-width: 52ch;
-  }
+.cabecera {
+  position: sticky; top: 0; z-index: 50;
+  backdrop-filter: blur(14px);
+  background: rgba(10,11,20,.62);
+  border-bottom: 1px solid rgba(255,255,255,.07);
+}
+.nav {
+  max-width: 1180px; margin: 0 auto; padding: 14px 24px;
+  display: flex; align-items: center; gap: 28px;
+}
+.logotipo {
+  display: flex; align-items: center; gap: 11px;
+  color: var(--texto); font-weight: 600; letter-spacing: -.02em; font-size: 16px;
+}
+.logotipo:hover { color: #fff; }
+.logotipo svg { width: 30px; height: 30px; flex: none; }
+.espaciador { flex: 1; }
+.enlaces { display: flex; align-items: center; gap: 26px; font-size: 14px; }
+.enlaces a { color: var(--suave); }
+.enlaces a:hover { color: #fff; }
+.boton-nav {
+  padding: 9px 18px; border-radius: 999px; background: var(--texto); color: #0A0B14;
+  font-size: 14px; font-weight: 600;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.boton-nav:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(237,238,246,.22);
+  color: #0A0B14;
+}
+@media (max-width: 820px) { .enlaces { display: none; } }
 
-  .rejilla {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(16.5rem, 1fr));
-    gap: 1rem;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
+main { position: relative; z-index: 1; }
 
-  .app {
-    background: var(--tarjeta);
-    border: 1px solid var(--linea);
-    border-radius: .9rem;
-    padding: 1.15rem 1.25rem 1.25rem;
-    box-shadow: var(--sombra);
-    display: flex;
-    flex-direction: column;
-    gap: .55rem;
-  }
+/* ---------- Heroe ---------- */
 
-  .encabezado-app {
-    display: flex;
-    align-items: center;
-    gap: .7rem;
-  }
-  .ficha {
-    width: 2.35rem;
-    height: 2.35rem;
-    border-radius: .62rem;
-    display: grid;
-    place-items: center;
-    color: #fff;
-    font-weight: 800;
-    font-size: 1.05rem;
-    flex: none;
-  }
-  .app h3 {
-    margin: 0;
-    font-size: 1.05rem;
-    font-weight: 700;
-    letter-spacing: -.01em;
-  }
-  .edad {
-    display: block;
-    font-size: .78rem;
-    font-weight: 600;
-    color: var(--tenue);
-  }
-  .app p {
-    margin: 0;
-    font-size: .92rem;
-    color: var(--suave);
-    flex: 1;
-    text-wrap: pretty;
-  }
+.heroe { padding-block: clamp(64px,11vw,132px) clamp(48px,7vw,88px); }
+.heroe-rejilla {
+  display: grid; grid-template-columns: minmax(0,1.05fr) minmax(0,.85fr);
+  gap: clamp(32px,6vw,72px); align-items: center;
+}
+@media (max-width: 900px) { .heroe-rejilla { grid-template-columns: 1fr; } }
 
-  .estado {
-    display: inline-flex;
-    align-items: center;
-    gap: .4rem;
-    align-self: flex-start;
-    margin-top: .35rem;
-    font-size: .8rem;
-    font-weight: 700;
-    color: var(--tenue);
-  }
-  .estado::before {
-    content: "";
-    width: .45rem;
-    height: .45rem;
-    border-radius: 50%;
-    background: currentColor;
-    opacity: .55;
-  }
-  a.estado {
-    color: var(--marca);
-    text-decoration: none;
-  }
-  a.estado::before { opacity: 1; }
-  a.estado:hover { text-decoration: underline; }
+.pildora {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 7px 15px; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.04);
+  font-family: var(--mono); font-size: 12px; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--suave);
+}
+.latido {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--menta);
+  box-shadow: 0 0 12px var(--menta); animation: gm-pulse 2.4s ease-in-out infinite;
+}
 
-  /* ---------- Pie ---------- */
+h1 {
+  margin: 26px 0 0; font-family: var(--display); font-weight: 800;
+  font-size: clamp(42px,6.6vw,84px); line-height: .98; letter-spacing: -.035em;
+  text-wrap: balance;
+}
+.degradado {
+  background: linear-gradient(100deg, #fff 20%, var(--acento-claro) 55%, var(--menta) 90%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.entrada {
+  margin: 24px 0 0; max-width: 52ch;
+  font-size: clamp(16px,1.5vw,19px); line-height: 1.65; color: var(--suave);
+  text-wrap: pretty;
+}
 
-  footer {
-    margin-top: 4.5rem;
-    padding-top: 1.75rem;
-    border-top: 1px solid var(--linea);
-    font-size: .88rem;
-    color: var(--tenue);
-  }
-  footer p { margin: 0 0 .4rem; }
-  footer a { color: var(--marca); }
+.botones { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 36px; }
+.boton-principal {
+  padding: 15px 28px; border-radius: 999px;
+  background: linear-gradient(140deg, #7C80FF, #4247D6); color: #fff;
+  font-weight: 600; font-size: 15px;
+  box-shadow: 0 14px 40px rgba(66,71,214,.45);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.boton-principal:hover {
+  transform: translateY(-3px); box-shadow: 0 20px 52px rgba(66,71,214,.6); color: #fff;
+}
+.boton-secundario {
+  padding: 15px 28px; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.16); color: var(--texto);
+  font-weight: 600; font-size: 15px;
+  transition: background .25s ease, border-color .25s ease;
+}
+.boton-secundario:hover { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.3); color: #fff; }
 
-  @media (prefers-reduced-motion: no-preference) {
-    a.estado { transition: opacity .15s ease; }
-  }
+.cifras {
+  display: flex; flex-wrap: wrap; gap: clamp(24px,4vw,52px);
+  margin: 52px 0 0; padding-top: 28px; border-top: 1px solid rgba(255,255,255,.08);
+}
+.cifras dt { font-family: var(--display); font-size: 34px; font-weight: 800; letter-spacing: -.03em; }
+.cifras dd { margin: 4px 0 0; font-size: 13px; color: var(--tenue); }
+
+.mosaico {
+  position: relative; display: grid; grid-template-columns: repeat(3,1fr);
+  gap: clamp(10px,1.4vw,18px);
+}
+.mosaico::before {
+  content: ""; position: absolute; inset: -14%;
+  background: radial-gradient(circle at 50% 50%, rgba(110,114,255,.32), transparent 65%);
+  filter: blur(30px);
+}
+.pieza {
+  position: relative; aspect-ratio: 1; border-radius: 26%;
+  display: grid; place-items: center; overflow: hidden;
+  font-family: var(--display); font-weight: 800;
+  font-size: clamp(20px,2.4vw,32px); color: #fff;
+  animation: gm-float 7s ease-in-out infinite;
+}
+.pieza img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ---------- Marquesina ---------- */
+
+.marquesina {
+  overflow: hidden; padding: 18px 0;
+  border-top: 1px solid rgba(255,255,255,.07);
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  background: rgba(255,255,255,.02);
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+.cinta { display: flex; width: max-content; animation: gm-marquee 34s linear infinite; }
+.cinta > div {
+  display: flex; gap: 52px; padding-right: 52px;
+  font-family: var(--mono); font-size: 13px; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--mudo); white-space: nowrap;
+}
+
+/* ---------- Secciones ---------- */
+
+.rotulo {
+  margin: 0; font-family: var(--mono); font-size: 12px;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--acento-claro);
+}
+.titulo {
+  margin: 16px 0 0; font-family: var(--display); font-weight: 800;
+  font-size: clamp(32px,4.6vw,58px); line-height: 1.04;
+  letter-spacing: -.032em; text-wrap: balance;
+}
+.parrafo { margin: 18px 0 0; max-width: 56ch; font-size: 17px; line-height: 1.65; color: var(--suave); text-wrap: pretty; }
+
+.promesas {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(270px,1fr));
+  gap: 20px; margin: 52px 0 0; padding: 0; list-style: none;
+}
+.promesa {
+  position: relative; overflow: hidden; padding: 34px 30px 30px;
+  border-radius: 22px; border: 1px solid rgba(255,255,255,.09);
+  background: linear-gradient(165deg, rgba(255,255,255,.07), rgba(255,255,255,.02));
+  transition: transform .35s cubic-bezier(.2,.7,.2,1), border-color .35s ease;
+}
+.promesa:hover { transform: translateY(-6px); }
+.promesa:nth-child(1):hover { border-color: rgba(124,128,255,.45); }
+.promesa:nth-child(2):hover { border-color: rgba(95,227,180,.45); }
+.promesa:nth-child(3):hover { border-color: rgba(231,97,50,.45); }
+.promesa .num { font-family: var(--mono); font-size: 12px; color: var(--mudo); }
+.promesa h3 { margin: 14px 0 0; font-family: var(--display); font-size: 26px; font-weight: 800; letter-spacing: -.02em; }
+.promesa p { margin: 12px 0 0; font-size: 15px; line-height: 1.65; color: var(--suave); text-wrap: pretty; }
+.promesa .halo { position: absolute; right: -30px; bottom: -30px; width: 130px; height: 130px; border-radius: 50%; }
+
+/* ---------- Catalogo ---------- */
+
+.cabeza-catalogo {
+  display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between;
+  gap: 20px; margin-top: 16px;
+}
+.cabeza-catalogo .titulo { margin: 0; max-width: 16ch; }
+.cabeza-catalogo p { margin: 0; max-width: 40ch; font-size: 15px; line-height: 1.6; color: var(--tenue); }
+
+.catalogo {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(300px,1fr));
+  gap: 16px; margin: 44px 0 0; padding: 0; list-style: none;
+}
+.app {
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column; gap: 10px; padding: 26px;
+  border-radius: 20px; border: 1px solid rgba(255,255,255,.09);
+  background: rgba(255,255,255,.035);
+  transition: transform .35s cubic-bezier(.2,.7,.2,1), border-color .35s ease, background .35s ease;
+}
+.app:hover { transform: translateY(-7px); border-color: var(--tinte-borde); background: var(--tinte-fondo); }
+.app-cabeza { display: flex; align-items: center; gap: 14px; }
+.icono {
+  width: 46px; height: 46px; flex: none; border-radius: 14px; overflow: hidden;
+  display: grid; place-items: center;
+  font-family: var(--display); font-weight: 800; font-size: 20px; color: #fff;
+}
+.icono img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.app h3 { margin: 0; font-family: var(--display); font-size: 20px; font-weight: 800; letter-spacing: -.02em; }
+.app .edad { font-family: var(--mono); font-size: 12px; color: var(--tenue); }
+.app p { margin: 6px 0 0; flex: 1; font-size: 15px; line-height: 1.6; color: var(--suave); text-wrap: pretty; }
+.estado {
+  display: inline-flex; align-items: center; gap: 8px; margin-top: 8px;
+  font-family: var(--mono); font-size: 12px; letter-spacing: .05em;
+  text-transform: uppercase; color: var(--tenue);
+}
+.estado .punto { width: 6px; height: 6px; border-radius: 50%; background: var(--tinte); }
+a.estado { color: var(--acento-claro); }
+a.estado:hover { color: #fff; }
+
+/* ---------- Metodo ---------- */
+
+.metodo {
+  border-top: 1px solid rgba(255,255,255,.07);
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  background: rgba(255,255,255,.018);
+}
+.pasos {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(230px,1fr));
+  gap: 2px; margin-top: 56px; background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.08); border-radius: 20px; overflow: hidden;
+}
+.paso { padding: 32px 28px; background: #0C0E1A; transition: background .35s ease; }
+.paso:hover { background: #12142B; }
+.paso .num { font-family: var(--mono); font-size: 12px; color: var(--acento-claro); }
+.paso h3 { margin: 14px 0 10px; font-family: var(--display); font-size: 19px; font-weight: 800; letter-spacing: -.015em; }
+.paso p { margin: 0; font-size: 14.5px; line-height: 1.65; color: var(--suave); }
+
+/* ---------- Preguntas ---------- */
+
+.preguntas { max-width: 900px; margin: 0 auto; }
+.preguntas details { border-bottom: 1px solid rgba(255,255,255,.09); padding: 22px 0; }
+.preguntas summary {
+  cursor: pointer; list-style: none;
+  font-family: var(--display); font-size: 20px; font-weight: 600;
+  letter-spacing: -.015em; color: var(--texto);
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.preguntas summary::-webkit-details-marker { display: none; }
+.preguntas summary::after {
+  content: "+"; font-family: var(--mono); font-size: 22px; color: var(--acento-claro);
+  flex: none; transition: transform .25s ease;
+}
+.preguntas details[open] summary::after { transform: rotate(45deg); }
+.preguntas details p { margin: 14px 0 0; font-size: 16px; line-height: 1.7; color: var(--suave); max-width: 62ch; }
+
+/* ---------- Contacto ---------- */
+
+.contacto {
+  position: relative; overflow: hidden; border-radius: 28px;
+  border: 1px solid rgba(255,255,255,.11);
+  background: linear-gradient(150deg, rgba(124,128,255,.22), rgba(14,124,134,.14) 60%, rgba(255,255,255,.03));
+  padding: clamp(44px,6vw,80px) clamp(28px,5vw,64px); text-align: center;
+}
+.contacto::before {
+  content: ""; position: absolute; top: -40%; left: 50%; width: 70%; height: 150%;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(124,128,255,.35), transparent 60%); filter: blur(50px);
+}
+.contacto > div { position: relative; }
+.contacto h2 {
+  margin: 0 auto; max-width: 20ch; font-family: var(--display); font-weight: 800;
+  font-size: clamp(30px,4.4vw,54px); line-height: 1.05; letter-spacing: -.032em; text-wrap: balance;
+}
+.contacto p { margin: 20px auto 0; max-width: 52ch; font-size: 17px; line-height: 1.65; color: #C3C7DC; text-wrap: pretty; }
+.contacto .botones { justify-content: center; }
+.boton-claro {
+  padding: 15px 30px; border-radius: 999px; background: var(--texto); color: #0A0B14;
+  font-weight: 600; font-size: 15px; transition: transform .25s ease, box-shadow .25s ease;
+}
+.boton-claro:hover { transform: translateY(-3px); box-shadow: 0 18px 40px rgba(0,0,0,.4); color: #0A0B14; }
+
+/* ---------- Pie ---------- */
+
+.pie { position: relative; z-index: 1; border-top: 1px solid rgba(255,255,255,.08); }
+.pie-fila {
+  max-width: 1180px; margin: 0 auto; padding: 44px 24px 56px;
+  display: flex; flex-wrap: wrap; gap: 28px; align-items: center; justify-content: space-between;
+}
+.pie-marca { display: flex; align-items: center; gap: 11px; font-weight: 600; letter-spacing: -.02em; }
+.pie-marca svg { width: 28px; height: 28px; flex: none; }
+.pie p { margin: 0; font-size: 14px; color: var(--tenue); }
+.pie .sello { font-family: var(--mono); font-size: 12px; color: var(--mudo); }
 </style>
 </head>
 <body>
-<div class="envoltura">
 
-  <header>
-    <div class="marca"><span class="logotipo" aria-hidden="true">G</span>GusMar Studios</div>
+<div class="lienzo">
 
-    <h1>Aplicaciones educativas para niños.</h1>
+  <div class="fondo-vivo" aria-hidden="true">
+    <div class="mancha-a"></div>
+    <div class="mancha-b"></div>
+    <div class="retícula"></div>
+    <div class="desvanecido"></div>
+  </div>
 
-    <p class="entrada">
-      Nueve apps para acompañar de los 3 a los 12 años, cada una centrada en
-      una sola cosa y hecha para funcionar en el teléfono que ya tienes.
-    </p>
+  <header class="cabecera">
+    <nav class="nav">
+      <a href="#inicio" class="logotipo">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <g transform="translate(32 32)">
+            <g transform="translate(-11 1) rotate(-11)"><rect x="-12" y="-12" width="24" height="24" rx="6.8" fill="#C08B0A" stroke="#0A0B14" stroke-width="3"/></g>
+            <g transform="translate(11 1) rotate(11)"><rect x="-12" y="-12" width="24" height="24" rx="6.8" fill="#12A0AC" stroke="#0A0B14" stroke-width="3"/></g>
+            <g transform="translate(0 -2)"><rect x="-13" y="-13" width="26" height="26" rx="7.4" fill="#7C80FF" stroke="#0A0B14" stroke-width="3"/></g>
+          </g>
+        </svg>
+        GusMar Studios
+      </a>
+      <div class="espaciador"></div>
+      <div class="enlaces">
+        <a href="#apps">Las apps</a>
+        <a href="#principios">Principios</a>
+        <a href="#proceso">Cómo trabajamos</a>
+        <a href="#preguntas">Preguntas</a>
+      </div>
+      <a href="#contacto" class="boton-nav">Hablemos</a>
+    </nav>
   </header>
 
-  <!-- Las tres promesas son las mismas que aparecen en cada ficha de Google Play.
-       Si alguna dejara de ser cierta en alguna app, sale de acá primero. -->
-  <ul class="promesas">
-    <li>
-      <h2>Sin publicidad</h2>
-      <p>Ni banners, ni vídeos, ni nada que interrumpa a un niño mientras aprende.</p>
-    </li>
-    <li>
-      <h2>Sin recolectar datos</h2>
-      <p>Lo que hace el niño se queda en el teléfono. No hay cuentas ni servidores nuestros.</p>
-    </li>
-    <li>
-      <h2>Sin internet</h2>
-      <p>Funcionan completas en avión, en el metro o donde no llega la señal.</p>
-    </li>
-  </ul>
+  <main>
 
-  <h2 class="titulo-seccion">Las apps</h2>
-  <p class="nota-seccion">
-    Estamos publicándolas por etapas. Aquí aparecerá el enlace a Google Play
-    de cada una en cuanto esté disponible.
-  </p>
+    <section id="inicio" class="ancho heroe">
+      <div class="heroe-rejilla">
+        <div>
+          <span class="pildora">
+            <span class="latido" aria-hidden="true"></span>
+            Santiago, Chile · 9 apps en camino
+          </span>
+          <h1>Aplicaciones que <span class="degradado">enseñan de verdad</span> a los niños.</h1>
+          <p class="entrada">
+            Nueve apps para acompañar de los 3 a los 12 años. Cada una centrada en una sola
+            cosa, hecha para funcionar en el teléfono que ya tienes: sin publicidad, sin
+            recolectar datos y sin necesitar internet.
+          </p>
+          <div class="botones">
+            <a href="#apps" class="boton-principal">Ver las nueve apps</a>
+            <a href="#principios" class="boton-secundario">Qué prometemos</a>
+          </div>
+          <dl class="cifras">
+            <div><dt>3–12</dt><dd>años cubiertos</dd></div>
+            <div><dt>0</dt><dd>anuncios y rastreadores</dd></div>
+            <div><dt>100%</dt><dd>funciona sin conexión</dd></div>
+          </dl>
+        </div>
 
-  <ul class="rejilla">
-
-    <li class="app">
-      <div class="encabezado-app">
-        <span class="ficha" style="background:#5B5FEF" aria-hidden="true">M</span>
-        <h3>Matibu <span class="edad">6 a 12 años</span></h3>
+        <!-- Los iconos reales de las apps. Palabu y Terrabu todavia no tienen:
+             se quedan con su letra, que ademas dice honestamente que faltan. -->
+        <div class="mosaico" aria-hidden="true">
+          <div class="pieza" style="animation-duration:7s"><img src="iconos/matibu.webp" alt="" width="256" height="256" loading="lazy"></div>
+          <div class="pieza" style="animation-duration:8.5s;animation-delay:.6s"><img src="iconos/silabu.webp" alt="" width="256" height="256" loading="lazy"></div>
+          <div class="pieza" style="animation-duration:7.8s;animation-delay:1.1s;background:linear-gradient(150deg,#E04A44,#C62F2A)">P</div>
+          <div class="pieza" style="animation-duration:9.2s;animation-delay:.3s;background:linear-gradient(150deg,#248A56,#17603C)">T</div>
+          <div class="pieza" style="animation-duration:6.8s;animation-delay:.9s"><img src="iconos/cronobu.webp" alt="" width="256" height="256" loading="lazy"></div>
+          <div class="pieza" style="animation-duration:8.1s;animation-delay:1.4s"><img src="iconos/lunabu.webp" alt="" width="256" height="256" loading="lazy"></div>
+          <div class="pieza" style="animation-duration:7.4s;animation-delay:.2s"><img src="iconos/anticipa.webp" alt="" width="256" height="256" loading="lazy"></div>
+          <div class="pieza" style="animation-duration:8.8s;animation-delay:.7s"><img src="iconos/dilojugando.webp" alt="" width="256" height="256" loading="lazy"></div>
+          <div class="pieza" style="animation-duration:6.4s;animation-delay:1.2s"><img src="iconos/cavila.webp" alt="" width="256" height="256" loading="lazy"></div>
+        </div>
       </div>
-      <p>Matemáticas desde primero básico: tablas, operaciones y fracciones.</p>
-      <!-- Cuando salga a producción, reemplazar por:
-           <a class="estado" href="https://play.google.com/store/apps/details?id=cl.matibu.matematicas">Ver en Google Play</a> -->
-      <span class="estado">Próximamente</span>
-    </li>
+    </section>
 
-    <li class="app">
-      <div class="encabezado-app">
-        <span class="ficha" style="background:#107D7A" aria-hidden="true">S</span>
-        <h3>Silabu <span class="edad">4 a 7 años</span></h3>
+    <div class="marquesina" aria-hidden="true">
+      <div class="cinta">
+        <div><span>Matibu · matemáticas</span><span>Silabu · lectura</span><span>Palabu · lenguaje</span><span>Terrabu · ciencias</span><span>Cronobu · historia</span><span>Lunabu · preescolar</span><span>Anticipa · rutinas</span><span>Dilo Jugando · pronunciación</span><span>Cavila · lógica</span></div>
+        <div><span>Matibu · matemáticas</span><span>Silabu · lectura</span><span>Palabu · lenguaje</span><span>Terrabu · ciencias</span><span>Cronobu · historia</span><span>Lunabu · preescolar</span><span>Anticipa · rutinas</span><span>Dilo Jugando · pronunciación</span><span>Cavila · lógica</span></div>
       </div>
-      <p>Aprender a leer en español, letra por letra y con la voz por delante.</p>
-      <span class="estado">Próximamente</span>
-    </li>
+    </div>
 
-    <li class="app">
-      <div class="encabezado-app">
-        <span class="ficha" style="background:#C62F2A" aria-hidden="true">P</span>
-        <h3>Palabu <span class="edad">6 a 12 años</span></h3>
+    <section id="principios" class="ancho" style="padding-block:clamp(72px,10vw,128px)">
+      <p class="rotulo" data-rise>01 — Principios</p>
+      <h2 class="titulo" data-rise style="max-width:20ch">Tres promesas que no negociamos.</h2>
+      <p class="parrafo" data-rise>
+        Son las mismas tres que aparecen en cada ficha de Google Play. Si alguna dejara de
+        ser cierta en alguna app, sale de aquí primero.
+      </p>
+
+      <ul class="promesas">
+        <li class="promesa" data-rise>
+          <span class="num" aria-hidden="true">/ 01</span>
+          <h3>Sin publicidad</h3>
+          <p>Ni banners, ni vídeos, ni nada que interrumpa a un niño mientras aprende. La pantalla es solo del contenido.</p>
+          <div class="halo" aria-hidden="true" style="background:radial-gradient(circle,rgba(124,128,255,.3),transparent 70%)"></div>
+        </li>
+        <li class="promesa" data-rise>
+          <span class="num" aria-hidden="true">/ 02</span>
+          <h3>Sin recolectar datos</h3>
+          <p>Lo que hace el niño se queda en el teléfono. No hay cuentas, ni perfiles, ni servidores nuestros guardando nada.</p>
+          <div class="halo" aria-hidden="true" style="background:radial-gradient(circle,rgba(95,227,180,.28),transparent 70%)"></div>
+        </li>
+        <li class="promesa" data-rise>
+          <span class="num" aria-hidden="true">/ 03</span>
+          <h3>Sin internet</h3>
+          <p>Funcionan completas en avión, en el metro o donde no llega la señal. Nada se descarga a mitad de camino.</p>
+          <div class="halo" aria-hidden="true" style="background:radial-gradient(circle,rgba(231,97,50,.26),transparent 70%)"></div>
+        </li>
+      </ul>
+    </section>
+
+    <section id="apps" class="ancho" style="padding-block:clamp(48px,7vw,88px) clamp(72px,10vw,120px)">
+      <p class="rotulo" data-rise>02 — Catálogo</p>
+      <div class="cabeza-catalogo" data-rise>
+        <h2 class="titulo">Las nueve apps.</h2>
+        <p>Las publicamos por etapas. El enlace a Google Play de cada una aparece aquí en cuanto la ficha está viva.</p>
       </div>
-      <p>Lenguaje: leer, escribir y entender lo que se lee.</p>
-      <span class="estado">En desarrollo</span>
-    </li>
 
-    <li class="app">
-      <div class="encabezado-app">
-        <span class="ficha" style="background:#17603C" aria-hidden="true">T</span>
-        <h3>Terrabu <span class="edad">6 a 12 años</span></h3>
+      <!-- Para poner un enlace de Play, cambiar el <span class="estado"> por:
+           <a class="estado" href="https://play.google.com/store/apps/details?id=PAQUETE">
+             <span class="punto"></span>Ver en Google Play</a>
+           Los paquetes estan en el README. -->
+      <ul class="catalogo">
+
+        <li class="app" data-rise style="--tinte:#7C80FF;--tinte-borde:rgba(91,95,239,.6);--tinte-fondo:rgba(91,95,239,.1)">
+          <div class="app-cabeza">
+            <span class="icono"><img src="iconos/matibu.webp" alt="Icono de Matibu" width="256" height="256" loading="lazy"></span>
+            <div><h3>Matibu</h3><span class="edad">6 a 12 años</span></div>
+          </div>
+          <p>Matemáticas desde primero básico: tablas, operaciones y fracciones.</p>
+          <span class="estado"><span class="punto" aria-hidden="true"></span>Próximamente</span>
+        </li>
+
+        <li class="app" data-rise style="--tinte:#18A9A5;--tinte-borde:rgba(16,125,122,.6);--tinte-fondo:rgba(16,125,122,.12)">
+          <div class="app-cabeza">
+            <span class="icono"><img src="iconos/silabu.webp" alt="Icono de Silabu" width="256" height="256" loading="lazy"></span>
+            <div><h3>Silabu</h3><span class="edad">4 a 7 años</span></div>
+          </div>
+          <p>Aprender a leer en español, letra por letra y con la voz por delante.</p>
+          <span class="estado"><span class="punto" aria-hidden="true"></span>Próximamente</span>
+        </li>
+
+        <li class="app" data-rise style="--tinte:#E04A44;--tinte-borde:rgba(198,47,42,.6);--tinte-fondo:rgba(198,47,42,.12)">
+          <div class="app-cabeza">
+            <span class="icono" style="background:linear-gradient(150deg,#E04A44,#C62F2A)">P</span>
+            <div><h3>Palabu</h3><span class="edad">6 a 12 años</span></div>
+          </div>
+          <p>Lenguaje: leer, escribir y entender lo que se lee.</p>
+          <span class="estado"><span class="punto" aria-hidden="true"></span>En desarrollo</span>
+        </li>
+
+        <li class="app" data-rise style="--tinte:#248A56;--tinte-borde:rgba(23,96,60,.7);--tinte-fondo:rgba(23,96,60,.14)">
+          <div class="app-cabeza">
+            <span class="icono" style="background:linear-gradient(150deg,#248A56,#17603C)">T</span>
+            <div><h3>Terrabu</h3><span class="edad">6 a 12 años</span></div>
+          </div>
+          <p>Ciencias naturales: el cuerpo, los seres vivos y el planeta.</p>
+          <span class="estado"><span class="punto" aria-hidden="true"></span>En desarrollo</span>
+        </li>
+
+        <li class="app" data-rise style="--tinte:#C08B0A;--tinte-borde:rgba(192,139,10,.6);--tinte-fondo:rgba(147,105,0,.14)">
+          <div class="app-cabeza">
+            <span class="icono"><img src="iconos/cronobu.webp" alt="Icono de Cronobu" width="256" height="256" loading="lazy"></span>
+            <div><h3>Cronobu</h3><span class="edad">6 a 12 años</span></div>
+          </div>
+          <p>Historia: el tiempo, el mundo y tu país. Empieza por qué es el tiempo.</p>
+          <span class="estado"><span class="punto" aria-hidden="true"></span>En desarrollo</span>
+        </li>
+
+        <li class="app" data-rise style="--tinte:#E76132;--tinte-borde:rgba(203,68,23,.6);--tinte-fondo:rgba(203,68,23,.13)">
+          <div class="app-cabeza">
+            <span class="icono"><img src="iconos/lunabu.webp" alt="Icono de Lunabu" width="256" height="256" loading="lazy"></span>
+            <div><h3>Lunabu</h3><span class="edad">hasta 6 años</span></div>
+          </div>
+          <p>Estimulación temprana con juegos por voz y dibujos. Gratis y completa.</p>
+          <span class="estado"><span class="punto" aria-hidden="true"></span>Próximamente</span>
+        </li>
+
+        <li class="app" data-rise style="--tinte:#3C7186;--tinte-borde:rgba(60,113,134,.7);--tinte-fondo:rgba(44,84,100,.16)">
+          <div class="app-cabeza">
+            <span class="icono"><img src="iconos/anticipa.webp" alt="Icono de Anticipa" width="256" height="256" loading="lazy"></span>
+            <div><h3>Anticipa</h3><span class="edad">TDAH y TEA</span></div>
+          </div>
+          <p>Agenda visual de rutinas: qué toca ahora y qué viene después.</p>
+          <span class="estado"><span class="punto" aria-hidden="true"></span>Próximamente</span>
+        </li>
+
+        <li class="app" data-rise style="--tinte:#12A0AC;--tinte-borde:rgba(18,160,172,.6);--tinte-fondo:rgba(14,124,134,.13)">
+          <div class="app-cabeza">
+            <span class="icono"><img src="iconos/dilojugando.webp" alt="Icono de Dilo Jugando" width="256" height="256" loading="lazy"></span>
+            <div><h3>Dilo Jugando</h3><span class="edad">6 a 12 años</span></div>
+          </div>
+          <p>Pronunciación, jugando. La voz del niño no queda grabada en ninguna parte.</p>
+          <span class="estado"><span class="punto" aria-hidden="true"></span>Próximamente</span>
+        </li>
+
+        <li class="app" data-rise style="--tinte:#3E88E8;--tinte-borde:rgba(62,136,232,.6);--tinte-fondo:rgba(42,111,204,.13)">
+          <div class="app-cabeza">
+            <span class="icono"><img src="iconos/cavila.webp" alt="Icono de Cavila" width="256" height="256" loading="lazy"></span>
+            <div><h3>Cavila</h3><span class="edad">desde 8 años</span></div>
+          </div>
+          <p>Acertijos de lógica para pensar despacio y con calma.</p>
+          <span class="estado"><span class="punto" aria-hidden="true"></span>Próximamente</span>
+        </li>
+
+      </ul>
+    </section>
+
+    <section id="proceso" class="metodo">
+      <div class="ancho" style="padding-block:clamp(72px,10vw,128px)">
+        <p class="rotulo" data-rise>03 — Método</p>
+        <h2 class="titulo" data-rise style="max-width:18ch">Cómo hacemos una app.</h2>
+        <div class="pasos">
+          <div class="paso" data-rise>
+            <span class="num">01</span>
+            <h3>Una sola cosa</h3>
+            <p>Cada app resuelve un objetivo del currículum. Nada de suites que hacen de todo a medias.</p>
+          </div>
+          <div class="paso" data-rise>
+            <span class="num">02</span>
+            <h3>Legible de verdad</h3>
+            <p>Cada color se mide contra el mínimo de accesibilidad antes de entrar en una app. Medido, no estimado a ojo.</p>
+          </div>
+          <div class="paso" data-rise>
+            <span class="num">03</span>
+            <h3>Ligero por diseño</h3>
+            <p>Sin dependencias innecesarias. Tiene que ir fluido en el teléfono de gama media que hay en casa.</p>
+          </div>
+          <div class="paso" data-rise>
+            <span class="num">04</span>
+            <h3>Prueba con niños</h3>
+            <p>Prueba cerrada antes de publicar. Si un niño de la edad objetivo se traba, se rehace la pantalla.</p>
+          </div>
+        </div>
       </div>
-      <p>Ciencias naturales: el cuerpo, los seres vivos y el planeta.</p>
-      <span class="estado">En desarrollo</span>
-    </li>
+    </section>
 
-    <li class="app">
-      <div class="encabezado-app">
-        <span class="ficha" style="background:#936900" aria-hidden="true">C</span>
-        <h3>Cronobu <span class="edad">6 a 12 años</span></h3>
+    <section id="preguntas" class="ancho preguntas" style="padding-block:clamp(72px,10vw,128px)">
+      <p class="rotulo" data-rise>04 — Preguntas frecuentes</p>
+      <h2 class="titulo" data-rise style="margin-bottom:44px">Lo que preguntan los papás.</h2>
+
+      <details data-rise open>
+        <summary>¿Las apps tienen publicidad?</summary>
+        <p>No. Ninguna app de GusMar Studios muestra banners, vídeos ni interrupciones de ningún tipo. Es una decisión de producto, no un plan de precios.</p>
+      </details>
+      <details data-rise>
+        <summary>¿Recolectan datos de los niños?</summary>
+        <p>No. Todo lo que hace el niño se queda en el teléfono: no hay cuentas, ni analítica, ni servidores nuestros guardando nada. En Dilo Jugando, además, la voz nunca se graba.</p>
+      </details>
+      <details data-rise>
+        <summary>¿Funcionan sin internet?</summary>
+        <p>Sí, completas. En avión, en el metro o donde no llega la señal. No hay contenido que se descargue a mitad de una actividad.</p>
+      </details>
+      <details data-rise>
+        <summary>¿En qué dispositivos funcionan?</summary>
+        <p>En Android, publicadas en Google Play bajo GusMar Studios. Están hechas para ir bien en teléfonos de gama media y en equipos con algunos años encima.</p>
+      </details>
+      <details data-rise>
+        <summary>¿Cuánto cuestan?</summary>
+        <p>Lunabu es gratis y completa. El resto se publica por etapas y el precio de cada una aparece en su ficha de Google Play cuando sale a producción.</p>
+      </details>
+    </section>
+
+    <section id="contacto" class="ancho" style="padding-bottom:clamp(80px,10vw,128px)">
+      <div class="contacto" data-rise>
+        <div>
+          <h2>¿Colegio, fundación o una idea propia?</h2>
+          <p>Escríbenos. Trabajamos con instituciones que quieren material educativo digital sin publicidad ni recolección de datos.</p>
+          <div class="botones">
+            <a href="mailto:hola@gusmarstudios.com" class="boton-claro">hola@gusmarstudios.com</a>
+            <a href="#apps" class="boton-secundario">Ver el catálogo</a>
+          </div>
+        </div>
       </div>
-      <p>Historia: el tiempo, el mundo y tu país. Empieza por qué es el tiempo.</p>
-      <span class="estado">En desarrollo</span>
-    </li>
+    </section>
 
-    <li class="app">
-      <div class="encabezado-app">
-        <span class="ficha" style="background:#CB4417" aria-hidden="true">L</span>
-        <h3>Lunabu <span class="edad">hasta 6 años</span></h3>
+  </main>
+
+  <footer class="pie">
+    <div class="pie-fila">
+      <div class="pie-marca">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <g transform="translate(32 32)">
+            <g transform="translate(-11 1) rotate(-11)"><rect x="-12" y="-12" width="24" height="24" rx="6.8" fill="#C08B0A" stroke="#0A0B14" stroke-width="3"/></g>
+            <g transform="translate(11 1) rotate(11)"><rect x="-12" y="-12" width="24" height="24" rx="6.8" fill="#12A0AC" stroke="#0A0B14" stroke-width="3"/></g>
+            <g transform="translate(0 -2)"><rect x="-13" y="-13" width="26" height="26" rx="7.4" fill="#7C80FF" stroke="#0A0B14" stroke-width="3"/></g>
+          </g>
+        </svg>
+        GusMar Studios
       </div>
-      <p>Estimulación temprana con juegos por voz y dibujos. Gratis y completa.</p>
-      <span class="estado">Próximamente</span>
-    </li>
-
-    <li class="app">
-      <div class="encabezado-app">
-        <span class="ficha" style="background:#2C5464" aria-hidden="true">A</span>
-        <h3>Anticipa <span class="edad">TDAH y TEA</span></h3>
-      </div>
-      <p>Agenda visual de rutinas: qué toca ahora y qué viene después.</p>
-      <span class="estado">Próximamente</span>
-    </li>
-
-    <li class="app">
-      <div class="encabezado-app">
-        <span class="ficha" style="background:#0E7C86" aria-hidden="true">D</span>
-        <h3>Dilo Jugando <span class="edad">6 a 12 años</span></h3>
-      </div>
-      <p>Pronunciación, jugando. La voz del niño no queda grabada en ninguna parte.</p>
-      <span class="estado">Próximamente</span>
-    </li>
-
-    <li class="app">
-      <div class="encabezado-app">
-        <span class="ficha" style="background:#2A6FCC" aria-hidden="true">C</span>
-        <h3>Cavila <span class="edad">desde 8 años</span></h3>
-      </div>
-      <p>Acertijos de lógica para pensar despacio y con calma.</p>
-      <span class="estado">Próximamente</span>
-    </li>
-
-  </ul>
-
-  <footer>
-    <p>GusMar Studios · Santiago, Chile</p>
-    <p>Publicado en Google Play como <strong>GusMar Studios</strong>.</p>
+      <p>Santiago, Chile · Publicado en Google Play como <strong style="color:#A7ACC6">GusMar Studios</strong></p>
+      <p class="sello">© 2026 gusmarstudios.com</p>
+    </div>
   </footer>
 
 </div>
