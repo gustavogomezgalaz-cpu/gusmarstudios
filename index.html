@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GusMar Studios</title>
+<meta name="description" content="Aplicaciones educativas para niños. Sin publicidad, sin recolección de datos y pensadas para funcionar sin internet.">
+<meta name="theme-color" content="#1d4ed8">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+<style>
+  :root {
+    --fondo: #f7f8fc;
+    --texto: #16182b;
+    --suave: #5a5f7d;
+    --linea: #e2e5f0;
+    --azul: #1d4ed8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --fondo: #101223;
+      --texto: #f2f3f9;
+      --suave: #a3a9c6;
+      --linea: #272a41;
+      --azul: #7ea2ff;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.25rem;
+    background: var(--fondo);
+    color: var(--texto);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  main { max-width: 34rem; text-align: center; }
+  .marca {
+    display: inline-flex;
+    align-items: center;
+    gap: .6rem;
+    font-size: clamp(1.75rem, 6vw, 2.5rem);
+    font-weight: 800;
+    letter-spacing: -.02em;
+    margin: 0;
+  }
+  .punto {
+    width: .6em;
+    height: .6em;
+    border-radius: 50%;
+    background: var(--azul);
+    flex: none;
+  }
+  .bajada {
+    margin: 1.25rem 0 0;
+    font-size: clamp(1rem, 3.5vw, 1.15rem);
+    color: var(--suave);
+    text-wrap: balance;
+  }
+  .pie {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--linea);
+    font-size: .875rem;
+    color: var(--suave);
+  }
+  a { color: var(--azul); }
+</style>
+</head>
+<body>
+  <main>
+    <h1 class="marca"><span class="punto" aria-hidden="true"></span>GusMar Studios</h1>
+    <p class="bajada">
+      Aplicaciones educativas para niños. Sin publicidad, sin recolección de datos,
+      y pensadas para funcionar sin internet.
+    </p>
+    <p class="pie">Estamos preparando esta página. Vuelve pronto.</p>
+  </main>
+</body>
+</html>
