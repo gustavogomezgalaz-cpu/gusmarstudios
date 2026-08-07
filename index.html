@@ -101,7 +101,13 @@ body {
   color: var(--texto);
   font-family: 'IBM Plex Sans', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+  /* `clip` en vez de `hidden`: recorta igual pero no crea contenedor de
+     desplazamiento, que es lo que rompe `position: sticky` cuando el overflow
+     cae en un envoltorio. Aqui, medido, el `hidden` NO rompia nada —Chrome
+     propaga el overflow del body a la ventana— pero `clip` es el correcto y
+     no cuesta. La primera linea es el repuesto para quien no conozca `clip`. */
   overflow-x: hidden;
+  overflow-x: clip;
 }
 a { color: var(--acento-claro); text-decoration: none; }
 a:hover { color: #fff; }
@@ -163,9 +169,22 @@ img { max-width: 100%; }
 
 .cabecera {
   position: sticky; top: 0; z-index: 50;
-  backdrop-filter: blur(14px);
-  background: rgba(10,11,20,.62);
+  /* Fondo CASI OPACO por defecto. El translucido solo se enciende si el
+     navegador de verdad sabe desenfocar (abajo): sin desenfoque, un 62% deja
+     ver el contenido pasando por debajo y la cabecera "se pierde". */
+  background: rgba(10,11,20,.94);
   border-bottom: 1px solid rgba(255,255,255,.07);
+  /* Capa propia: en varios Android el desenfoque sobre un elemento pegajoso
+     parpadea o desaparece mientras se hace scroll si no esta promovido. */
+  will-change: transform;
+  transform: translateZ(0);
+}
+@supports ((backdrop-filter: blur(14px)) or (-webkit-backdrop-filter: blur(14px))) {
+  .cabecera {
+    background: rgba(10,11,20,.62);
+    -webkit-backdrop-filter: blur(14px);  /* iOS y varios WebView lo exigen */
+    backdrop-filter: blur(14px);
+  }
 }
 .nav {
   max-width: 1180px; margin: 0 auto; padding: 14px 24px;
