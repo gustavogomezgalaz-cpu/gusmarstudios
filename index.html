@@ -3,27 +3,27 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GusMar Studios — Apps educativas para niños de 3 a 12 años</title>
-<meta name="description" content="Estudio chileno de apps educativas para niños de 3 a 12 años. Nueve aplicaciones sin publicidad, sin recolección de datos y que funcionan sin internet.">
+<title>GusMar Studios — Educación que se adapta a cada niño</title>
+<meta name="description" content="Estudio chileno de educación y tecnología. Nueve aplicaciones que ajustan el nivel y el ritmo a cada niño, sin publicidad, sin recolección de datos y funcionando sin internet.">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <link rel="canonical" href="https://gusmarstudios.com/">
 <meta name="theme-color" content="#0A0B14">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="GusMar Studios">
-<meta property="og:title" content="GusMar Studios — Apps educativas para niños">
-<meta property="og:description" content="Nueve apps para acompañar de los 3 a los 12 años. Sin publicidad, sin datos y sin internet.">
+<meta property="og:title" content="GusMar Studios — Educación que se adapta a cada niño">
+<meta property="og:description" content="Nueve aplicaciones que ajustan el nivel y el ritmo a quien las usa. Sin publicidad, sin datos y sin internet.">
 <meta property="og:url" content="https://gusmarstudios.com/">
 <meta property="og:locale" content="es_CL">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="GusMar Studios — Apps educativas para niños">
-<meta name="twitter:description" content="Nueve apps para acompañar de los 3 a los 12 años. Sin publicidad, sin datos y sin internet.">
+<meta name="twitter:title" content="GusMar Studios — Educación que se adapta a cada niño">
+<meta name="twitter:description" content="Nueve aplicaciones que ajustan el nivel y el ritmo a quien las usa. Sin publicidad, sin datos y sin internet.">
 <link rel="icon" href="marca.svg" type="image/svg+xml">
 <link rel="preload" href="fuentes/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fuentes/ibm-plex-sans-400.woff2" as="font" type="font/woff2" crossorigin>
 
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
-{"@type":"Organization","@id":"https://gusmarstudios.com/#org","name":"GusMar Studios","url":"https://gusmarstudios.com/","description":"Estudio de aplicaciones educativas para niños de 3 a 12 años.","address":{"@type":"PostalAddress","addressLocality":"Santiago","addressCountry":"CL"}},
+{"@type":"Organization","@id":"https://gusmarstudios.com/#org","name":"GusMar Studios","url":"https://gusmarstudios.com/","description":"Estudio de educación y tecnología. Construye aplicaciones que ajustan el nivel y el ritmo a cada niño, sin publicidad ni recolección de datos.","address":{"@type":"PostalAddress","addressLocality":"Santiago","addressCountry":"CL"}},
 {"@type":"WebSite","@id":"https://gusmarstudios.com/#web","url":"https://gusmarstudios.com/","name":"GusMar Studios","inLanguage":"es-CL","publisher":{"@id":"https://gusmarstudios.com/#org"}},
 {"@type":"ItemList","name":"Apps de GusMar Studios","itemListElement":[
 {"@type":"ListItem","position":1,"item":{"@type":"MobileApplication","name":"Matibu","applicationCategory":"EducationalApplication","operatingSystem":"Android","description":"Matemáticas desde primero básico: tablas, operaciones y fracciones."}},
@@ -43,6 +43,10 @@
 {"@type":"Question","name":"¿Cuánto cuestan?","acceptedAnswer":{"@type":"Answer","text":"Lunabu es gratis y completa. El resto se publica por etapas; el precio de cada una aparece en su ficha de Google Play."}}]}
 ]}
 </script>
+
+<!-- Marca que hay JavaScript ANTES de pintar: sin esto, un `opacity:0` de
+     entrada dejaria la pagina en blanco para quien tenga el script apagado. -->
+<script>document.documentElement.classList.add('js')</script>
 
 <style>
 /* ---------- Fuentes propias ----------
@@ -126,15 +130,24 @@ img { max-width: 100%; }
 @keyframes gm-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @keyframes gm-pulse { 0%,100% { opacity: .35; } 50% { opacity: 1; } }
 
-[data-rise] {
-  animation: gm-rise .9s cubic-bezier(.2,.7,.2,1) both;
-  animation-timeline: view();
-  animation-range: entry 4% cover 26%;
+/* Revelado al bajar.
+   Antes usaba `animation-timeline: view()`, que hoy solo entienden Chrome y
+   Edge: en Firefox y Safari la animacion corria entera al cargar y no se veia
+   nada al hacer scroll. Ahora lo dispara un IntersectionObserver, que anda en
+   todos lados.
+   El `.js` lo pone un script en la cabecera: sin JavaScript nada se esconde,
+   asi la pagina nunca queda en blanco si el script no corre. */
+.js [data-rise] {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity .75s cubic-bezier(.2,.7,.2,1), transform .75s cubic-bezier(.2,.7,.2,1);
 }
+.js [data-rise][data-visible] { opacity: 1; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001s !important; transition-duration: .001s !important; }
   html { scroll-behavior: auto; }
+  .js [data-rise] { opacity: 1; transform: none; }
 }
 
 /* ---------- Estructura ---------- */
@@ -482,8 +495,9 @@ a.estado:hover { color: #fff; }
       </a>
       <div class="espaciador"></div>
       <div class="enlaces">
-        <a href="#principios">Principios</a>
-        <a href="#proceso">Cómo trabajamos</a>
+        <a href="#apps">El trabajo</a>
+        <a href="#principios">Estándar</a>
+        <a href="#proceso">Método</a>
         <a href="#preguntas">Preguntas</a>
       </div>
       <!-- Era "Hablemos" -> #contacto. Vuelve cuando exista el correo. -->
@@ -498,22 +512,22 @@ a.estado:hover { color: #fff; }
         <div>
           <span class="pildora">
             <span class="latido" aria-hidden="true"></span>
-            Santiago, Chile · 9 apps en camino
+            Santiago, Chile · Educación y tecnología
           </span>
-          <h1>Aplicaciones que <span class="degradado">enseñan de verdad</span> a los niños.</h1>
+          <h1>La educación del futuro <span class="degradado">se adapta a cada niño</span>.</h1>
           <p class="entrada">
-            Nueve apps para acompañar de los 3 a los 12 años. Cada una centrada en una sola
-            cosa, hecha para funcionar en el teléfono que ya tienes: sin publicidad, sin
-            recolectar datos y sin necesitar internet.
+            Un contenido igual para treinta niños deja a la mitad afuera: a unos les sobra
+            y a otros les falta. Construimos herramientas que ajustan el nivel y el ritmo
+            a quien las está usando, en su idioma y en el teléfono que ya tiene en casa.
           </p>
           <div class="botones">
-            <a href="#apps" class="boton-principal">Ver las nueve apps</a>
-            <a href="#principios" class="boton-secundario">Qué prometemos</a>
+            <a href="#apps" class="boton-principal">Ver el trabajo</a>
+            <a href="#proceso" class="boton-secundario">Cómo trabajamos</a>
           </div>
           <dl class="cifras">
-            <div><dt>3–12</dt><dd>años cubiertos</dd></div>
+            <div><dt>9</dt><dd>productos construidos</dd></div>
+            <div><dt>3</dt><dd>idiomas en cada uno</dd></div>
             <div><dt>0</dt><dd>anuncios y rastreadores</dd></div>
-            <div><dt>100%</dt><dd>funciona sin conexión</dd></div>
           </dl>
         </div>
 
@@ -541,11 +555,11 @@ a.estado:hover { color: #fff; }
     </div>
 
     <section id="principios" class="ancho" style="padding-block:clamp(72px,10vw,128px)">
-      <p class="rotulo" data-rise>01 — Principios</p>
-      <h2 class="titulo" data-rise style="max-width:20ch">Tres promesas que no negociamos.</h2>
+      <p class="rotulo" data-rise>01 — Estándar</p>
+      <h2 class="titulo" data-rise style="max-width:20ch">Tres decisiones que no se negocian.</h2>
       <p class="parrafo" data-rise>
-        Son las mismas tres que aparecen en cada ficha de Google Play. Si alguna dejara de
-        ser cierta en alguna app, sale de aquí primero.
+        Se tomaron una vez y valen para todo lo que publicamos. No dependen del producto,
+        del público ni del rubro: son la forma de la casa.
       </p>
 
       <ul class="promesas">
@@ -571,10 +585,10 @@ a.estado:hover { color: #fff; }
     </section>
 
     <section id="apps" class="ancho" style="padding-block:clamp(48px,7vw,88px) clamp(72px,10vw,120px)">
-      <p class="rotulo" data-rise>02 — Catálogo</p>
+      <p class="rotulo" data-rise>02 — El trabajo</p>
       <div class="cabeza-catalogo" data-rise>
-        <h2 class="titulo">Las nueve apps.</h2>
-        <p>Las publicamos por etapas. Cinco ya están en prueba cerrada — ese enlace es para quienes participan de ella. El resto aparecerá aquí en cuanto llegue a Google Play.</p>
+        <h2 class="titulo">Lo construido.</h2>
+        <p>Nueve aplicaciones educativas para Android, cada una terminada de punta a punta. Cinco ya están en manos de sus primeros usuarios.</p>
       </div>
 
       <!-- ═══════════════════════════════════════════════════════════════════
@@ -689,7 +703,7 @@ a.estado:hover { color: #fff; }
     <section id="proceso" class="metodo">
       <div class="ancho" style="padding-block:clamp(72px,10vw,128px)">
         <p class="rotulo" data-rise>03 — Método</p>
-        <h2 class="titulo" data-rise style="max-width:18ch">Cómo hacemos una app.</h2>
+        <h2 class="titulo" data-rise style="max-width:18ch">Cómo se construye acá.</h2>
         <div class="pasos">
           <div class="paso" data-rise>
             <span class="num">01</span>
@@ -717,7 +731,7 @@ a.estado:hover { color: #fff; }
 
     <section id="preguntas" class="ancho preguntas" style="padding-block:clamp(72px,10vw,128px)">
       <p class="rotulo" data-rise>04 — Preguntas frecuentes</p>
-      <h2 class="titulo" data-rise style="margin-bottom:44px">Lo que preguntan los papás.</h2>
+      <h2 class="titulo" data-rise style="margin-bottom:44px">Lo que suelen preguntarnos.</h2>
 
       <details data-rise open>
         <summary>¿Las apps tienen publicidad?</summary>
@@ -783,5 +797,58 @@ a.estado:hover { color: #fff; }
   </footer>
 
 </div>
+
+<script>
+// Revelado al bajar.
+//
+// Barrido en el scroll y NO un IntersectionObserver, a proposito: el observador
+// solo avisa de lo que intersecta EN ESE INSTANTE, asi que un salto —tocar un
+// enlace del menu, una pasada de dedo rapida— deja atras elementos que nunca
+// reciben el aviso y **se quedan invisibles para siempre**. Aca la condicion es
+// "ya paso el borde de abajo", que un salto no puede deshacer.
+//
+// Son 30 elementos y cada uno sale de la lista al revelarse, asi que el costo
+// por scroll tiende a cero.
+(() => {
+  let pendientes = [...document.querySelectorAll('[data-rise]')];
+  if (!pendientes.length) return;
+
+  const todos = () => { pendientes.forEach((p) => p.setAttribute('data-visible', '')); pendientes = []; };
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { todos(); return; }
+
+  let agendado = false;
+  const barrer = () => {
+    agendado = false;
+    const limite = window.innerHeight * 0.92;   // aparece un poco antes del borde
+    const quedan = [];
+    let enTanda = 0;
+    for (const el of pendientes) {
+      if (el.getBoundingClientRect().top >= limite) { quedan.push(el); continue; }
+      // Escalonado: los que entran juntos lo hacen uno detras de otro, no de
+      // golpe. Tope de 5 para que el ultimo no se haga esperar.
+      if (enTanda > 0) el.style.transitionDelay = `${Math.min(enTanda, 5) * 70}ms`;
+      el.setAttribute('data-visible', '');
+      enTanda++;
+    }
+    pendientes = quedan;
+    if (!pendientes.length) {
+      removeEventListener('scroll', pedir);
+      removeEventListener('resize', pedir);
+    }
+  };
+  const pedir = () => { if (!agendado) { agendado = true; requestAnimationFrame(barrer); } };
+
+  addEventListener('scroll', pedir, { passive: true });
+  addEventListener('resize', pedir, { passive: true });
+  pedir();                       // lo que ya esta en pantalla no espera un scroll
+  addEventListener('load', pedir);
+
+  // Red de seguridad: llama a `barrer` DIRECTO, sin pasar por rAF. En una
+  // pestana oculta o en segundo plano rAF no dispara nunca, y entonces `pedir`
+  // no serviria de nada. Esto garantiza que lo que este en pantalla se vea.
+  setTimeout(() => { if (pendientes.length) barrer(); }, 2500);
+})();
+</script>
 </body>
 </html>
