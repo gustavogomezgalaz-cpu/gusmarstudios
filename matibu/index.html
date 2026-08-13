@@ -160,17 +160,14 @@ footer a:hover{color:#fff}
 
   <div class="acciones">
     <!-- ═══ EL BOTON ═══
-         Hoy dice "Próximamente" porque la ficha de Play todavía no es pública
-         (en prueba cerrada devuelve 404). Cuando Matibu esté EN PRODUCCIÓN,
-         reemplazar el <span> de abajo por:
-
-         <a class="boton" href="https://play.google.com/store/apps/details?id=cl.matibu.matematicas">
-           Descargar en Google Play</a>
-
-         Comprobar ANTES que la ficha responda 200:
+         Encendido el 2026-08-13, el día que Matibu pasó a producción. Antes de
+         encenderlo se comprobó que la ficha responde 200 en los tres idiomas:
          curl -s -o /dev/null -w "%{http_code}" "https://play.google.com/store/apps/details?id=cl.matibu.matematicas"
+         Mientras estuvo en prueba cerrada devolvía 404, y un botón que lleva a
+         un 404 cuesta más que no tener botón.
     ═══ -->
-    <span class="boton espera">Próximamente en Google Play</span>
+    <a class="boton" href="https://play.google.com/store/apps/details?id=cl.matibu.matematicas">
+      Descargar en Google Play</a>
     <p class="firma">Una app de GusMar Studios</p>
   </div>
 </header>
@@ -242,7 +239,8 @@ footer a:hover{color:#fff}
       y al que le cuesta no lo deja atrás.
     </p>
     <div class="acciones">
-      <span class="boton espera">Próximamente en Google Play</span>
+      <a class="boton" href="https://play.google.com/store/apps/details?id=cl.matibu.matematicas">
+        Descargar en Google Play</a>
     </div>
   </section>
 
