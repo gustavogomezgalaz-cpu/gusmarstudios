@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Matibu — Matemáticas desde los 6 años | GusMar Studios</title>
-<meta name="description" content="App de matemáticas para niños desde primero básico: tablas, operaciones, fracciones y más. El nivel se ajusta a cada niño. Sin anuncios, sin internet y sin compras del niño.">
+<meta name="description" content="App de matemáticas para niños de 1º a 6º básico: 28 temas, 99 lecciones y 13 juegos, de contar hasta despejar la X. El nivel se ajusta a cada niño. Sin anuncios, sin internet y sin compras del niño.">
 <link rel="canonical" href="https://gusmarstudios.com/matibu/">
 <meta name="theme-color" content="#4247D6">
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="GusMar Studios">
 <meta property="og:title" content="Matibu — Matemáticas desde los 6 años">
-<meta property="og:description" content="Se ajusta al nivel de cada niño. Sin anuncios, sin internet y sin nada que el niño pueda comprar.">
+<meta property="og:description" content="28 temas y 13 juegos, de contar hasta despejar la X. Se ajusta al nivel de cada niño. Sin anuncios, sin internet y sin nada que el niño pueda comprar.">
 <meta property="og:url" content="https://gusmarstudios.com/matibu/">
 <meta property="og:locale" content="es_CL">
 <meta property="og:image" content="https://gusmarstudios.com/matibu/og.png">
@@ -20,19 +20,26 @@
 <meta property="og:image:alt" content="Matibu — Matemáticas desde los 6 años, de GusMar Studios">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Matibu — Matemáticas desde los 6 años">
-<meta name="twitter:description" content="Se ajusta al nivel de cada niño. Sin anuncios, sin internet y sin nada que el niño pueda comprar.">
+<meta name="twitter:description" content="28 temas y 13 juegos, de contar hasta despejar la X. Se ajusta al nivel de cada niño. Sin anuncios, sin internet y sin nada que el niño pueda comprar.">
 <meta name="twitter:image" content="https://gusmarstudios.com/matibu/og.png">
-<link rel="icon" href="../marca.svg" type="image/svg+xml">
+<link rel="icon" href="/marca.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"MobileApplication",
 "name":"Matibu: Tablas y Matemáticas",
 "operatingSystem":"Android","applicationCategory":"EducationalApplication",
-"description":"Matemáticas para niños desde primero básico: tablas, operaciones, fracciones, geometría y más. El nivel se ajusta a cada niño. Sin anuncios, sin internet y sin compras del niño.",
+"description":"Matemáticas para niños de 1º a 6º básico: 28 temas y 99 lecciones de contar hasta despejar la X, con 13 juegos para practicar. El nivel se ajusta a cada niño. Sin anuncios, sin internet y sin compras del niño.",
 "inLanguage":["es","en","pt"],
 "image":"https://gusmarstudios.com/matibu/og.png",
 "author":{"@type":"Organization","name":"GusMar Studios","url":"https://gusmarstudios.com/"}}
 </script>
+
+<!-- Sin JavaScript no se esconde nada: la clase `js` es la que enciende el
+     revelado, así que la página nunca queda en blanco si el script no corre. -->
+<script>document.documentElement.classList.add('js')</script>
 
 <style>
 @font-face { font-family:'Bricolage Grotesque'; src:url('../fuentes/bricolage-grotesque.woff2') format('woff2'); font-weight:400 800; font-display:swap; }
@@ -53,6 +60,41 @@ img{max-width:100%;display:block}
 :focus-visible{outline:2px solid var(--matibu);outline-offset:3px;border-radius:6px}
 
 .ancho{max-width:1080px;margin:0 auto;padding-inline:24px}
+
+/* Revelado al bajar. Mismo patrón que la portada del estudio: un barrido en el
+   scroll y NO un IntersectionObserver, porque el observador solo avisa de lo que
+   cruza EN ESE INSTANTE y un salto —un enlace del menú, un dedo rápido— deja
+   elementos invisibles para siempre. La condición de aquí es "ya pasó el borde
+   de abajo", que un salto no puede deshacer. */
+.js [data-rise]{
+  opacity:0;transform:translateY(30px);
+  transition:opacity .75s cubic-bezier(.2,.7,.2,1),transform .75s cubic-bezier(.2,.7,.2,1);
+}
+.js [data-rise][data-visible]{opacity:1;transform:none}
+
+/* La pista de que abajo hay más. Se apaga sola en cuanto el visitante baja:
+   una flecha que sigue insistiendo cuando ya obedeciste es ruido.
+
+   Va ANCLADA al borde de abajo y no debajo de las cifras: en un teléfono el
+   héroe ya no cabe entero, así que una pista colocada al final del bloque se
+   queda justo fuera de la pantalla — o sea, no existe. */
+.sigue{
+  position:fixed;left:0;right:0;bottom:18px;z-index:5;pointer-events:none;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  margin:0;font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--tenue);
+  text-shadow:0 2px 12px var(--fondo);
+  transition:opacity .5s ease;
+}
+.sigue svg{width:22px;height:22px;animation:baja 1.9s ease-in-out infinite}
+@keyframes baja{0%,100%{transform:translateY(0);opacity:.55}50%{transform:translateY(7px);opacity:1}}
+body[data-bajo] .sigue{opacity:0;pointer-events:none}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.001s !important;transition-duration:.001s !important}
+  html{scroll-behavior:auto}
+  .js [data-rise]{opacity:1;transform:none}
+}
 
 /* Cabecera: vuelta al estudio */
 .volver{display:flex;align-items:center;gap:10px;padding:18px 0;font-size:14px;color:var(--suave);font-weight:600}
@@ -100,8 +142,31 @@ h1{margin:22px 0 0;font-family:var(--display);font-weight:800;font-size:clamp(38
 .boton.espera:hover{transform:none;color:var(--suave)}
 .firma{font-size:14px;color:var(--tenue)}
 
+/* Las cifras, debajo del héroe. Son el argumento más corto que hay: dicen de
+   una vez que no es una app de tablas con otro nombre. */
+.cifras{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;
+  margin-top:38px;padding:0;list-style:none;
+}
+.cifra{padding:18px 12px;border-radius:16px;background:var(--tarjeta);border:1px solid rgba(255,255,255,.08)}
+.cifra b{display:block;font-family:var(--display);font-size:34px;font-weight:800;letter-spacing:-.03em;color:var(--matibu)}
+.cifra span{display:block;margin-top:2px;font-size:13.5px;color:var(--suave);font-weight:600}
+
 /* Lo que enseña */
 .seccion{padding-block:clamp(48px,8vw,80px)}
+
+/* Las islas: cada una con su color, como en el mapa de la app */
+.islas{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:30px 0 0;padding:0;list-style:none}
+.isla{padding:22px;border-radius:18px;background:var(--tarjeta);border:1px solid rgba(255,255,255,.08);border-left:5px solid var(--tono)}
+.isla h3{margin:0;font-family:var(--display);font-size:18px;font-weight:800;letter-spacing:-.015em}
+.isla p{margin:8px 0 0;font-size:14px;line-height:1.6;color:var(--suave)}
+.isla .cuenta{display:block;margin-top:10px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--tenue)}
+
+/* Precio */
+.plan{margin:30px 0 0;padding:26px;border-radius:20px;background:var(--tarjeta);border:1px solid rgba(255,255,255,.08)}
+.plan h3{margin:0;font-family:var(--display);font-size:21px;font-weight:800;letter-spacing:-.02em}
+.plan p{margin:10px 0 0;font-size:15px;line-height:1.7;color:var(--suave)}
+.plan .destacado{color:var(--texto);font-weight:600}
 .rotulo{margin:0;font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--matibu)}
 h2{margin:14px 0 0;font-family:var(--display);font-weight:800;font-size:clamp(28px,6vw,42px);letter-spacing:-.03em;line-height:1.08}
 .intro{margin:14px 0 0;max-width:58ch;font-size:16.5px;line-height:1.7;color:var(--suave)}
@@ -112,15 +177,30 @@ h2{margin:14px 0 0;font-family:var(--display);font-weight:800;font-size:clamp(28
   border:1px solid rgba(255,255,255,.08);font-size:14.5px;font-weight:600;color:var(--suave);
 }
 
-/* Capturas */
-.tira{
-  display:grid;grid-auto-flow:column;grid-auto-columns:minmax(210px,250px);gap:16px;
-  margin-top:30px;padding-bottom:14px;overflow-x:auto;
-  scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+/* La galería: cada captura dentro de un teléfono.
+   El marco no es adorno — una captura suelta y muy alta se lee como una tira
+   rara; metida en un teléfono, el ojo la reconoce y deja de medirla. */
+.galeria{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:clamp(20px,4vw,34px);margin:38px 0 0;padding:0;list-style:none;
 }
-.tira figure{margin:0;scroll-snap-align:start}
-.tira img{border-radius:16px;border:1px solid rgba(255,255,255,.09)}
-.tira figcaption{margin-top:10px;font-size:13.5px;color:var(--tenue);line-height:1.5}
+.galeria figure{margin:0;display:flex;flex-direction:column;align-items:center}
+.tel{
+  position:relative;width:100%;max-width:250px;padding:9px 9px 14px;
+  border-radius:34px;background:linear-gradient(155deg,#33385C,#12142A);
+  box-shadow:0 26px 60px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.10) inset;
+}
+/* El auricular. Dos píxeles que hacen que se lea como teléfono y no como caja. */
+.tel::before{
+  content:"";position:absolute;top:4px;left:50%;transform:translateX(-50%);
+  width:52px;height:5px;border-radius:99px;background:rgba(255,255,255,.18);
+}
+.tel img{border-radius:26px;display:block;width:100%;height:auto}
+.galeria figcaption{
+  margin-top:16px;max-width:26ch;text-align:center;
+  font-size:14px;color:var(--suave);line-height:1.55;
+}
+.galeria figcaption strong{color:var(--texto)}
 
 /* Promesas */
 .promesas{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:30px 0 0;padding:0;list-style:none}
@@ -170,70 +250,167 @@ footer a:hover{color:#fff}
       Descargar en Google Play</a>
     <p class="firma">Una app de GusMar Studios</p>
   </div>
+
+  <ul class="cifras">
+    <li class="cifra"><b>28</b><span>temas</span></li>
+    <li class="cifra"><b>99</b><span>lecciones</span></li>
+    <li class="cifra"><b>13</b><span>juegos</span></li>
+    <li class="cifra"><b>3</b><span>idiomas</span></li>
+  </ul>
+
 </header>
+
+<p class="sigue" aria-hidden="true">
+  Sigue bajando
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+</p>
 
 <main>
 
   <section class="ancho seccion">
-    <p class="rotulo">Qué aprende</p>
-    <h2>Diecisiete temas, de contar hasta despejar la X.</h2>
-    <p class="intro">
+    <p class="rotulo" data-rise>Qué aprende</p>
+    <h2 data-rise>Veintiocho temas, de contar hasta despejar la X.</h2>
+    <p class="intro" data-rise>
       No es una app de tablas de multiplicar con otro nombre. Cubre el currículum de
       primero a sexto básico, y cada tema se abre cuando el anterior está firme.
     </p>
-    <ul class="temas">
-      <li>Contar</li><li>Comparar</li><li>Sumar</li><li>Restar</li>
-      <li>Tablas 1-10</li><li>Dividir</li><li>Fracciones</li><li>Figuras</li>
-      <li>Perímetro</li><li>La hora</li><li>El dinero</li><li>Peso y kilos</li>
-      <li>Romanos</li><li>Problemas</li><li>Secuencias</li><li>Redondear</li>
-      <li>Ecuaciones</li>
+    <ul class="temas" data-rise>
+      <li>Contar</li><li>Comparar</li><li>Secuencias</li><li>Redondear</li>
+      <li>Múltiplos y primos</li><li>Decimales</li>
+      <li>Suma</li><li>Resta</li><li>Tablas con truco</li><li>Tablas difíciles</li>
+      <li>División</li><li>Operar fracciones</li><li>Porcentajes</li>
+      <li>Figuras</li><li>Medir</li><li>Área</li><li>Ángulos</li><li>Coordenadas</li>
+      <li>Gráficos</li><li>Tablas de datos</li><li>Promedio</li><li>Azar</li>
+      <li>Fracciones</li><li>La hora</li><li>El dinero</li><li>Números romanos</li>
+      <li>Problemas</li><li>Ecuaciones</li>
     </ul>
   </section>
 
   <section class="ancho seccion">
-    <p class="rotulo">Por dentro</p>
-    <h2>Así se ve.</h2>
-    <div class="tira">
-      <figure>
-        <img src="temas.webp" alt="Pantalla con los diecisiete temas de Matibu" width="540" height="960" loading="lazy">
-        <figcaption>Los temas, agrupados en tres mundos por dificultad.</figcaption>
+    <p class="rotulo" data-rise>Cómo está armado</p>
+    <h2 data-rise>Cinco islas, y un camino dentro de cada una.</h2>
+    <p class="intro" data-rise>
+      El niño no elige de una lista de temas: recorre un mapa. Cada isla junta los
+      temas que se parecen, y dentro de cada tema las lecciones van una detrás de
+      otra, con un cofre al final que guarda su pegatina.
+    </p>
+    <ul class="islas">
+      <li class="isla" data-rise style="--tono:#5B8C3E">
+        <h3>🌳 Bosque de los Números</h3>
+        <p>Contar, comparar, secuencias, redondear, múltiplos y decimales.</p>
+        <span class="cuenta">6 temas · 21 lecciones</span>
+      </li>
+      <li class="isla" data-rise style="--tono:#D0552F">
+        <h3>🌋 Volcán de las Operaciones</h3>
+        <p>Sumar, restar, las tablas, dividir, fracciones y porcentajes.</p>
+        <span class="cuenta">7 temas · 26 lecciones</span>
+      </li>
+      <li class="isla" data-rise style="--tono:#12A0AC">
+        <h3>🏰 Castillo de las Formas</h3>
+        <p>Figuras, medir, área y perímetro, ángulos y coordenadas.</p>
+        <span class="cuenta">5 temas · 21 lecciones</span>
+      </li>
+      <li class="isla" data-rise style="--tono:#C08B0A">
+        <h3>🔭 Observatorio de los Datos</h3>
+        <p>Leer gráficos, tablas de datos, promedio y probabilidad.</p>
+        <span class="cuenta">4 temas · 13 lecciones</span>
+      </li>
+      <li class="isla" data-rise style="--tono:#7C80FF">
+        <h3>🚀 Cohete de la Aventura</h3>
+        <p>Fracciones, la hora, el dinero, romanos, problemas y ecuaciones.</p>
+        <span class="cuenta">6 temas · 21 lecciones</span>
+      </li>
+    </ul>
+  </section>
+
+  <section class="ancho seccion">
+    <p class="rotulo" data-rise>Por dentro</p>
+    <h2 data-rise>Así se ve.</h2>
+    <div class="galeria">
+      <figure data-rise>
+        <div class="tel"><img src="islas.webp" alt="El mapa de Matibu con sus islas" width="780" height="1400" loading="lazy"></div>
+        <figcaption>El mapa: <strong>cinco islas</strong> y el reto del día.</figcaption>
       </figure>
-      <figure>
-        <img src="explica.webp" alt="Matibu explicando una división con grupos de puntos" width="540" height="960" loading="lazy">
-        <figcaption>Cuando se equivoca, ve <strong>por qué</strong>, no solo cuánto.</figcaption>
+      <figure data-rise>
+        <div class="tel"><img src="juegos.webp" alt="La sala de juegos de Matibu" width="780" height="1400" loading="lazy"></div>
+        <figcaption><strong>Trece juegos</strong> para practicar sin que parezca tarea.</figcaption>
       </figure>
-      <figure>
-        <img src="problema.webp" alt="Un problema contado con palabras" width="540" height="960" loading="lazy">
-        <figcaption>Problemas con palabras: leer el enunciado también se aprende.</figcaption>
+      <figure data-rise>
+        <div class="tel"><img src="tesoro.webp" alt="El juego de buscar el tesoro en la cuadrícula de coordenadas" width="780" height="1400" loading="lazy"></div>
+        <figcaption>Buscar el tesoro: <strong>coordenadas</strong>, y hay que deducirlas.</figcaption>
       </figure>
-      <figure>
-        <img src="offline.webp" alt="Matibu funcionando sin conexión" width="540" height="960" loading="lazy">
-        <figcaption>Funciona entera sin señal, en el auto o en el metro.</figcaption>
+      <figure data-rise>
+        <div class="tel"><img src="papas.webp" alt="La Zona de Papás con el resumen de lo que ya sabe el niño" width="780" height="1400" loading="lazy"></div>
+        <figcaption>La <strong>Zona de Papás</strong>: qué domina y cuánto practica.</figcaption>
+      </figure>
+      <figure data-rise>
+        <div class="tel"><img src="explica.webp" alt="Matibu explicando una división después de un error" width="780" height="1400" loading="lazy"></div>
+        <figcaption>Cuando se equivoca ve <strong>por qué</strong>, no solo cuánto. Y el error no es rojo.</figcaption>
       </figure>
     </div>
   </section>
 
   <section class="ancho seccion">
-    <p class="rotulo">Para el papá o la mamá</p>
-    <h2>Lo que no vas a encontrar.</h2>
+    <p class="rotulo" data-rise>Para el papá o la mamá</p>
+    <h2 data-rise>Lo que no vas a encontrar.</h2>
     <ul class="promesas">
-      <li class="promesa">
+      <li class="promesa" data-rise>
         <h3>Sin publicidad</h3>
         <p>Ni banners, ni vídeos, ni nada que interrumpa a un niño mientras aprende.</p>
       </li>
-      <li class="promesa">
+      <li class="promesa" data-rise>
         <h3>Sin recolectar datos</h3>
         <p>Lo que hace el niño se queda en el teléfono. No hay cuentas que crear ni servidores nuestros donde guardar nada.</p>
       </li>
-      <li class="promesa">
+      <li class="promesa" data-rise>
         <h3>Sin compras del niño</h3>
         <p>No hay monedas, ni vidas, ni saltarse un paso. Lo que decide un adulto se decide en la Zona de Papás.</p>
       </li>
     </ul>
   </section>
 
+  <section class="ancho seccion">
+    <p class="rotulo" data-rise>Lo que sí vas a encontrar</p>
+    <h2 data-rise>Una zona que es tuya, no del niño.</h2>
+    <p class="intro" data-rise>
+      Detrás de una puerta que un niño de seis años no pasa —hay que tocar el número
+      más grande de cuatro, dos veces— está lo que un papá viene a mirar.
+    </p>
+    <ul class="promesas">
+      <li class="promesa" data-rise>
+        <h3>Qué está aprendiendo</h3>
+        <p>Dicho en una frase, no en un puntaje: qué temas domina, en cuál va ahora y cuánto le falta.</p>
+      </li>
+      <li class="promesa" data-rise>
+        <h3>Una prueba que le tomas tú</h3>
+        <p>Eliges hasta cuatro temas y el nivel, y la app arma una tanda sin pistas ni reintentos. Al final te dice cómo le fue en cada tema, y lo compara con la vez anterior. Al niño no se le pone nota.</p>
+      </li>
+      <li class="promesa" data-rise>
+        <h3>Cuánto usa la app</h3>
+        <p>Los minutos de hoy, la semana entera y una meta diaria que pones tú.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="ancho seccion">
+    <p class="rotulo" data-rise>Cuánto cuesta</p>
+    <h2 data-rise>Se prueba gratis y no hay reloj corriendo.</h2>
+    <div class="plan" data-rise>
+      <h3>Gratis para siempre</h3>
+      <p>
+        <span class="destacado">La isla del Bosque entera y las tablas fáciles</span>, más
+        una lección de fracciones, una de la hora y una de gráficos: dieciocho lecciones
+        completas, tres juegos y la práctica sin fin de cuatro temas.
+        <br><br>
+        No es una prueba de siete días que después se apaga: lo gratis se queda gratis.
+        El que quiera todo lo demás —los 28 temas, los 13 juegos y la prueba para el
+        papá— se suscribe, y puede cancelar desde la misma pantalla de Google Play.
+      </p>
+    </div>
+  </section>
+
   <section class="ancho cierre">
-    <h2>Se ajusta a él, no al revés.</h2>
+    <h2 data-rise>Se ajusta a él, no al revés.</h2>
     <p class="intro" style="margin-inline:auto;text-align:center">
       Matibu mide cómo responde y mueve el nivel: al que va rápido no lo aburre,
       y al que le cuesta no lo deja atrás.
@@ -250,5 +427,49 @@ footer a:hover{color:#fff}
   <p><a href="../">GusMar Studios</a> · Santiago, Chile</p>
 </footer>
 
+<script>
+// Revelado al bajar, y la pista de "hay más abajo" que se apaga al primer scroll.
+//
+// Barrido en el scroll y NO un IntersectionObserver, por lo mismo que en la
+// portada: el observador solo avisa de lo que cruza EN ESE INSTANTE, así que un
+// salto deja elementos invisibles para siempre. La condición de aquí —"ya pasó
+// el borde de abajo"— un salto no la puede deshacer.
+(() => {
+  let pendientes = [...document.querySelectorAll('[data-rise]')];
+  const quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const todos = () => { pendientes.forEach((p) => p.setAttribute('data-visible', '')); pendientes = []; };
+  if (quieto) todos();
+
+  let agendado = false;
+  const barrer = () => {
+    agendado = false;
+    if (scrollY > 40) document.body.setAttribute('data-bajo', '');
+    if (!pendientes.length) return;
+    const limite = innerHeight * 0.92;   // aparece un poco antes del borde
+    const quedan = [];
+    let enTanda = 0;
+    for (const el of pendientes) {
+      if (el.getBoundingClientRect().top >= limite) { quedan.push(el); continue; }
+      // Escalonado: los que entran juntos lo hacen uno detrás de otro. Tope de
+      // cinco, para que el último no se haga esperar.
+      if (enTanda > 0) el.style.transitionDelay = `${Math.min(enTanda, 5) * 70}ms`;
+      el.setAttribute('data-visible', '');
+      enTanda++;
+    }
+    pendientes = quedan;
+  };
+  const pedir = () => { if (!agendado) { agendado = true; requestAnimationFrame(barrer); } };
+
+  addEventListener('scroll', pedir, { passive: true });
+  addEventListener('resize', pedir, { passive: true });
+  pedir();                       // lo que ya está en pantalla no espera un scroll
+  addEventListener('load', pedir);
+
+  // Red de seguridad: llama a `barrer` DIRECTO, sin pasar por rAF. En una
+  // pestaña en segundo plano rAF no dispara nunca y nada se vería.
+  setTimeout(() => { if (pendientes.length) barrer(); }, 2500);
+})();
+</script>
 </body>
 </html>

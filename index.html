@@ -22,7 +22,15 @@
 <meta name="twitter:title" content="GusMar Studios — Tecnología que se adapta a cada persona">
 <meta name="twitter:description" content="Estudio independiente. Empezamos por la educación de los niños, y el enfoque no se agota ahí.">
 <meta name="twitter:image" content="https://gusmarstudios.com/og.png">
-<link rel="icon" href="marca.svg" type="image/svg+xml">
+<!-- El SVG es el bueno, pero no basta solo: Safari no lo usa, y el navegador
+     que no encuentra nada pide /favicon.ico a secas y deja la pestaña en
+     blanco. Van los tres, y en rutas absolutas para que /matibu/ los comparta.
+     El fondo oscuro es parte de la marca: el borde de las fichas es del color
+     del fondo del sitio, así que sobre blanco se desarman. -->
+<link rel="icon" href="/marca.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preload" href="fuentes/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fuentes/ibm-plex-sans-400.woff2" as="font" type="font/woff2" crossorigin>
 
@@ -341,10 +349,21 @@ h1 {
 }
 .cinta { display: flex; width: max-content; animation: gm-marquee 34s linear infinite; }
 .cinta > div {
-  display: flex; gap: 52px; padding-right: 52px;
+  display: flex; gap: 46px; padding-right: 46px;
   font-family: var(--mono); font-size: 13px; letter-spacing: .14em;
   text-transform: uppercase; color: var(--mudo); white-space: nowrap;
 }
+/* Cada nombre viaja con su icono. Sin él la cinta es una lista de palabras que
+   nadie asocia a nada; con él, el icono que el papá ve en Google Play y el
+   nombre entran juntos por el mismo sitio. */
+.cinta span { display: inline-flex; align-items: center; gap: 11px; }
+.cinta .marca {
+  width: 26px; height: 26px; flex: none; border-radius: 8px; overflow: hidden;
+  display: grid; place-items: center;
+  font-family: var(--display); font-weight: 800; font-size: 13px;
+  letter-spacing: 0; color: #fff;
+}
+.cinta .marca img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 /* ---------- Secciones ---------- */
 
@@ -421,6 +440,21 @@ h1 {
 .estado .punto { width: 6px; height: 6px; border-radius: 50%; background: var(--tinte); }
 a.estado { color: var(--acento-claro); }
 a.estado:hover { color: #fff; }
+/* La app que tiene página propia lleva a ella con un enlace de verdad, y no
+   solo con su nombre en el título: ahí nadie hace clic. Va PRIMERO, antes que
+   el de Google Play, porque es la página que explica de qué va. */
+.enlaces { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; margin-top: 8px; }
+.enlaces .estado { margin-top: 0; }
+.ficha {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 8px 15px; border-radius: 999px;
+  border: 1px solid var(--tinte-borde); background: var(--tinte-fondo);
+  font-family: var(--mono); font-size: 12px; letter-spacing: .05em;
+  text-transform: uppercase; color: #fff; font-weight: 500;
+  transition: background .25s ease, transform .25s ease;
+}
+.ficha:hover { background: var(--tinte); color: #0A0B14; transform: translateY(-2px); }
+.ficha svg { width: 13px; height: 13px; }
 
 /* ---------- Metodo ---------- */
 
@@ -595,44 +629,13 @@ a.estado:hover { color: #fff; }
 
     <div class="marquesina" aria-hidden="true">
       <div class="cinta">
-        <div><span>Matibu · matemáticas</span><span>Silabu · lectura</span><span>Palabu · lenguaje</span><span>Terrabu · ciencias</span><span>Cronobu · historia</span><span>Lunabu · preescolar</span><span>Anticipa · rutinas</span><span>Dilo Jugando · pronunciación</span><span>Cavila · lógica</span></div>
-        <div><span>Matibu · matemáticas</span><span>Silabu · lectura</span><span>Palabu · lenguaje</span><span>Terrabu · ciencias</span><span>Cronobu · historia</span><span>Lunabu · preescolar</span><span>Anticipa · rutinas</span><span>Dilo Jugando · pronunciación</span><span>Cavila · lógica</span></div>
+        <div><span><span class="marca"><img src="iconos/matibu.webp" alt="" width="52" height="52" loading="lazy"></span>Matibu · matemáticas</span><span><span class="marca"><img src="iconos/silabu.webp" alt="" width="52" height="52" loading="lazy"></span>Silabu · lectura</span><span><span class="marca" style="background:linear-gradient(150deg,#E04A44,#C62F2A)">P</span>Palabu · lenguaje</span><span><span class="marca" style="background:linear-gradient(150deg,#248A56,#17603C)">T</span>Terrabu · ciencias</span><span><span class="marca"><img src="iconos/cronobu.webp" alt="" width="52" height="52" loading="lazy"></span>Cronobu · historia</span><span><span class="marca"><img src="iconos/lunabu.webp" alt="" width="52" height="52" loading="lazy"></span>Lunabu · preescolar</span><span><span class="marca"><img src="iconos/anticipa.webp" alt="" width="52" height="52" loading="lazy"></span>Anticipa · rutinas</span><span><span class="marca"><img src="iconos/dilojugando.webp" alt="" width="52" height="52" loading="lazy"></span>Dilo Jugando · pronunciación</span><span><span class="marca"><img src="iconos/cavila.webp" alt="" width="52" height="52" loading="lazy"></span>Cavila · lógica</span></div>
+        <div><span><span class="marca"><img src="iconos/matibu.webp" alt="" width="52" height="52" loading="lazy"></span>Matibu · matemáticas</span><span><span class="marca"><img src="iconos/silabu.webp" alt="" width="52" height="52" loading="lazy"></span>Silabu · lectura</span><span><span class="marca" style="background:linear-gradient(150deg,#E04A44,#C62F2A)">P</span>Palabu · lenguaje</span><span><span class="marca" style="background:linear-gradient(150deg,#248A56,#17603C)">T</span>Terrabu · ciencias</span><span><span class="marca"><img src="iconos/cronobu.webp" alt="" width="52" height="52" loading="lazy"></span>Cronobu · historia</span><span><span class="marca"><img src="iconos/lunabu.webp" alt="" width="52" height="52" loading="lazy"></span>Lunabu · preescolar</span><span><span class="marca"><img src="iconos/anticipa.webp" alt="" width="52" height="52" loading="lazy"></span>Anticipa · rutinas</span><span><span class="marca"><img src="iconos/dilojugando.webp" alt="" width="52" height="52" loading="lazy"></span>Dilo Jugando · pronunciación</span><span><span class="marca"><img src="iconos/cavila.webp" alt="" width="52" height="52" loading="lazy"></span>Cavila · lógica</span></div>
       </div>
     </div>
 
-    <section id="principios" class="ancho" style="padding-block:clamp(72px,10vw,128px)">
-      <p class="rotulo" data-rise>01 — La tesis</p>
-      <h2 class="titulo" data-rise style="max-width:19ch">Enseñamos casi igual que hace cien años. El mundo, no.</h2>
-      <p class="parrafo" data-rise>
-        Treinta niños, el mismo contenido, el mismo ritmo, la misma prueba el mismo día.
-        Ese formato nació cuando saber cosas era escaso y caro. Hoy la información sobra
-        y lo que escasea es otra cosa, que nadie está enseñando a los seis años.
-      </p>
-
-      <ul class="promesas">
-        <li class="promesa" data-rise>
-          <span class="num" aria-hidden="true">/ 01</span>
-          <h3>Lo que está roto</h3>
-          <p>Un solo ritmo para todos aburre al que va adelante y pierde al que va atrás. No es culpa de quien enseña: es un formato diseñado para que quepan treinta, no para que aprenda cada uno.</p>
-          <div class="halo" aria-hidden="true" style="background:radial-gradient(circle,rgba(231,97,50,.26),transparent 70%)"></div>
-        </li>
-        <li class="promesa" data-rise>
-          <span class="num" aria-hidden="true">/ 02</span>
-          <h3>Lo que se les viene</h3>
-          <p>Quien hoy tiene seis años va a trabajar junto a máquinas que responden más rápido y saben más. Lo que lo va a distinguir no es cuánto memorizó: es si aprendió a preguntar bien, a dudar de una respuesta y a aprender solo.</p>
-          <div class="halo" aria-hidden="true" style="background:radial-gradient(circle,rgba(124,128,255,.3),transparent 70%)"></div>
-        </li>
-        <li class="promesa" data-rise>
-          <span class="num" aria-hidden="true">/ 03</span>
-          <h3>Lo que hacemos con eso</h3>
-          <p>Construimos herramientas que se ajustan a cada niño en vez de exigirle que se ajuste él. Empezamos por la escuela porque ahí empieza todo, pero el enfoque no se agota en apps para niños.</p>
-          <div class="halo" aria-hidden="true" style="background:radial-gradient(circle,rgba(95,227,180,.28),transparent 70%)"></div>
-        </li>
-      </ul>
-    </section>
-
     <section id="apps" class="ancho" style="padding-block:clamp(48px,7vw,88px) clamp(72px,10vw,120px)">
-      <p class="rotulo" data-rise>02 — El trabajo</p>
+      <p class="rotulo" data-rise>01 — El trabajo</p>
       <div class="cabeza-catalogo" data-rise>
         <h2 class="titulo">Lo construido.</h2>
         <p>Nueve aplicaciones educativas para Android, cada una terminada de punta a punta. Cinco ya están en manos de sus primeros usuarios.</p>
@@ -668,8 +671,14 @@ a.estado:hover { color: #fff; }
             <span class="icono"><img src="iconos/matibu.webp" alt="Icono de Matibu" width="256" height="256" loading="lazy"></span>
             <div><h3><a href="matibu/">Matibu</a></h3><span class="edad">6 a 12 años</span></div>
           </div>
-          <p>Matemáticas desde primero básico: tablas, operaciones y fracciones.</p>
-          <a class="estado" href="https://play.google.com/store/apps/details?id=cl.matibu.matematicas" rel="noopener"><span class="punto" aria-hidden="true"></span>Ver en Google Play</a>
+          <p>Matemáticas de 1º a 6º básico: 28 temas y 13 juegos, de contar hasta despejar la X.</p>
+          <div class="enlaces">
+            <a class="ficha" href="matibu/">
+              Ver la app
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+            </a>
+            <a class="estado" href="https://play.google.com/store/apps/details?id=cl.matibu.matematicas" rel="noopener"><span class="punto" aria-hidden="true"></span>Google Play</a>
+          </div>
         </li>
 
         <li class="app" data-rise style="--tinte:#18A9A5;--tinte-borde:rgba(16,125,122,.6);--tinte-fondo:rgba(16,125,122,.12)">
@@ -744,6 +753,37 @@ a.estado:hover { color: #fff; }
           <a class="estado" href="https://play.google.com/apps/testing/cl.cavila.app" rel="noopener"><span class="punto" aria-hidden="true"></span>Prueba cerrada · solo testers</a>
         </li>
 
+      </ul>
+    </section>
+
+    <section id="principios" class="ancho" style="padding-block:clamp(72px,10vw,128px)">
+      <p class="rotulo" data-rise>02 — La tesis</p>
+      <h2 class="titulo" data-rise style="max-width:19ch">Enseñamos casi igual que hace cien años. El mundo, no.</h2>
+      <p class="parrafo" data-rise>
+        Treinta niños, el mismo contenido, el mismo ritmo, la misma prueba el mismo día.
+        Ese formato nació cuando saber cosas era escaso y caro. Hoy la información sobra
+        y lo que escasea es otra cosa, que nadie está enseñando a los seis años.
+      </p>
+
+      <ul class="promesas">
+        <li class="promesa" data-rise>
+          <span class="num" aria-hidden="true">/ 01</span>
+          <h3>Lo que está roto</h3>
+          <p>Un solo ritmo para todos aburre al que va adelante y pierde al que va atrás. No es culpa de quien enseña: es un formato diseñado para que quepan treinta, no para que aprenda cada uno.</p>
+          <div class="halo" aria-hidden="true" style="background:radial-gradient(circle,rgba(231,97,50,.26),transparent 70%)"></div>
+        </li>
+        <li class="promesa" data-rise>
+          <span class="num" aria-hidden="true">/ 02</span>
+          <h3>Lo que se les viene</h3>
+          <p>Quien hoy tiene seis años va a trabajar junto a máquinas que responden más rápido y saben más. Lo que lo va a distinguir no es cuánto memorizó: es si aprendió a preguntar bien, a dudar de una respuesta y a aprender solo.</p>
+          <div class="halo" aria-hidden="true" style="background:radial-gradient(circle,rgba(124,128,255,.3),transparent 70%)"></div>
+        </li>
+        <li class="promesa" data-rise>
+          <span class="num" aria-hidden="true">/ 03</span>
+          <h3>Lo que hacemos con eso</h3>
+          <p>Construimos herramientas que se ajustan a cada niño en vez de exigirle que se ajuste él. Empezamos por la escuela porque ahí empieza todo, pero el enfoque no se agota en apps para niños.</p>
+          <div class="halo" aria-hidden="true" style="background:radial-gradient(circle,rgba(95,227,180,.28),transparent 70%)"></div>
+        </li>
       </ul>
     </section>
 
