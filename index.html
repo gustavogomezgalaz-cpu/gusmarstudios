@@ -329,14 +329,35 @@ h1 {
   background: radial-gradient(circle at 50% 50%, rgba(110,114,255,.32), transparent 65%);
   filter: blur(30px);
 }
+/* Cada ficha es un enlace: la de Matibu a su página, las demás al catálogo.
+   Nueve iconos grandes en la primera pantalla son lo que más invita a tocar, y
+   hasta ahora no llevaban a ninguna parte. */
 .pieza {
   position: relative; aspect-ratio: 1; border-radius: 26%;
   display: grid; place-items: center; overflow: hidden;
   font-family: var(--display); font-weight: 800;
   font-size: clamp(20px,2.4vw,32px); color: #fff;
   animation: gm-float 7s ease-in-out infinite;
+  transition: transform .3s cubic-bezier(.2,.7,.2,1), box-shadow .3s ease;
 }
 .pieza img { width: 100%; height: 100%; object-fit: cover; display: block; }
+a.pieza:hover, a.pieza:focus-visible {
+  transform: scale(1.07);
+  box-shadow: 0 18px 40px rgba(0,0,0,.5);
+  z-index: 2;
+}
+/* El nombre solo aparece al pasar por encima: con los nueve escritos a la vez,
+   el mosaico deja de ser un fondo y compite con el titular. */
+.pieza .nombre {
+  position: absolute; inset: auto 0 0; z-index: 1;
+  padding: 22px 6px 7px;
+  background: linear-gradient(transparent, rgba(6,7,16,.92));
+  font-family: var(--mono); font-size: 11px; letter-spacing: .04em;
+  text-align: center; color: #fff; text-transform: uppercase;
+  opacity: 0; transition: opacity .3s ease;
+}
+a.pieza:hover .nombre, a.pieza:focus-visible .nombre { opacity: 1; }
+@media (hover: none) { .pieza .nombre { opacity: 1; } }
 
 /* ---------- Marquesina ---------- */
 
@@ -613,16 +634,16 @@ a.estado:hover { color: #fff; }
 
         <!-- Los iconos reales de las apps. Palabu y Terrabu todavia no tienen:
              se quedan con su letra, que ademas dice honestamente que faltan. -->
-        <div class="mosaico" aria-hidden="true">
-          <div class="pieza" style="animation-duration:7s"><img src="iconos/matibu.webp" alt="" width="256" height="256" loading="lazy"></div>
-          <div class="pieza" style="animation-duration:8.5s;animation-delay:.6s"><img src="iconos/silabu.webp" alt="" width="256" height="256" loading="lazy"></div>
-          <div class="pieza" style="animation-duration:7.8s;animation-delay:1.1s;background:linear-gradient(150deg,#E04A44,#C62F2A)">P</div>
-          <div class="pieza" style="animation-duration:9.2s;animation-delay:.3s;background:linear-gradient(150deg,#248A56,#17603C)">T</div>
-          <div class="pieza" style="animation-duration:6.8s;animation-delay:.9s"><img src="iconos/cronobu.webp" alt="" width="256" height="256" loading="lazy"></div>
-          <div class="pieza" style="animation-duration:8.1s;animation-delay:1.4s"><img src="iconos/lunabu.webp" alt="" width="256" height="256" loading="lazy"></div>
-          <div class="pieza" style="animation-duration:7.4s;animation-delay:.2s"><img src="iconos/anticipa.webp" alt="" width="256" height="256" loading="lazy"></div>
-          <div class="pieza" style="animation-duration:8.8s;animation-delay:.7s"><img src="iconos/dilojugando.webp" alt="" width="256" height="256" loading="lazy"></div>
-          <div class="pieza" style="animation-duration:6.4s;animation-delay:1.2s"><img src="iconos/cavila.webp" alt="" width="256" height="256" loading="lazy"></div>
+        <div class="mosaico">
+          <a class="pieza" href="matibu/" style="animation-duration:7s" aria-label="Matibu, matemáticas"><span class="nombre">Matibu</span><img src="iconos/matibu.webp" alt="" width="256" height="256" loading="lazy"></a>
+          <a class="pieza" href="#apps" style="animation-duration:8.5s;animation-delay:.6s" aria-label="Silabu, lectura"><span class="nombre">Silabu</span><img src="iconos/silabu.webp" alt="" width="256" height="256" loading="lazy"></a>
+          <a class="pieza" href="#apps" style="animation-duration:7.8s;animation-delay:1.1s;background:linear-gradient(150deg,#E04A44,#C62F2A)" aria-label="Palabu, lenguaje"><span class="nombre">Palabu</span>P</a>
+          <a class="pieza" href="#apps" style="animation-duration:9.2s;animation-delay:.3s;background:linear-gradient(150deg,#248A56,#17603C)" aria-label="Terrabu, ciencias"><span class="nombre">Terrabu</span>T</a>
+          <a class="pieza" href="#apps" style="animation-duration:6.8s;animation-delay:.9s" aria-label="Cronobu, historia"><span class="nombre">Cronobu</span><img src="iconos/cronobu.webp" alt="" width="256" height="256" loading="lazy"></a>
+          <a class="pieza" href="#apps" style="animation-duration:8.1s;animation-delay:1.4s" aria-label="Lunabu, preescolar"><span class="nombre">Lunabu</span><img src="iconos/lunabu.webp" alt="" width="256" height="256" loading="lazy"></a>
+          <a class="pieza" href="#apps" style="animation-duration:7.4s;animation-delay:.2s" aria-label="Anticipa, rutinas"><span class="nombre">Anticipa</span><img src="iconos/anticipa.webp" alt="" width="256" height="256" loading="lazy"></a>
+          <a class="pieza" href="#apps" style="animation-duration:8.8s;animation-delay:.7s" aria-label="Dilo Jugando, pronunciación"><span class="nombre">Dilo Jugando</span><img src="iconos/dilojugando.webp" alt="" width="256" height="256" loading="lazy"></a>
+          <a class="pieza" href="#apps" style="animation-duration:6.4s;animation-delay:1.2s" aria-label="Cavila, lógica"><span class="nombre">Cavila</span><img src="iconos/cavila.webp" alt="" width="256" height="256" loading="lazy"></a>
         </div>
       </div>
     </section>
