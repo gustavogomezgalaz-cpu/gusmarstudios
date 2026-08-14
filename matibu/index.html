@@ -155,12 +155,49 @@ h1{margin:22px 0 0;font-family:var(--display);font-weight:800;font-size:clamp(38
 /* Lo que enseña */
 .seccion{padding-block:clamp(48px,8vw,80px)}
 
-/* Las islas: cada una con su color, como en el mapa de la app */
-.islas{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:30px 0 0;padding:0;list-style:none}
-.isla{padding:22px;border-radius:18px;background:var(--tarjeta);border:1px solid rgba(255,255,255,.08);border-left:5px solid var(--tono)}
-.isla h3{margin:0;font-family:var(--display);font-size:18px;font-weight:800;letter-spacing:-.015em}
-.isla p{margin:8px 0 0;font-size:14px;line-height:1.6;color:var(--suave)}
-.isla .cuenta{display:block;margin-top:10px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--tenue)}
+/* Los ríos de temas: uno por isla, corriendo de lado.
+   Veintiocho etiquetas quietas son un muro que nadie lee entero; corriendo son
+   una franja que se mira sola, y cada tema lleva el color de su isla — el mismo
+   que el niño ve en el mapa. Van en direcciones alternas: dos filas hacia el
+   mismo lado se leen como una sola cosa que se desplaza. */
+.rios{margin:38px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px}
+.rio{
+  overflow:hidden;padding:3px 0;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+}
+.rio-pista{display:flex;width:max-content;animation:correr 30s linear infinite}
+.rio.al-reves .rio-pista{animation-direction:reverse}
+/* Se detiene al pasar por encima: si no, el que quiere leer un tema lo persigue. */
+.rio:hover .rio-pista{animation-play-state:paused}
+@keyframes correr{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.rio-grupo{display:flex;align-items:center;gap:10px;padding-right:10px}
+.rio-isla{
+  display:inline-flex;align-items:center;gap:9px;padding:9px 18px 9px 12px;
+  border-radius:999px;background:var(--tinte);border:1px solid var(--borde);
+  font-family:var(--display);font-weight:800;font-size:15px;color:var(--texto);
+  white-space:nowrap;
+}
+.rio-emoji{font-size:19px}
+.rio-cuenta{
+  font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:.05em;
+  color:var(--suave);border-left:1px solid var(--borde);padding-left:9px;
+}
+/* El chip lleva el tinte de SU isla: así la fila se lee como un grupo aunque la
+   etiqueta de la isla vaya lejos, y el color es el mismo del mapa de la app. */
+.rio .chip{
+  padding:9px 17px;border-radius:999px;
+  background:var(--tinte);border:1px solid var(--borde);
+  font-size:14.5px;font-weight:600;color:var(--texto);white-space:nowrap;
+}
+
+@media (prefers-reduced-motion: reduce){
+  /* Sin movimiento: la fila se parte en varias líneas y se lee como una lista. */
+  .rio{-webkit-mask-image:none;mask-image:none}
+  .rio-pista{animation:none;width:100%}
+  .rio-pista > [aria-hidden]{display:none}
+  .rio-grupo{flex-wrap:wrap}
+}
 
 /* Precio */
 .plan{margin:30px 0 0;padding:26px;border-radius:20px;background:var(--tarjeta);border:1px solid rgba(255,255,255,.08)}
@@ -267,58 +304,51 @@ footer a:hover{color:#fff}
 
 <main>
 
-  <section class="ancho seccion">
-    <p class="rotulo" data-rise>Qué aprende</p>
-    <h2 data-rise>Veintiocho temas, de contar hasta despejar la X.</h2>
-    <p class="intro" data-rise>
-      No es una app de tablas de multiplicar con otro nombre. Cubre el currículum de
-      primero a sexto básico, y cada tema se abre cuando el anterior está firme.
-    </p>
-    <ul class="temas" data-rise>
-      <li>Contar</li><li>Comparar</li><li>Secuencias</li><li>Redondear</li>
-      <li>Múltiplos y primos</li><li>Decimales</li>
-      <li>Suma</li><li>Resta</li><li>Tablas con truco</li><li>Tablas difíciles</li>
-      <li>División</li><li>Operar fracciones</li><li>Porcentajes</li>
-      <li>Figuras</li><li>Medir</li><li>Área</li><li>Ángulos</li><li>Coordenadas</li>
-      <li>Gráficos</li><li>Tablas de datos</li><li>Promedio</li><li>Azar</li>
-      <li>Fracciones</li><li>La hora</li><li>El dinero</li><li>Números romanos</li>
-      <li>Problemas</li><li>Ecuaciones</li>
-    </ul>
-  </section>
+  <section class="seccion">
+    <div class="ancho">
+      <p class="rotulo" data-rise>Qué aprende</p>
+      <h2 data-rise>Veintiocho temas, de contar hasta despejar la X.</h2>
+      <p class="intro" data-rise>
+        No es una app de tablas de multiplicar con otro nombre: cubre el currículum de
+        primero a sexto básico. Y el niño no elige de una lista — recorre un mapa de cinco
+        islas, y dentro de cada tema las lecciones van una detrás de otra, con un cofre al
+        final que guarda su pegatina.
+      </p>
+    </div>
 
-  <section class="ancho seccion">
-    <p class="rotulo" data-rise>Cómo está armado</p>
-    <h2 data-rise>Cinco islas, y un camino dentro de cada una.</h2>
-    <p class="intro" data-rise>
-      El niño no elige de una lista de temas: recorre un mapa. Cada isla junta los
-      temas que se parecen, y dentro de cada tema las lecciones van una detrás de
-      otra, con un cofre al final que guarda su pegatina.
-    </p>
-    <ul class="islas">
-      <li class="isla" data-rise style="--tono:#5B8C3E">
-        <h3>🌳 Bosque de los Números</h3>
-        <p>Contar, comparar, secuencias, redondear, múltiplos y decimales.</p>
-        <span class="cuenta">6 temas · 21 lecciones</span>
+    <!-- Los temas corren de lado, como la cinta de la portada: ocupan una franja
+         en vez de un muro de veintiocho etiquetas, y cada uno lleva el color de
+         su isla. Se detienen al pasar el ratón, para poder leerlos. -->
+    <ul class="rios" data-rise>
+      <li class="rio" style="--tono:#5B5FEF;--tinte:rgba(91,95,239,.15);--borde:rgba(91,95,239,.38)">
+        <div class="rio-pista" style="animation-duration:36s">
+          <div class="rio-grupo"><span class="rio-isla"><span class="rio-emoji" aria-hidden="true">🌳</span>Bosque de los Números<span class="rio-cuenta">6 temas · 21 lecciones</span></span><span class="chip">Contar</span><span class="chip">Comparar</span><span class="chip">Secuencias</span><span class="chip">Redondear</span><span class="chip">Múltiplos y primos</span><span class="chip">Decimales</span></div>
+          <div class="rio-grupo" aria-hidden="true"><span class="rio-isla"><span class="rio-emoji" aria-hidden="true">🌳</span>Bosque de los Números<span class="rio-cuenta">6 temas · 21 lecciones</span></span><span class="chip">Contar</span><span class="chip">Comparar</span><span class="chip">Secuencias</span><span class="chip">Redondear</span><span class="chip">Múltiplos y primos</span><span class="chip">Decimales</span></div>
+        </div>
       </li>
-      <li class="isla" data-rise style="--tono:#D0552F">
-        <h3>🌋 Volcán de las Operaciones</h3>
-        <p>Sumar, restar, las tablas, dividir, fracciones y porcentajes.</p>
-        <span class="cuenta">7 temas · 26 lecciones</span>
+      <li class="rio al-reves" style="--tono:#33C481;--tinte:rgba(51,196,129,.15);--borde:rgba(51,196,129,.38)">
+        <div class="rio-pista" style="animation-duration:40s">
+          <div class="rio-grupo"><span class="rio-isla"><span class="rio-emoji" aria-hidden="true">🌋</span>Volcán de las Operaciones<span class="rio-cuenta">7 temas · 26 lecciones</span></span><span class="chip">Suma</span><span class="chip">Resta</span><span class="chip">Tablas con truco</span><span class="chip">Tablas difíciles</span><span class="chip">División</span><span class="chip">Operar fracciones</span><span class="chip">Porcentajes</span></div>
+          <div class="rio-grupo" aria-hidden="true"><span class="rio-isla"><span class="rio-emoji" aria-hidden="true">🌋</span>Volcán de las Operaciones<span class="rio-cuenta">7 temas · 26 lecciones</span></span><span class="chip">Suma</span><span class="chip">Resta</span><span class="chip">Tablas con truco</span><span class="chip">Tablas difíciles</span><span class="chip">División</span><span class="chip">Operar fracciones</span><span class="chip">Porcentajes</span></div>
+        </div>
       </li>
-      <li class="isla" data-rise style="--tono:#12A0AC">
-        <h3>🏰 Castillo de las Formas</h3>
-        <p>Figuras, medir, área y perímetro, ángulos y coordenadas.</p>
-        <span class="cuenta">5 temas · 21 lecciones</span>
+      <li class="rio" style="--tono:#14A5A0;--tinte:rgba(20,165,160,.15);--borde:rgba(20,165,160,.38)">
+        <div class="rio-pista" style="animation-duration:33s">
+          <div class="rio-grupo"><span class="rio-isla"><span class="rio-emoji" aria-hidden="true">🏰</span>Castillo de las Formas<span class="rio-cuenta">5 temas · 21 lecciones</span></span><span class="chip">Figuras</span><span class="chip">Medir</span><span class="chip">Área</span><span class="chip">Ángulos</span><span class="chip">Coordenadas</span></div>
+          <div class="rio-grupo" aria-hidden="true"><span class="rio-isla"><span class="rio-emoji" aria-hidden="true">🏰</span>Castillo de las Formas<span class="rio-cuenta">5 temas · 21 lecciones</span></span><span class="chip">Figuras</span><span class="chip">Medir</span><span class="chip">Área</span><span class="chip">Ángulos</span><span class="chip">Coordenadas</span></div>
+        </div>
       </li>
-      <li class="isla" data-rise style="--tono:#C08B0A">
-        <h3>🔭 Observatorio de los Datos</h3>
-        <p>Leer gráficos, tablas de datos, promedio y probabilidad.</p>
-        <span class="cuenta">4 temas · 13 lecciones</span>
+      <li class="rio al-reves" style="--tono:#E8A33D;--tinte:rgba(232,163,61,.15);--borde:rgba(232,163,61,.38)">
+        <div class="rio-pista" style="animation-duration:30s">
+          <div class="rio-grupo"><span class="rio-isla"><span class="rio-emoji" aria-hidden="true">🔭</span>Observatorio de los Datos<span class="rio-cuenta">4 temas · 13 lecciones</span></span><span class="chip">Gráficos</span><span class="chip">Tablas de datos</span><span class="chip">Promedio</span><span class="chip">Azar</span></div>
+          <div class="rio-grupo" aria-hidden="true"><span class="rio-isla"><span class="rio-emoji" aria-hidden="true">🔭</span>Observatorio de los Datos<span class="rio-cuenta">4 temas · 13 lecciones</span></span><span class="chip">Gráficos</span><span class="chip">Tablas de datos</span><span class="chip">Promedio</span><span class="chip">Azar</span></div>
+        </div>
       </li>
-      <li class="isla" data-rise style="--tono:#7C80FF">
-        <h3>🚀 Cohete de la Aventura</h3>
-        <p>Fracciones, la hora, el dinero, romanos, problemas y ecuaciones.</p>
-        <span class="cuenta">6 temas · 21 lecciones</span>
+      <li class="rio" style="--tono:#FF9F68;--tinte:rgba(255,159,104,.15);--borde:rgba(255,159,104,.38)">
+        <div class="rio-pista" style="animation-duration:36s">
+          <div class="rio-grupo"><span class="rio-isla"><span class="rio-emoji" aria-hidden="true">🚀</span>Cohete de la Aventura<span class="rio-cuenta">6 temas · 21 lecciones</span></span><span class="chip">Fracciones</span><span class="chip">La hora</span><span class="chip">El dinero</span><span class="chip">Números romanos</span><span class="chip">Ecuaciones</span><span class="chip">Problemas</span></div>
+          <div class="rio-grupo" aria-hidden="true"><span class="rio-isla"><span class="rio-emoji" aria-hidden="true">🚀</span>Cohete de la Aventura<span class="rio-cuenta">6 temas · 21 lecciones</span></span><span class="chip">Fracciones</span><span class="chip">La hora</span><span class="chip">El dinero</span><span class="chip">Números romanos</span><span class="chip">Ecuaciones</span><span class="chip">Problemas</span></div>
+        </div>
       </li>
     </ul>
   </section>
