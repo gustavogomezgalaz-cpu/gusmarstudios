@@ -61,6 +61,16 @@ img{max-width:100%;display:block}
 
 .ancho{max-width:1080px;margin:0 auto;padding-inline:24px}
 
+/* La barra de lectura: dice cuanto queda, y son dos pixeles. Esta pagina es
+   larga y en el telefono no hay cabecera fija donde ponerla, asi que va pegada
+   al borde de arriba de la ventana. */
+.progreso{
+  position:fixed;top:0;left:0;height:2px;width:0;z-index:60;
+  background:linear-gradient(90deg,#7C80FF,#5EE7C6);
+  box-shadow:0 0 10px rgba(124,128,255,.65);
+  transition:width .12s linear;
+}
+
 /* Revelado al bajar. Mismo patrón que la portada del estudio: un barrido en el
    scroll y NO un IntersectionObserver, porque el observador solo avisa de lo que
    cruza EN ESE INSTANTE y un salto —un enlace del menú, un dedo rápido— deja
@@ -94,6 +104,9 @@ body[data-bajo] .sigue{opacity:0;pointer-events:none}
   *,*::before,*::after{animation-duration:.001s !important;transition-duration:.001s !important}
   html{scroll-behavior:auto}
   .js [data-rise]{opacity:1;transform:none}
+  /* Se quita, no se congela: acelerado a .001s el destello se quedaría parado
+     encima del texto del botón. */
+  .boton::after{display:none}
 }
 
 /* Cabecera: vuelta al estudio */
@@ -134,6 +147,20 @@ h1{margin:22px 0 0;font-family:var(--display);font-weight:800;font-size:clamp(38
   transition:transform .25s ease,box-shadow .25s ease;
 }
 .boton:hover{transform:translateY(-3px);box-shadow:0 20px 50px rgba(66,71,214,.62);color:#fff}
+
+/* El destello que cruza el botón.
+   Pasa RÁPIDO y después descansa —cruza en dos segundos y espera otros dos—
+   porque un brillo que barre sin parar deja de llamar la atención y molesta.
+   Va en un pseudo-elemento recortado por el propio botón, así que no hace falta
+   ningún elemento extra ni toca el texto. */
+.boton:not(.espera){position:relative;overflow:hidden;isolation:isolate}
+.boton:not(.espera)::after{
+  content:"";position:absolute;top:0;bottom:0;left:-65%;width:42%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);
+  transform:skewX(-18deg);pointer-events:none;
+  animation:destello 4.2s ease-in-out infinite;
+}
+@keyframes destello{0%{left:-65%}45%,100%{left:135%}}
 .boton.espera{
   background:none;border:1px solid rgba(255,255,255,.2);color:var(--suave);
   box-shadow:none;cursor:default;font-family:var(--mono);font-size:13px;
@@ -259,6 +286,8 @@ footer a:hover{color:#fff}
 </style>
 </head>
 <body>
+
+<div class="progreso" aria-hidden="true"></div>
 
 <div class="ancho">
   <a class="volver" href="../">
@@ -475,10 +504,24 @@ footer a:hover{color:#fff}
   const todos = () => { pendientes.forEach((p) => p.setAttribute('data-visible', '')); pendientes = []; };
   if (quieto) todos();
 
+  // La pista sobra en dos casos: cuando ya bajaste, y cuando el héroe no cabe
+  // entero — ahí la página se ve cortada por sí sola y el aviso solo se
+  // superpone a lo que hay debajo.
+  const barra = document.querySelector('.progreso');
+  const medir = () => {
+    if (!barra) return;
+    const alto = document.documentElement.scrollHeight - innerHeight;
+    barra.style.width = (alto > 0 ? Math.min(100, (scrollY / alto) * 100) : 0) + '%';
+  };
+
+  const heroe = document.querySelector('.heroe');
+  const estorba = () => heroe && heroe.getBoundingClientRect().bottom > innerHeight - 64;
+
   let agendado = false;
   const barrer = () => {
     agendado = false;
-    if (scrollY > 40) document.body.setAttribute('data-bajo', '');
+    medir();
+    if (scrollY > 40 || estorba()) document.body.setAttribute('data-bajo', '');
     if (!pendientes.length) return;
     const limite = innerHeight * 0.92;   // aparece un poco antes del borde
     const quedan = [];

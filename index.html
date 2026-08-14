@@ -165,6 +165,9 @@ img { max-width: 100%; }
   *, *::before, *::after { animation-duration: .001s !important; transition-duration: .001s !important; }
   html { scroll-behavior: auto; }
   .js [data-rise] { opacity: 1; transform: none; }
+  /* Se quita, no se congela: acelerado a .001s el destello se quedaria parado
+     encima del texto del boton. */
+  .boton-principal::after, .boton-nav::after, .ficha::after { display: none; }
 }
 
 /* ---------- Estructura ---------- */
@@ -240,7 +243,29 @@ img { max-width: 100%; }
   box-shadow: 0 10px 26px rgba(237,238,246,.22);
   color: #0A0B14;
 }
-@media (max-width: 820px) { .enlaces { display: none; } }
+/* La barra de lectura: se llena a medida que baja la pagina.
+   Es la unica pista de "cuanto queda" que cabe en una cabecera de telefono, y
+   ocupa dos pixeles. Va pegada al borde de abajo, donde ya hay una linea. */
+.progreso {
+  position: absolute; left: 0; bottom: -1px; height: 2px; width: 0;
+  background: linear-gradient(90deg, #7C80FF, #5EE7C6);
+  box-shadow: 0 0 10px rgba(124,128,255,.65);
+  transition: width .12s linear;
+}
+
+/* ---------- La cabecera en telefono ----------
+   El menu se esconde —son cuatro anclas de la misma pagina, y en 390 px se
+   apilaban en cuatro lineas empujando la cabecera a 250 px de alto—, y queda lo
+   unico que hace falta: quien eres y a donde ir. `nowrap` en los dos, porque
+   sin el "GusMar Studios" se parte en dos y el boton se vuelve un circulo con
+   el texto en tres. */
+@media (max-width: 820px) {
+  .enlaces { display: none; }
+  .nav { padding: 11px 18px; gap: 12px; }
+  .logotipo { font-size: 15px; white-space: nowrap; }
+  .logotipo svg { width: 27px; height: 27px; }
+  .boton-nav { padding: 9px 16px; font-size: 13px; white-space: nowrap; flex: none; }
+}
 
 main { position: relative; z-index: 1; }
 
@@ -312,6 +337,24 @@ h1 {
   transition: background .25s ease, border-color .25s ease;
 }
 .boton-secundario:hover { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.3); color: #fff; }
+
+/* El destello que cruza el boton.
+   Pasa RAPIDO y despues descansa —cruza en menos de dos segundos y espera otros
+   dos— porque un brillo que barre sin parar deja de llamar la atencion.
+   Va SOLO en los botones de accion principal: si lo lleva todo, deja de decir
+   cual es EL boton. Los de contorno (.boton-secundario) se quedan sin el. */
+.boton-principal, .boton-nav, .ficha { position: relative; overflow: hidden; isolation: isolate; }
+.boton-principal::after, .boton-nav::after, .ficha::after {
+  content: ""; position: absolute; top: 0; bottom: 0; left: -65%; width: 42%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,.55), transparent);
+  transform: skewX(-18deg); pointer-events: none;
+  animation: gm-destello 4.2s ease-in-out infinite;
+}
+/* Sobre el boton claro de la barra el blanco no se ve: ahi el destello es oscuro. */
+.boton-nav::after {
+  background: linear-gradient(100deg, transparent, rgba(10,11,20,.22), transparent);
+}
+@keyframes gm-destello { 0% { left: -65%; } 45%, 100% { left: 135%; } }
 
 .cifras {
   display: flex; flex-wrap: wrap; gap: clamp(24px,4vw,52px);
@@ -464,8 +507,8 @@ a.estado:hover { color: #fff; }
 /* La app que tiene página propia lleva a ella con un enlace de verdad, y no
    solo con su nombre en el título: ahí nadie hace clic. Va PRIMERO, antes que
    el de Google Play, porque es la página que explica de qué va. */
-.enlaces { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; margin-top: 8px; }
-.enlaces .estado { margin-top: 0; }
+.app-enlaces { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; margin-top: 8px; }
+.app-enlaces .estado { margin-top: 0; }
 .ficha {
   display: inline-flex; align-items: center; gap: 7px;
   padding: 8px 15px; border-radius: 999px;
@@ -585,6 +628,7 @@ a.estado:hover { color: #fff; }
       <!-- Era "Hablemos" -> #contacto. Vuelve cuando exista el correo. -->
       <a href="#apps" class="boton-nav">Ver las apps</a>
     </nav>
+    <div class="progreso" aria-hidden="true"></div>
   </header>
 
   <main>
@@ -693,7 +737,7 @@ a.estado:hover { color: #fff; }
             <div><h3><a href="matibu/">Matibu</a></h3><span class="edad">6 a 12 años</span></div>
           </div>
           <p>Matemáticas de 1º a 6º básico: 28 temas y 13 juegos, de contar hasta despejar la X.</p>
-          <div class="enlaces">
+          <div class="app-enlaces">
             <a class="ficha" href="matibu/">
               Ver la app
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
@@ -924,15 +968,25 @@ a.estado:hover { color: #fff; }
 // por scroll tiende a cero.
 (() => {
   let pendientes = [...document.querySelectorAll('[data-rise]')];
-  if (!pendientes.length) return;
+
+  // La barra de lectura de la cabecera. Va aqui y no en su propio listener: el
+  // barrido ya corre en cada scroll, y dos listeners sobre lo mismo es pagar
+  // dos veces. No es una animacion de adorno —dice cuanto queda—, asi que sigue
+  // funcionando con el movimiento reducido.
+  const barra = document.querySelector('.progreso');
 
   const todos = () => { pendientes.forEach((p) => p.setAttribute('data-visible', '')); pendientes = []; };
-
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { todos(); return; }
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) todos();
+  const medir = () => {
+    if (!barra) return;
+    const alto = document.documentElement.scrollHeight - innerHeight;
+    barra.style.width = (alto > 0 ? Math.min(100, (scrollY / alto) * 100) : 0) + '%';
+  };
 
   let agendado = false;
   const barrer = () => {
     agendado = false;
+    medir();
     const limite = window.innerHeight * 0.92;   // aparece un poco antes del borde
     const quedan = [];
     let enTanda = 0;
@@ -945,7 +999,9 @@ a.estado:hover { color: #fff; }
       enTanda++;
     }
     pendientes = quedan;
-    if (!pendientes.length) {
+    // Los listeners solo se sueltan si no queda NADA que hacer en cada scroll.
+    // Con la barra de lectura puesta, siempre queda algo.
+    if (!pendientes.length && !barra) {
       removeEventListener('scroll', pedir);
       removeEventListener('resize', pedir);
     }

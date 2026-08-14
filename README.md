@@ -1,7 +1,20 @@
 # gusmarstudios.com
 
 Sitio de GusMar Studios, publicado con GitHub Pages sobre el dominio propio.
-Una sola pagina estatica: sin dependencias, sin JavaScript, sin recursos externos.
+HTML y CSS a mano: **sin dependencias, sin framework y sin un solo recurso externo**.
+Lleva un script propio de ~40 lineas por pagina, solo para el revelado al bajar, y la
+pagina se ve entera aunque no corra.
+
+```
+/                     la vitrina del estudio (index.html)
+/matibu/              la pagina de una app — el patron para las otras ocho
+iconos/*.webp         los iconos reales de cada app
+fuentes/*.woff2       Bricolage Grotesque + IBM Plex Sans/Mono, subconjunto latino
+marca.svg             la marca; tambien favicon
+favicon.ico  favicon-32.png  favicon-48.png  apple-touch-icon.png  icono-512.png
+og.png                la tarjeta que se ve al pegar el enlace (1200x630)
+CNAME                 NO BORRAR: ata el repo al dominio
+```
 
 El dominio esta en Porkbun (comprado el 2026-08-07, 3 anos, vence en agosto de 2029).
 
@@ -97,6 +110,88 @@ pagina va a recibir trafico pagado.
   y IBM Plex Mono, solo subconjunto latino. **Se sirven desde aqui a proposito**: cargarlas
   desde Google le mandaria la IP de cada visitante a un tercero, y esta pagina promete
   justo lo contrario.
+
+## El favicon: el SVG solo NO basta
+
+Cuatro archivos, y cada uno cubre a alguien que los otros dejan fuera:
+
+| Archivo | Para quien |
+|---------|-----------|
+| `marca.svg` | Chrome, Firefox y Edge, que lo escalan sin perder nada |
+| `favicon-32.png`, `favicon-48.png` | Safari y todo el que no entiende favicons SVG |
+| `favicon.ico` | **el navegador que lo pide a `/favicon.ico` sin leer el HTML** |
+| `apple-touch-icon.png` (180) | iOS al guardar la pagina en la pantalla de inicio |
+
+Se declaran en **rutas absolutas** (`/marca.svg`, no `../marca.svg`) para que las paginas
+de las apps compartan los mismos.
+
+**Se rasterizan del propio `marca.svg` con FONDO OSCURO**, no transparente: el borde de las
+tres fichas es del color del fondo del sitio, asi que sobre blanco la marca se desarma y
+se ve un solo bulto. El `.ico` se arma con Node —cabecera ICO de 6 bytes + una entrada de
+16 + el PNG tal cual— porque los navegadores aceptan PNG dentro de un ICO.
+
+## Como se arma la pagina de una app
+
+`/matibu/` es el patron. Para otra app se clona la carpeta y se cambia el contenido; la
+estructura es siempre la misma y **cada bloque esta porque contesta una pregunta**:
+
+| Bloque | Que contesta |
+|--------|--------------|
+| Heroe: icono, nombre, una linea, boton a Play | que es y donde se baja |
+| Cifras (temas / lecciones / juegos / idiomas) | cuanto hay ahi dentro |
+| **Que aprende** — los temas, en cintas por isla | de que va, sin leer un parrafo |
+| **Asi se ve** — capturas dentro de un telefono | como se ve de verdad |
+| **Lo que no vas a encontrar** | sin anuncios, sin datos, sin compras del nino |
+| **Lo que si** — la zona del adulto | por que le sirve al que paga |
+| **Cuanto cuesta** | que es gratis y que no, sin letra chica |
+
+### Las capturas
+
+Se sacan **de la app corriendo**, nunca de un mockup, con la ventana en **390x700**.
+Es deliberado: a 375x812 la relacion es 2,17 y la captura se lee como una *tira*, no como
+una pantalla. A 390x700 (1,79) parece un telefono.
+
+Van dentro de un **marco de telefono dibujado con CSS** (`.tel`, con su auricular): con el
+marco el ojo reconoce lo que mira y deja de medirlo.
+
+Se guardan en **webp** (~25-55 KB cada una contra 200+ en PNG).
+
+### Los temas
+
+No es una lista: son **cintas que corren, una por isla**, con el emoji y el color que esa
+isla y ese tema tienen DENTRO de la app (salen de `curriculum.ts`, no se eligen a ojo).
+Veintiocho etiquetas quietas son un muro que nadie lee; corriendo son una franja que se
+mira sola. Se detienen al pasar el raton, porque si no, el que quiere leer una la persigue.
+
+### La `og.png` (1200x630)
+
+Es la cara del enlace al pegarlo en WhatsApp, que es justo como se reparten los codigos de
+regalo. **Lleva el icono de la app DENTRO**, asi que no se actualiza sola cuando el icono
+cambia: hay que recomponerla. En `/matibu/og.png` el icono va en 300x300 en (800,165) con
+esquinas de radio 60.
+
+## Los efectos, y por que cada uno
+
+- **Revelado al bajar** (`[data-rise]`): barrido en el evento `scroll`, **NO un
+  `IntersectionObserver`**. El observador solo avisa de lo que cruza EN ESE INSTANTE, asi
+  que un salto —un enlace del menu, un dedo rapido— deja elementos invisibles **para
+  siempre**. La condicion de aqui es "ya paso el borde de abajo", que un salto no deshace.
+  La clase `js` se pone en la cabecera: **sin JavaScript no se esconde nada**.
+- **Destello de los botones**: un pseudo-elemento con un degradado blanco inclinado que
+  cruza el boton. Cruza en menos de dos segundos y **descansa otros dos**: un brillo que
+  barre sin parar deja de llamar la atencion. Va SOLO en los botones de accion principal
+  (`.boton`, `.boton-principal`, `.boton-nav`, `.ficha`); si lo lleva todo, deja de decir
+  cual es EL boton. Sobre el boton claro de la barra el destello es oscuro, no blanco.
+- **Pista de "sigue bajando"**: anclada al borde inferior de la ventana, no al final del
+  heroe —ahi se queda fuera de pantalla en un telefono, o sea que no existe—, y se apaga
+  al primer scroll **o si el heroe no cabe entero**, porque entonces la pagina ya se ve
+  cortada y el aviso solo tapa lo que hay debajo.
+- **Cinta de la portada**: los nueve nombres corriendo, **cada uno con su icono**. Y los
+  nueve iconos del heroe son **enlaces** (el de una app publicada a su pagina, el resto al
+  catalogo) que enseñan su nombre al pasar por encima; en pantalla tactil, siempre.
+
+Todo lo animado se apaga con `prefers-reduced-motion`. El destello se **quita** (`display:
+none`), no se acelera: a 0,001s se quedaria parado encima del texto.
 
 ## Colores
 
