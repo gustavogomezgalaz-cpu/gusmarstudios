@@ -170,6 +170,21 @@ regalo. **Lleva el icono de la app DENTRO**, asi que no se actualiza sola cuando
 cambia: hay que recomponerla. En `/matibu/og.png` el icono va en 300x300 en (800,165) con
 esquinas de radio 60.
 
+Ademas de `og:image` van `og:image:secure_url` y `og:image:type`, que algunos scrapers
+viejos de Meta prefieren. La URL es **absoluta y sin redirecciones**.
+
+🚨 **No compartir un enlace recien publicado.** Tras un push, GitHub Pages tarda entre 30
+segundos y 5 minutos en reconstruir, y en esa ventana los archivos pueden dar **404 con el
+HTML nuevo ya servido**. Si el robot de Meta pasa justo ahi, guarda "esta URL no tiene
+imagen" y **ese cache dura dias aunque la imagen ya funcione**: el enlace sale en el chat
+sin foto, como de sitio desconocido. Paso exactamente eso con `/matibu/`.
+
+- Antes de pegar un enlace en un chat, comprobar que la imagen responde 200:
+  `curl -sI https://gusmarstudios.com/matibu/og.png`
+- Si el cache ya se envenono, se purga en `developers.facebook.com/tools/debug` con
+  **"Scrape Again"** (es el mismo cache que usa WhatsApp). Para salir del paso, cualquier
+  parametro —`?v=2`— es una URL distinta y la obliga a mirar de nuevo.
+
 ## Los efectos, y por que cada uno
 
 - **Revelado al bajar** (`[data-rise]`): barrido en el evento `scroll`, **NO un
