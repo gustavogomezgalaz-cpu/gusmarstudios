@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GusMar Studios — Tecnología que se adapta a cada persona</title>
-<meta name="description" content="Compañía chilena de software. Construimos herramientas que se ajustan a cada persona en vez de exigirle que se ajuste ella, para que nadie quede atrás. Empezamos por la educación.">
+<meta name="description" content="Compañía chilena de software que cambia el mundo desde la educación. Construimos herramientas que se ajustan a cada persona en vez de exigirle que se ajuste ella, para que nadie quede atrás.">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <link rel="canonical" href="https://gusmarstudios.com/">
 <meta name="theme-color" content="#0A0B14">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="GusMar Studios">
 <meta property="og:title" content="GusMar Studios — Tecnología que se adapta a cada persona">
-<meta property="og:description" content="Construimos tecnología que se adapta a cada persona, para que nadie quede atrás. Empezamos por la educación de los niños, y el enfoque no se agota ahí.">
+<meta property="og:description" content="Cambiamos el mundo desde la educación: tecnología que se adapta a cada persona para que nadie quede atrás. Empezamos por los niños, y el enfoque no se agota ahí.">
 <meta property="og:url" content="https://gusmarstudios.com/">
 <meta property="og:locale" content="es_CL">
 <meta property="og:image" content="https://gusmarstudios.com/og.png">
@@ -20,7 +20,7 @@
 <meta property="og:image:alt" content="GusMar Studios — Construimos cosas que se adaptan a cada persona.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="GusMar Studios — Tecnología que se adapta a cada persona">
-<meta name="twitter:description" content="Construimos tecnología que se adapta a cada persona, para que nadie quede atrás. Empezamos por la educación de los niños, y el enfoque no se agota ahí.">
+<meta name="twitter:description" content="Cambiamos el mundo desde la educación: tecnología que se adapta a cada persona para que nadie quede atrás. Empezamos por los niños, y el enfoque no se agota ahí.">
 <meta name="twitter:image" content="https://gusmarstudios.com/og.png">
 <!-- El SVG es el bueno, pero no basta solo: Safari no lo usa, y el navegador
      que no encuentra nada pide /favicon.ico a secas y deja la pestaña en
@@ -36,7 +36,7 @@
 
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
-{"@type":"Organization","@id":"https://gusmarstudios.com/#org","name":"GusMar Studios","url":"https://gusmarstudios.com/","description":"Compañía de software que construye herramientas que se adaptan a cada persona para que nadie quede atrás. Su trabajo publicado son aplicaciones educativas para niños.","logo":"https://gusmarstudios.com/marca.svg","image":"https://gusmarstudios.com/og.png","foundingLocation":"Santiago, Chile","address":{"@type":"PostalAddress","addressLocality":"Santiago","addressCountry":"CL"}},
+{"@type":"Organization","@id":"https://gusmarstudios.com/#org","name":"GusMar Studios","url":"https://gusmarstudios.com/","description":"Compañía de software que cambia el mundo desde la educación, con herramientas que se adaptan a cada persona para que nadie quede atrás. Su trabajo publicado son aplicaciones educativas para niños.","logo":"https://gusmarstudios.com/marca.svg","image":"https://gusmarstudios.com/og.png","foundingLocation":"Santiago, Chile","address":{"@type":"PostalAddress","addressLocality":"Santiago","addressCountry":"CL"}},
 {"@type":"WebSite","@id":"https://gusmarstudios.com/#web","url":"https://gusmarstudios.com/","name":"GusMar Studios","inLanguage":"es-CL","publisher":{"@id":"https://gusmarstudios.com/#org"}},
 {"@type":"ItemList","name":"Apps de GusMar Studios","itemListElement":[
 {"@type":"ListItem","position":1,"item":{"@type":"MobileApplication","name":"Matibu","applicationCategory":"EducationalApplication","operatingSystem":"Android","description":"Matemáticas desde primero básico: tablas, operaciones y fracciones."}},
@@ -292,10 +292,20 @@ main { position: relative; z-index: 1; }
   font-family: var(--mono); font-size: 12px; letter-spacing: .06em;
   text-transform: uppercase; color: var(--suave);
 }
+/* El globo gira despacio. No es un adorno suelto: es lo unico de la pildora que
+   dice que la frase esta pasando ahora, que era el trabajo del punto que latia. */
+.globo { font-size: 14px; line-height: 1; animation: gm-girar 9s ease-in-out infinite; }
+@keyframes gm-girar {
+  0%, 100% { transform: rotate(0); }
+  50%      { transform: rotate(22deg); }
+}
+
 /* En un telefono angosto encoge lo justo para no partirse en dos lineas: una
    pildora de dos renglones se lee como un parrafo con borde. */
 @media (max-width: 430px) {
   .pildora { font-size: 11px; letter-spacing: .03em; padding: 7px 13px; gap: 7px; }
+  /* Entre el arraigo y el porque, en 375 px manda el porque. */
+  .pildora .ciudad { display: none; }
 }
 .latido {
   width: 7px; height: 7px; border-radius: 50%; background: var(--menta);
@@ -642,12 +652,13 @@ a.estado:hover { color: #fff; }
       <div class="heroe-rejilla">
         <div>
           <span class="pildora">
-            <span class="latido" aria-hidden="true"></span>
             <!-- Ni el tamano ("estudio independiente" se baja el perfil) ni el
                  inventario ("nueve apps" es un dato, no una razon de ser): lo que
-                 va aqui es PARA QUE existe la compania, y en sus palabras. La
-                 frase es la misma tesis que sostiene el resto de la pagina. -->
-            Santiago, Chile · Que nadie quede atrás
+                 va aqui es PARA QUE existe la compania.
+                 El globo reemplaza al punto que latia: dos senales a la izquierda
+                 de la misma pildora se pisan, y el globo dice mas. -->
+            <span class="globo" aria-hidden="true">🌎</span>
+            <span class="ciudad">Santiago, Chile · </span>Cambiando el mundo
           </span>
           <h1>Construimos cosas que <span class="degradado">se adaptan a cada persona</span>, no al revés.</h1>
           <p class="entrada">
