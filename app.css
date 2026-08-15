@@ -1,0 +1,277 @@
+/* Hoja de las paginas de app (matibu/, lunabu/, anticipa/, cavila/…).
+
+   Vivia dentro de matibu/index.html y se saco cuando aparecio la segunda
+   pagina: cuatro copias del mismo CSS no divergen el dia que se copian, sino
+   tres meses despues, cuando alguien arregla el marco del telefono en una sola.
+
+   Lo unico que cambia por app es el COLOR, y va como variable: cada pagina
+   define --acento y --acento-hondo en su propio <style> antes de usar esto.
+   Las rutas de las fuentes son absolutas (/fuentes/…) porque esta hoja se lee
+   desde subcarpetas de distinta profundidad. */
+@font-face { font-family:'Bricolage Grotesque'; src:url('/fuentes/bricolage-grotesque.woff2') format('woff2'); font-weight:400 800; font-display:swap; }
+@font-face { font-family:'IBM Plex Sans'; src:url('/fuentes/ibm-plex-sans-400.woff2') format('woff2'); font-weight:400; font-display:swap; }
+@font-face { font-family:'IBM Plex Sans'; src:url('/fuentes/ibm-plex-sans-600.woff2') format('woff2'); font-weight:600; font-display:swap; }
+@font-face { font-family:'IBM Plex Mono'; src:url('/fuentes/ibm-plex-mono-400.woff2') format('woff2'); font-weight:400; font-display:swap; }
+
+:root {
+  --fondo:#0A0B14; --tarjeta:#171A2E; --texto:#EDEEF6; --suave:#A7ACC6; --tenue:#8890AD;
+  --acento:#7C80FF; --acento-hondo:#4247D6;
+  --display:'Bricolage Grotesque',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--fondo);color:var(--texto);font-family:'IBM Plex Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--acento);text-decoration:none}
+img{max-width:100%;display:block}
+:focus-visible{outline:2px solid var(--acento);outline-offset:3px;border-radius:6px}
+
+.ancho{max-width:1080px;margin:0 auto;padding-inline:24px}
+
+/* La barra de lectura: dice cuanto queda, y son dos pixeles. Esta pagina es
+   larga y en el telefono no hay cabecera fija donde ponerla, asi que va pegada
+   al borde de arriba de la ventana. */
+.progreso{
+  position:fixed;top:0;left:0;height:2px;width:0;z-index:60;
+  background:linear-gradient(90deg,#7C80FF,#5EE7C6);
+  box-shadow:0 0 10px rgba(124,128,255,.65);
+  transition:width .12s linear;
+}
+
+/* Revelado al bajar. Mismo patrón que la portada del estudio: un barrido en el
+   scroll y NO un IntersectionObserver, porque el observador solo avisa de lo que
+   cruza EN ESE INSTANTE y un salto —un enlace del menú, un dedo rápido— deja
+   elementos invisibles para siempre. La condición de aquí es "ya pasó el borde
+   de abajo", que un salto no puede deshacer. */
+.js [data-rise]{
+  opacity:0;transform:translateY(30px);
+  transition:opacity .75s cubic-bezier(.2,.7,.2,1),transform .75s cubic-bezier(.2,.7,.2,1);
+}
+.js [data-rise][data-visible]{opacity:1;transform:none}
+
+/* La pista de que abajo hay más. Se apaga sola en cuanto el visitante baja:
+   una flecha que sigue insistiendo cuando ya obedeciste es ruido.
+
+   Va ANCLADA al borde de abajo y no debajo de las cifras: en un teléfono el
+   héroe ya no cabe entero, así que una pista colocada al final del bloque se
+   queda justo fuera de la pantalla — o sea, no existe. */
+.sigue{
+  position:fixed;left:0;right:0;bottom:18px;z-index:5;pointer-events:none;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  margin:0;font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--tenue);
+  text-shadow:0 2px 12px var(--fondo);
+  transition:opacity .5s ease;
+}
+.sigue svg{width:22px;height:22px;animation:baja 1.9s ease-in-out infinite}
+@keyframes baja{0%,100%{transform:translateY(0);opacity:.55}50%{transform:translateY(7px);opacity:1}}
+body[data-bajo] .sigue{opacity:0;pointer-events:none}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.001s !important;transition-duration:.001s !important}
+  html{scroll-behavior:auto}
+  .js [data-rise]{opacity:1;transform:none}
+  /* Se quita, no se congela: acelerado a .001s el destello se quedaría parado
+     encima del texto del botón. */
+  .boton::after{display:none}
+}
+
+/* Cabecera: vuelta al estudio */
+.volver{display:flex;align-items:center;gap:10px;padding:18px 0;font-size:14px;color:var(--suave);font-weight:600}
+.volver:hover{color:#fff}
+.volver svg{width:24px;height:24px;flex:none}
+
+/* Heroe */
+.heroe{
+  position:relative;overflow-x:clip;
+  padding-block:clamp(28px,6vw,56px) clamp(48px,8vw,84px);
+  text-align:center;
+}
+.heroe::before{
+  content:"";position:absolute;top:-30%;left:50%;width:min(760px,120%);height:120%;
+  transform:translateX(-50%);
+  background:radial-gradient(circle,rgba(124,128,255,.30),transparent 62%);filter:blur(50px);
+}
+.heroe > *{position:relative}
+.icono-app{width:clamp(96px,22vw,124px);height:auto;border-radius:26%;margin:0 auto;box-shadow:0 20px 50px rgba(66,71,214,.45)}
+h1{margin:22px 0 0;font-family:var(--display);font-weight:800;font-size:clamp(38px,9vw,62px);letter-spacing:-.03em;line-height:1}
+.bajada{margin:12px 0 0;font-size:clamp(17px,4vw,21px);color:var(--suave);font-weight:600}
+.edad{
+  display:inline-block;margin-top:16px;padding:6px 14px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);
+  font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--suave);
+}
+
+/* Boton principal */
+.acciones{display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:34px}
+.boton{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:16px 34px;border-radius:999px;font-weight:600;font-size:16px;
+  /* Medido: con #7C80FF de inicio, la letra blanca daba 3.29:1 en el extremo
+     claro del degradado y no llegaba a AA. #6669D1 da 4.66:1 y se ve igual. */
+  background:linear-gradient(140deg,#6669D1,#4247D6);color:#fff;
+  box-shadow:0 14px 38px rgba(66,71,214,.5);
+  transition:transform .25s ease,box-shadow .25s ease;
+}
+.boton:hover{transform:translateY(-3px);box-shadow:0 20px 50px rgba(66,71,214,.62);color:#fff}
+
+/* El destello que cruza el botón.
+   Pasa RÁPIDO y después descansa —cruza en dos segundos y espera otros dos—
+   porque un brillo que barre sin parar deja de llamar la atención y molesta.
+   Va en un pseudo-elemento recortado por el propio botón, así que no hace falta
+   ningún elemento extra ni toca el texto. */
+.boton:not(.espera){position:relative;overflow:hidden;isolation:isolate}
+.boton:not(.espera)::after{
+  content:"";position:absolute;top:0;bottom:0;left:-65%;width:42%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);
+  transform:skewX(-18deg);pointer-events:none;
+  animation:destello 4.2s ease-in-out infinite;
+}
+@keyframes destello{0%{left:-65%}45%,100%{left:135%}}
+.boton.espera{
+  background:none;border:1px solid rgba(255,255,255,.2);color:var(--suave);
+  box-shadow:none;cursor:default;font-family:var(--mono);font-size:13px;
+  letter-spacing:.06em;text-transform:uppercase;
+}
+.boton.espera:hover{transform:none;color:var(--suave)}
+.firma{font-size:14px;color:var(--tenue)}
+
+/* Las cifras, debajo del héroe. Son el argumento más corto que hay: dicen de
+   una vez que no es una app de tablas con otro nombre. */
+.cifras{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;
+  margin-top:38px;padding:0;list-style:none;
+}
+.cifra{padding:18px 12px;border-radius:16px;background:var(--tarjeta);border:1px solid rgba(255,255,255,.08)}
+.cifra b{display:block;font-family:var(--display);font-size:34px;font-weight:800;letter-spacing:-.03em;color:var(--acento)}
+.cifra span{display:block;margin-top:2px;font-size:13.5px;color:var(--suave);font-weight:600}
+
+/* Lo que enseña */
+.seccion{padding-block:clamp(48px,8vw,80px)}
+
+/* Los ríos de temas: uno por isla, corriendo de lado.
+   Veintiocho etiquetas quietas son un muro que nadie lee entero; corriendo son
+   una franja que se mira sola, y cada tema lleva el color de su isla — el mismo
+   que el niño ve en el mapa. Van en direcciones alternas: dos filas hacia el
+   mismo lado se leen como una sola cosa que se desplaza. */
+.rios{margin:38px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px}
+.rio{
+  overflow:hidden;padding:3px 0;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+}
+.rio-pista{display:flex;width:max-content;animation:correr 30s linear infinite}
+.rio.al-reves .rio-pista{animation-direction:reverse}
+/* Se detiene al pasar por encima: si no, el que quiere leer un tema lo persigue. */
+.rio:hover .rio-pista{animation-play-state:paused}
+@keyframes correr{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.rio-grupo{display:flex;align-items:center;gap:10px;padding-right:10px}
+.rio-isla{
+  display:inline-flex;align-items:center;gap:9px;padding:9px 18px 9px 12px;
+  border-radius:999px;background:var(--tinte);border:1px solid var(--borde);
+  font-family:var(--display);font-weight:800;font-size:15px;color:var(--texto);
+  white-space:nowrap;
+}
+.rio-emoji{font-size:19px}
+.rio-cuenta{
+  font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:.05em;
+  color:var(--suave);border-left:1px solid var(--borde);padding-left:9px;
+}
+/* El chip lleva el tinte de SU isla: así la fila se lee como un grupo aunque la
+   etiqueta de la isla vaya lejos, y el color es el mismo del mapa de la app. */
+.rio .chip{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:9px 17px 9px 13px;border-radius:999px;
+  background:var(--tinte);border:1px solid var(--borde);
+  font-size:14.5px;font-weight:600;color:var(--texto);white-space:nowrap;
+}
+/* El emoji de cada tema es el MISMO que el niño toca en el mapa: la regla de
+   Medir, el reloj de La hora, la balanza de Comparar. */
+.chip-emoji{font-size:16px;line-height:1}
+
+@media (prefers-reduced-motion: reduce){
+  /* Sin movimiento: la fila se parte en varias líneas y se lee como una lista. */
+  .rio{-webkit-mask-image:none;mask-image:none}
+  .rio-pista{animation:none;width:100%}
+  .rio-pista > [aria-hidden]{display:none}
+  .rio-grupo{flex-wrap:wrap}
+}
+
+/* Precio */
+.plan{margin:30px 0 0;padding:26px;border-radius:20px;background:var(--tarjeta);border:1px solid rgba(255,255,255,.08)}
+.plan h3{margin:0;font-family:var(--display);font-size:21px;font-weight:800;letter-spacing:-.02em}
+.plan p{margin:10px 0 0;font-size:15px;line-height:1.7;color:var(--suave)}
+.plan .destacado{color:var(--texto);font-weight:600}
+.rotulo{margin:0;font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--acento)}
+h2{margin:14px 0 0;font-family:var(--display);font-weight:800;font-size:clamp(28px,6vw,42px);letter-spacing:-.03em;line-height:1.08}
+.intro{margin:14px 0 0;max-width:58ch;font-size:16.5px;line-height:1.7;color:var(--suave)}
+
+.temas{display:flex;flex-wrap:wrap;gap:9px;margin:30px 0 0;padding:0;list-style:none}
+.temas li{
+  padding:9px 15px;border-radius:999px;background:var(--tarjeta);
+  border:1px solid rgba(255,255,255,.08);font-size:14.5px;font-weight:600;color:var(--suave);
+}
+
+/* La galería: cada captura dentro de un teléfono.
+   El marco no es adorno — una captura suelta y muy alta se lee como una tira
+   rara; metida en un teléfono, el ojo la reconoce y deja de medirla. */
+.galeria{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:clamp(20px,4vw,34px);margin:38px 0 0;padding:0;list-style:none;
+}
+.galeria figure{margin:0;display:flex;flex-direction:column;align-items:center}
+.tel{
+  position:relative;width:100%;max-width:250px;padding:9px 9px 14px;
+  border-radius:34px;background:linear-gradient(155deg,#33385C,#12142A);
+  box-shadow:0 26px 60px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.10) inset;
+}
+/* El auricular. Dos píxeles que hacen que se lea como teléfono y no como caja. */
+.tel::before{
+  content:"";position:absolute;top:4px;left:50%;transform:translateX(-50%);
+  width:52px;height:5px;border-radius:99px;background:rgba(255,255,255,.18);
+}
+.tel img{border-radius:26px;display:block;width:100%;height:auto}
+.galeria figcaption{
+  margin-top:16px;max-width:26ch;text-align:center;
+  font-size:14px;color:var(--suave);line-height:1.55;
+}
+.galeria figcaption strong{color:var(--texto)}
+
+/* Promesas */
+.promesas{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:30px 0 0;padding:0;list-style:none}
+.promesa{padding:24px;border-radius:18px;background:var(--tarjeta);border:1px solid rgba(255,255,255,.08)}
+.promesa h3{margin:0;font-family:var(--display);font-size:19px;font-weight:800;letter-spacing:-.015em}
+.promesa p{margin:9px 0 0;font-size:14.5px;line-height:1.6;color:var(--suave)}
+
+/* Cierre */
+.cierre{text-align:center;padding-block:clamp(48px,8vw,88px);border-top:1px solid rgba(255,255,255,.08);margin-top:40px}
+.cierre h2{max-width:16ch;margin-inline:auto}
+
+footer{border-top:1px solid rgba(255,255,255,.08);padding:32px 0 48px;font-size:14px;color:var(--tenue);text-align:center}
+footer a{color:var(--suave)}
+footer a:hover{color:#fff}
+
+/* ── El aviso de "todavía no está en la tienda" ──────────────────────────────
+   Ocupa el lugar del botón de Google Play en las apps que aún no se pueden
+   descargar. NO es un botón atenuado: es una caja de texto que dice el estado y
+   ofrece lo único que sí existe, el enlace de la prueba cerrada.
+
+   🚨 El enlace de /apps/testing/ le dice "no eres tester" a quien no está en la
+   lista, así que la etiqueta lo avisa ANTES. Un botón que promete descargar y
+   lleva a esa puerta cuesta más que no tener botón. */
+.aviso-tienda{
+  display:inline-flex;flex-direction:column;align-items:center;gap:6px;
+  padding:16px 26px;border-radius:18px;
+  border:1px dashed rgba(167,172,198,.32);background:rgba(255,255,255,.03);
+  font-size:14.5px;color:var(--suave);line-height:1.5;text-align:center;max-width:44ch;
+}
+.aviso-tienda b{color:var(--texto);font-weight:600}
+.aviso-tienda .mini{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--tenue)}
+.aviso-tienda a{color:var(--acento);text-decoration:underline;text-underline-offset:3px}
+
+/* Las capturas de Cavila NO son fotos de pantalla sueltas: son las láminas de
+   la ficha de Play, con su titular y su fondo, porque esa app no tiene capturas
+   sin marco y recortarle el teléfono deja adornos cortados por la mitad. Van sin
+   el marco de teléfono —meter una lámina que ya trae teléfono dentro de otro se
+   ve como la foto de una foto— y con su propia sombra. */
+.lamina{border-radius:20px;overflow:hidden;box-shadow:0 22px 52px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.08)}
+.lamina img{display:block;width:100%;height:auto}
