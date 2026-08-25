@@ -304,12 +304,28 @@ main { position: relative; z-index: 1; }
   50%      { transform: rotate(22deg); }
 }
 
+/* La pildora y el lema van en la misma linea mientras quepan, y en el telefono
+   se apilan. Se apilan de verdad —no encogen— porque ya no compiten por el
+   mismo renglon: son dos cosas distintas, el sitio y el porque. */
+.antesala {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 12px 14px;
+}
+/* Mismo registro que la pildora (mono, versalitas, mismo color) pero sin borde
+   ni fondo: uno es una ficha, el otro es una linea. Y como es una linea, puede
+   envolver sin romperse. */
+.lema {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--suave); text-wrap: balance;
+}
+
 /* En un telefono angosto encoge lo justo para no partirse en dos lineas: una
-   pildora de dos renglones se lee como un parrafo con borde. */
+   pildora de dos renglones se lee como un parrafo con borde.
+   🚨 Aqui vivia un `.pildora .ciudad { display:none }` que escondia la ciudad
+   para dejarle sitio al lema. Con el lema fuera, esa regla dejaba la pildora
+   con el globo SOLO —un adorno sin texto— asi que se fue con el. */
 @media (max-width: 430px) {
   .pildora { font-size: 11px; letter-spacing: .03em; padding: 7px 13px; gap: 7px; }
-  /* Entre el arraigo y el porque, en 375 px manda el porque. */
-  .pildora .ciudad { display: none; }
+  .lema { font-size: 11px; letter-spacing: .03em; }
 }
 .latido {
   width: 7px; height: 7px; border-radius: 50%; background: var(--menta);
@@ -676,15 +692,23 @@ a.estado:hover { color: #fff; }
     <section id="inicio" class="ancho heroe">
       <div class="heroe-rejilla">
         <div>
-          <span class="pildora">
-            <!-- Ni el tamano ("estudio independiente" se baja el perfil) ni el
-                 inventario ("nueve apps" es un dato, no una razon de ser): lo que
-                 va aqui es PARA QUE existe la compania.
-                 El globo reemplaza al punto que latia: dos senales a la izquierda
-                 de la misma pildora se pisan, y el globo dice mas. -->
-            <span class="globo" aria-hidden="true">🌎</span>
-            <span class="ciudad">Santiago, Chile · </span>Cambiando el mundo
-          </span>
+          <!-- El lema SALIO de la pildora. Medido a 360 px: con el lema adentro
+               la pildora ocupaba 304 de los 312 disponibles —entraba por 8 px— y
+               cualquier frase mas larga la partia en dos renglones, que es
+               exactamente lo que una pildora no puede hacer. Fuera de ella el
+               lema puede crecer y envolver como lo que es: una linea.
+               Ni el tamano ("estudio independiente" se baja el perfil) ni el
+               inventario ("nueve apps" es un dato, no una razon de ser): lo que
+               va aqui es PARA QUE existe la compania. -->
+          <div class="antesala">
+            <span class="pildora">
+              <!-- El globo reemplaza al punto que latia: dos senales a la
+                   izquierda de la misma pildora se pisan, y el globo dice mas. -->
+              <span class="globo" aria-hidden="true">🌎</span>
+              Santiago, Chile
+            </span>
+            <span class="lema">Cambiando cómo aprende la próxima generación</span>
+          </div>
           <!-- El giro final "no al reves" es lo que hace la frase: sin el queda un lema
                que firmaria cualquiera. Y es "cada persona", no "las personas": el plural
                vuelve al promedio que el parrafo de abajo justo esta negando. -->
