@@ -175,6 +175,91 @@ img { max-width: 100%; }
   .boton-principal::after, .boton-nav::after, .ficha::after { display: none; }
 }
 
+/* ---------- Cortinilla de entrada ----------
+   Un vuelo de 20s por las diez apps que termina en un estallido de luz, y sobre
+   ese destello nace la marca. El logo y el nombre NO van quemados en el video:
+   se dibujan aqui con el mismo SVG y la misma tipografia del sitio, asi quedan
+   nitidos en cualquier pantalla (el video es 720p) y se corrigen sin volver a
+   renderizar.
+   🚨 Arranca MUDO a proposito: los navegadores bloquean el autoplay con sonido,
+   y un video que no puede arrancar deja la portada en negro. El boton de sonido
+   lo enciende quien quiera. */
+.cortinilla {
+  position: fixed; inset: 0; z-index: 90;
+  background: #0A0B14;
+  display: grid; place-items: center;
+  opacity: 1;
+  transition: opacity .9s ease;
+}
+.cortinilla[hidden] { display: none; }
+.cortinilla.saliendo { opacity: 0; pointer-events: none; }
+.cortinilla video {
+  width: 100%; height: 100%; object-fit: cover;
+  /* El clip nace de un fundido desde negro: sin esto se ve el salto del primer
+     fotograma contra el fondo. */
+  animation: cortinilla-entra 1s ease both;
+}
+@keyframes cortinilla-entra { from { opacity: 0 } to { opacity: 1 } }
+
+/* La marca, encima del destello final. */
+.cortinilla-marca {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 18px;
+  opacity: 0; pointer-events: none;
+}
+.cortinilla-marca[data-visible] { animation: marca-nace 1.5s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes marca-nace {
+  from { opacity: 0; transform: scale(.86); filter: blur(6px); }
+  to   { opacity: 1; transform: none;       filter: none; }
+}
+.cortinilla-bloque { display: flex; align-items: center; gap: clamp(14px, 2.4vw, 30px); }
+.cortinilla-bloque svg { width: clamp(64px, 11vw, 138px); height: auto; flex: none; }
+.cortinilla-bloque strong {
+  font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+  font-weight: 800; font-size: clamp(30px, 6.4vw, 76px);
+  letter-spacing: -.02em; color: #F4F5FB; white-space: nowrap;
+}
+/* El nombre necesita despegarse del destello dorado que tiene detras: sin esta
+   sombra los bordes de las letras se comen contra la luz. */
+.cortinilla-bloque strong { text-shadow: 0 2px 24px rgba(10,11,20,.75), 0 1px 3px rgba(10,11,20,.9); }
+.cortinilla-bloque svg { filter: drop-shadow(0 4px 18px rgba(10,11,20,.6)); }
+
+/* Los dos controles van separados a proposito: el sonido es un ajuste (esquina
+   superior, donde no estorba) y saltar es la SALIDA (abajo al centro, en el eje
+   de lectura, que es donde se busca sin pensar). */
+.cortinilla-btns button {
+  position: absolute; z-index: 2;
+}
+#cortinilla-sonido { right: clamp(14px, 3vw, 30px); top: clamp(14px, 3vw, 30px); }
+#cortinilla-saltar {
+  left: 50%; bottom: clamp(22px, 4.5vh, 48px);
+  transform: translateX(-50%);
+  /* No aparece de entrada: los primeros segundos son los que enganchan, y
+     ofrecer la salida antes de que empiece invita a usarla. Entra a los 3,5s. */
+  opacity: 0; pointer-events: none; transition: opacity .5s ease;
+}
+#cortinilla-saltar[data-visible] { opacity: 1; pointer-events: auto; }
+.cortinilla-btns button {
+  font: inherit; font-size: 13px; color: #C9CDE4;
+  background: rgba(10,11,20,.62); border: 1px solid rgba(200,205,230,.28);
+  border-radius: 999px; padding: 9px 16px; cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: background .2s, color .2s, border-color .2s;
+}
+.cortinilla-btns button:hover { background: rgba(10,11,20,.85); color: #fff; border-color: rgba(200,205,230,.5); }
+/* El foco tiene que verse: la cortinilla tapa la pagina y el teclado es la unica
+   salida para quien no usa raton. */
+.cortinilla-btns button:focus-visible { outline: 2px solid #7C80FF; outline-offset: 3px; }
+
+/* Sin JS no hay cortinilla que valga: se oculta y la portada queda visible. */
+html:not(.js) .cortinilla { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  /* Quien pide menos movimiento no quiere un vuelo de 20s: se salta entera. */
+  .cortinilla { display: none; }
+}
+
 /* ---------- Estructura ---------- */
 
 .lienzo { position: relative; min-height: 100vh; isolation: isolate; }
@@ -653,6 +738,38 @@ a.estado:hover { color: #fff; }
 </style>
 </head>
 <body>
+
+<!-- Cortinilla de entrada. Va ANTES del lienzo para que se pinte encima sin
+     depender del orden de apilado del resto. `hidden` de salida: el script la
+     enciende solo si corresponde mostrarla (ver el bloque al final). -->
+<div class="cortinilla" id="cortinilla" hidden>
+  <video id="cortinilla-video" muted playsinline preload="auto" poster="media/intro-poster.jpg" aria-label="Presentación de GusMar Studios">
+    <source src="media/intro.mp4" type="video/mp4">
+  </video>
+
+  <div class="cortinilla-marca" id="cortinilla-marca">
+    <div class="cortinilla-bloque">
+      <!-- El mismo SVG de marca.svg: la marca del video y la de la cabecera son
+           el mismo dibujo, no una copia que se desincroniza. -->
+      <svg viewBox="0 0 64 64" role="img" aria-label="GusMar Studios">
+        <g transform="translate(32 32)">
+          <g transform="translate(-11 1) rotate(-11)"><rect x="-12" y="-12" width="24" height="24" rx="6.8" fill="#C08B0A" stroke="#0A0B14" stroke-width="3"/></g>
+          <g transform="translate(11 1) rotate(11)"><rect x="-12" y="-12" width="24" height="24" rx="6.8" fill="#12A0AC" stroke="#0A0B14" stroke-width="3"/></g>
+          <g transform="translate(0 -2)"><rect x="-13" y="-13" width="26" height="26" rx="7.4" fill="#7C80FF" stroke="#0A0B14" stroke-width="3"/></g>
+        </g>
+      </svg>
+      <strong>GusMar Studios</strong>
+    </div>
+    <!-- Aqui iba el lema. Se quito: sobre el destello dorado el gris no tenia
+         contraste y se leia a medias, que es peor que no estar. El lema ya vive
+         en el heroe, dos segundos mas abajo. -->
+  </div>
+
+  <div class="cortinilla-btns">
+    <button type="button" id="cortinilla-sonido" aria-pressed="false">🔇 Sonido</button>
+    <button type="button" id="cortinilla-saltar">Saltar ›</button>
+  </div>
+</div>
 
 <div class="lienzo">
 
@@ -1166,6 +1283,95 @@ a.estado:hover { color: #fff; }
   // pestana oculta o en segundo plano rAF no dispara nunca, y entonces `pedir`
   // no serviria de nada. Esto garantiza que lo que este en pantalla se vea.
   setTimeout(() => { if (pendientes.length) barrer(); }, 2500);
+})();
+
+/* ---------- Cortinilla de entrada ----------
+   Reglas: se ve UNA vez al dia por visitante, nunca si se llega con ancla
+   (#apps viene de un enlace concreto: quien lo sigue quiere ESO, no un video),
+   y nunca si el navegador no puede reproducirla. Ante cualquier duda, se salta:
+   una portada en negro es mucho peor que una portada sin cortinilla. */
+(function () {
+  const caja = document.getElementById('cortinilla');
+  if (!caja) return;
+
+  const CLAVE = 'gm-intro-visto';
+  const UN_DIA = 24 * 60 * 60 * 1000;
+
+  // 1) ¿Corresponde mostrarla?
+  const menosMovimiento = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let yaVista = false;
+  // localStorage revienta en modo privado de algunos navegadores: si no se puede
+  // leer, se asume no vista y se sigue. Nunca dejar que esto rompa la portada.
+  try { yaVista = Date.now() - (+localStorage.getItem(CLAVE) || 0) < UN_DIA; } catch (e) {}
+
+  if (menosMovimiento || yaVista || location.hash) { caja.remove(); return; }
+
+  const video  = document.getElementById('cortinilla-video');
+  const marca  = document.getElementById('cortinilla-marca');
+  const bSon   = document.getElementById('cortinilla-sonido');
+  const bSalta = document.getElementById('cortinilla-saltar');
+
+  let cerrada = false;
+  const cerrar = () => {
+    if (cerrada) return;
+    cerrada = true;
+    try { localStorage.setItem(CLAVE, Date.now()); } catch (e) {}
+    caja.classList.add('saliendo');
+    document.documentElement.style.overflow = '';
+    // Se quita del DOM al terminar el fundido: deja de consumir y de robar foco.
+    setTimeout(() => caja.remove(), 950);
+  };
+
+  caja.hidden = false;
+  document.documentElement.style.overflow = 'hidden';   // sin scroll por detras
+
+  // 2) La marca entra sobre el destello final, no al terminar el video.
+  //    Se dispara por tiempo y no por 'ended' para que se solape con el final.
+  const MARCA_EN = 18.2;
+  let marcaPuesta = false;
+  video.addEventListener('timeupdate', () => {
+    if (!marcaPuesta && video.currentTime >= MARCA_EN) {
+      marcaPuesta = true;
+      marca.setAttribute('data-visible', '');
+    }
+  });
+
+  // 3) Al terminar, la marca se queda un momento y recien ahi se abre la pagina.
+  video.addEventListener('ended', () => {
+    if (!marcaPuesta) { marcaPuesta = true; marca.setAttribute('data-visible', ''); }
+    setTimeout(cerrar, 1400);
+  });
+
+  // "Saltar" entra a los 3,5s (ver el CSS): antes de eso no hay nada que saltar.
+  setTimeout(() => bSalta.setAttribute('data-visible', ''), 3500);
+  bSalta.addEventListener('click', cerrar);
+  addEventListener('keydown', e => { if (e.key === 'Escape') cerrar(); }, { once: true });
+
+  const pintarSonido = () => {
+    bSon.textContent = video.muted ? '🔇 Sonido' : '🔊 Sonido';
+    bSon.setAttribute('aria-pressed', String(!video.muted));
+  };
+  bSon.addEventListener('click', () => { video.muted = !video.muted; pintarSonido(); });
+
+  /* 5) Arranque CON SONIDO, con red de seguridad.
+     🚨 Los navegadores bloquean el autoplay con audio salvo que el visitante ya
+     haya interactuado con el sitio. Forzarlo sin mas deja la portada EN NEGRO,
+     que es el peor resultado posible. Asi que se intenta con sonido y, si lo
+     rechazan, se reintenta mudo; el boton queda para encenderlo a mano. */
+  video.muted = false;
+  const arrancar = video.play();
+  if (arrancar && arrancar.catch) {
+    arrancar.then(pintarSonido).catch(() => {
+      video.muted = true;
+      pintarSonido();
+      const segundo = video.play();
+      if (segundo && segundo.catch) segundo.catch(cerrar);
+    });
+  }
+  pintarSonido();
+  video.addEventListener('error', cerrar);
+  // Y un tope duro: si por lo que sea el video se cuelga, no secuestra la visita.
+  setTimeout(cerrar, 26000);
 })();
 </script>
 </body>
