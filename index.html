@@ -1424,7 +1424,33 @@ a.estado:hover { color: #fff; }
     // `data-mudo` es lo que hace latir el boton: solo mientras haya algo que encender.
     bSon.toggleAttribute('data-mudo', video.muted);
   };
-  bSon.addEventListener('click', () => { video.muted = !video.muted; pintarSonido(); });
+
+  /* 🚨 Quitarle el mute a un video que el navegador solo autorizo MUDO no da
+     error: lo PAUSA. Y la cortinilla no tiene boton de play, asi que quedaba
+     congelada sin salida. Esto es la unica puerta de reproduccion: si para
+     seguir hay que callarlo, se calla, pero el video NUNCA se queda parado. */
+  const seguir = () => {
+    if (cerrada || video.ended) return;
+    const r = video.play();
+    if (r && r.catch) r.catch(() => {
+      if (cerrada || video.ended) return;
+      video.muted = true;
+      pintarSonido();
+      const mudo = video.play();
+      if (mudo && mudo.catch) mudo.catch(cerrar);   // ni mudo puede: no secuestrar la visita
+    });
+  };
+  // Red de seguridad para cualquier pausa que no venga del final del clip, sea
+  // del boton de sonido o del propio navegador. Se mira tambien el reloj y no
+  // solo `ended`: si el evento llegara antes de que se marque, esto rearrancaria
+  // el clip entero justo cuando iba a aparecer la marca.
+  video.addEventListener('pause', () => {
+    if (cerrada || video.ended) return;
+    if (video.duration && video.currentTime >= video.duration - 0.15) return;
+    seguir();
+  });
+
+  bSon.addEventListener('click', () => { video.muted = !video.muted; pintarSonido(); seguir(); });
 
   /* 5) Arranque CON SONIDO, con red de seguridad.
      🚨 Los navegadores bloquean el autoplay con audio salvo que el visitante ya
@@ -1447,21 +1473,26 @@ a.estado:hover { color: #fff; }
   /* Cuando Chrome nos bloqueo el audio, basta CUALQUIER gesto del visitante para
      que deje de bloquearlo. Se aprovecha el primero que llegue -mover el raton,
      una tecla, un toque- para encender el sonido sin que tenga que buscar el
-     boton. El puntero se toma UNA vez y con `once`, para no quedar escuchando.
-     (El bloqueo depende del Media Engagement Index del dominio: por eso a veces
-     suena de entrada y a veces no.) */
+     boton. Se desarma con el primer gesto que sirva, para no quedar escuchando.
+     (El bloqueo depende del Media Engagement Index del dominio: por eso en el PC
+     de casa suena de entrada y en un celular nuevo casi nunca.) */
   function rescatarSonido() {
     const ev = ['pointerdown', 'keydown', 'touchstart', 'pointermove', 'wheel'];
-    const encender = () => {
+    const encender = e => {
+      /* 🚨 Los gestos SOBRE los botones no cuentan: el `pointerdown` llega antes
+         que el `click`, asi que en el boton de sonido este rescate encendia y el
+         click de despues, que invierte el estado, volvia a apagar. Apretar
+         "Sonido" daba mudo. Se deja pasar sin desarmar el rescate. */
+      if (e && e.target && e.target.closest && e.target.closest('.cortinilla-btns')) return;
       ev.forEach(n => removeEventListener(n, encender));
       if (cerrada || !video.muted) return;
       video.muted = false;
       pintarSonido();
-      // Si aun asi lo rechaza, se vuelve a mudo y no se molesta mas.
-      const r = video.play();
-      if (r && r.catch) r.catch(() => { video.muted = true; pintarSonido(); });
+      seguir();          // si lo rechaza, `seguir` lo devuelve a mudo sin pararlo
     };
-    ev.forEach(n => addEventListener(n, encender, { once: true, passive: true }));
+    // Sin `once`: la remocion se hace a mano, para poder ignorar un gesto y
+    // seguir esperando el siguiente.
+    ev.forEach(n => addEventListener(n, encender, { passive: true }));
   }
 
   /* 6) El relleno desenfocado de los costados (solo en vertical).
