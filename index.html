@@ -792,15 +792,124 @@ a.estado:hover { color: #fff; }
 
 /* ---------- Pie ---------- */
 
-.pie { position: relative; z-index: 1; border-top: 1px solid rgba(255,255,255,.08); }
+/* El pie era una linea con el logo en 28px. Al quitar las preguntas la pagina
+   caia de golpe ahi, asi que ahora CIERRA: la frase de la marca en grande, la
+   unica accion que existe de verdad (Play) y despues los datos. */
+.pie {
+  position: relative; z-index: 1; overflow: hidden;
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+/* El halo sigue al puntero. Va detras de todo y solo existe donde hay raton:
+   en un telefono no hay puntero que seguir y seria pintar por pintar. */
+.pie-halo {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(460px circle at var(--mx,50%) var(--my,55%), rgba(110,114,255,.15), transparent 68%);
+  opacity: 0; transition: opacity .6s ease;
+}
+@media (hover: hover) { .pie:hover .pie-halo { opacity: 1; } }
+
+.pie-cierre {
+  position: relative; z-index: 1;
+  max-width: 1180px; margin: 0 auto; padding: clamp(64px,9vw,110px) 24px clamp(30px,4vw,44px);
+  display: grid; grid-template-columns: auto minmax(0,1fr) auto; gap: clamp(20px,3vw,40px);
+  align-items: start;
+}
+/* `start` y no `center`: contra una frase de tres renglones el logo centrado
+   queda flotando a media altura, como si se hubiera caido ahi. */
+.pie-cierre > svg { width: clamp(70px,8vw,104px); height: auto; aspect-ratio: 1; flex: none; margin-top: .1em; }
+/* 🚨 `.pie .pie-frase` y no `.pie-frase` a secas: mas abajo vive
+   `.pie p { font-size: 14px }`, que es clase+tipo y le gana a una sola clase.
+   Con el selector corto la frase de cierre salia a 14px, del tamaño del
+   copyright. Cualquier cosa que se le ponga a un <p> dentro del pie necesita
+   este doble selector. */
+.pie .pie-frase {
+  margin: 0;
+  font-family: var(--display); font-weight: 800;
+  font-size: clamp(26px,4.4vw,54px); line-height: 1.06; letter-spacing: -.03em;
+  color: var(--texto); max-width: 15ch;
+}
+/* Sube a la misma fila que la frase: antes iba debajo y dejaba medio ancho de
+   pantalla vacio a la derecha del texto. */
+.pie-acciones { display: flex; flex-direction: column; align-items: flex-end; gap: 18px; }
+.pie-acciones a { font-size: 14px; color: var(--suave); text-decoration: none; transition: color .2s; }
+.pie-acciones a:hover, .pie-acciones a:focus-visible { color: #fff; }
+.pie-play {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 11px 20px; border-radius: 999px;
+  border: 1px solid rgba(200,205,230,.28); background: rgba(255,255,255,.03);
+  font-weight: 600; letter-spacing: -.01em;
+}
+.pie-play:hover, .pie-play:focus-visible { background: rgba(255,255,255,.08); border-color: rgba(200,205,230,.5); }
+.pie-play svg { width: 17px; height: 17px; flex: none; }
+.pie-sep { display: flex; flex-wrap: wrap; gap: 8px 22px; justify-content: flex-end; }
 .pie-fila {
-  max-width: 1180px; margin: 0 auto; padding: 44px 24px 56px;
-  display: flex; flex-wrap: wrap; gap: 28px; align-items: center; justify-content: space-between;
+  position: relative; z-index: 1;
+  max-width: 1180px; margin: 0 auto; padding: 24px 24px 20px;
+  border-top: 1px solid rgba(255,255,255,.07);
+  display: flex; flex-wrap: wrap; gap: 14px 28px; align-items: center; justify-content: space-between;
+}
+
+/* ═══ LA FIRMA ═══
+   El nombre a sangre cerrando la pagina, cortado por el borde de abajo: la
+   cortinilla ABRE con la marca naciendo de un destello y esto la CIERRA
+   hundiendose en el fondo. Es decorativa (aria-hidden): el nombre legible ya
+   esta en la fila de arriba. */
+.pie-firma {
+  position: relative; z-index: 1;
+  padding: clamp(10px,2vw,26px) 0 0;
+  /* El corte de abajo lo hace la mascara, no el overflow: asi se DESVANECE en
+     vez de cortarse con una linea recta. */
+  -webkit-mask-image: linear-gradient(to bottom, #000 38%, transparent 94%);
+          mask-image: linear-gradient(to bottom, #000 38%, transparent 94%);
+}
+.pie-firma span {
+  display: block; text-align: center; white-space: nowrap;
+  font-family: var(--display); font-weight: 800;
+  /* Medido, no estimado: "GusMar Studios" ocupa ~6,5 veces su font-size... en
+     tamaños grandes. 🚨 En chico la proporcion sube a 6,86 (la tipografia se
+     ajusta), asi que el 14,8vw que llena justo un escritorio SE SALE en un
+     telefono de 390: se cortaban la G y la ultima s, y eso se lee como error,
+     no como diseño. Por eso el movil va mas conservador. */
+  font-size: clamp(40px, 13.9vw, 280px);
+  line-height: .82; letter-spacing: -.045em;
+  margin-bottom: -.16em;              /* el remate de las letras cae fuera */
+  /* La luz que barre: un degradado ancho moviendose bajo el texto recortado.
+     Los tonos son casi el fondo, para que sea un brillo y no un cartel. */
+  background: linear-gradient(100deg, #171B33 0%, #171B33 32%, #333B7E 47%, #4A54A8 52%, #333B7E 57%, #171B33 72%, #171B33 100%);
+  background-size: 260% 100%;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: pie-barrido 11s linear infinite;
+}
+@keyframes pie-barrido {
+  from { background-position: 130% 0; }
+  to   { background-position: -130% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Sin barrido: queda el texto quieto en su tono base. */
+  .pie-firma span { animation: none; background-position: 200% 0; }
+  .pie-halo { display: none; }
 }
 .pie-marca { display: flex; align-items: center; gap: 11px; font-weight: 600; letter-spacing: -.02em; }
 .pie-marca svg { width: 28px; height: 28px; flex: none; }
 .pie p { margin: 0; font-size: 14px; color: var(--tenue); }
 .pie .sello { font-family: var(--mono); font-size: 12px; color: var(--mudo); }
+@media (max-width: 900px) {
+  /* Las acciones no caben al lado de la frase: bajan a su propia fila. */
+  .pie-cierre { grid-template-columns: auto minmax(0,1fr); }
+  .pie-acciones { grid-column: 1 / -1; align-items: flex-start; margin-top: 10px; }
+  .pie-sep { justify-content: flex-start; }
+}
+@media (min-width: 900px) {
+  /* Ya sin el ajuste optico de los tamaños chicos, aca si toca los dos bordes. */
+  .pie-firma span { font-size: min(14.8vw, 280px); }
+}
+@media (max-width: 620px) {
+  /* En un telefono el logo al lado de la frase deja 4 palabras por renglon. */
+  .pie-cierre { grid-template-columns: 1fr; justify-items: start; gap: 22px; }
+  /* `space-between` en 390px empujaba "Santiago, Chile" contra el borde y
+     mandaba el copyright solo a un tercer renglon. Todo a la izquierda. */
+  .pie-fila { justify-content: flex-start; gap: 10px 20px; }
+}
 </style>
 </head>
 <body>
@@ -868,7 +977,6 @@ a.estado:hover { color: #fff; }
         <a href="#apps">El ecosistema</a>
         <a href="#principios">La tesis</a>
         <a href="#proceso">Cómo se nota</a>
-        <a href="#preguntas">Preguntas</a>
       </div>
       <!-- Era "Hablemos" -> #contacto. Vuelve cuando exista el correo. -->
       <a href="#apps" class="boton-nav">Ver las apps</a>
@@ -974,11 +1082,12 @@ a.estado:hover { color: #fff; }
       <p class="rotulo" data-rise>01 — Las apps</p>
       <div class="cabeza-catalogo" data-rise>
         <h2 class="titulo">Nuestro ecosistema.</h2>
-        <!-- Los numeros se MIDEN contra Play antes de tocarlos. El 25-08-2026:
-             ocho paquetes con release viva (Matibu en produccion, los otros
-             siete en alpha), Terrabu con ficha pero sin release, y Dormibu sin
-             paquete todavia. Decia "cinco", que llevaba meses desactualizado. -->
-        <p>Diez aplicaciones educativas para Android, cada una terminada de punta a punta antes de publicarse. Ocho ya están en manos de sus primeros usuarios; una está por entrar a prueba y la décima, en construcción.</p>
+        <!-- 🚨 AQUI NO VAN NUMEROS. Decia cuantas apps hay y cuantas estaban
+             publicadas: un inventario que se desactualiza solo (ya paso: decia
+             "cinco" durante meses) y que ademas no le importa a nadie de fuera.
+             Si una app esta en desarrollo o en prueba cerrada ya lo dice su
+             tarjeta; aqui va QUE ES el ecosistema. -->
+        <p>Un ecosistema educativo que acompaña al mismo niño mientras crece: de los primeros juegos por voz a leer solo, y de ahí a las asignaturas del colegio. En el camino, lo que cada uno necesite aparte: rutinas, pronunciación, lógica o un cuento antes de dormir. No son apps sueltas que comparten un logo: comparten criterio.</p>
       </div>
 
       <!-- ═══════════════════════════════════════════════════════════════════
@@ -1186,7 +1295,12 @@ a.estado:hover { color: #fff; }
         <li class="promesa" data-rise>
           <span class="num" aria-hidden="true">/ 03</span>
           <h3>Lo que hacemos con eso</h3>
-          <p>Construimos herramientas que se ajustan a cada niño en vez de exigirle que se ajuste él. Empezamos por la escuela porque ahí empieza todo, pero el enfoque no se agota en apps para niños.</p>
+          <!-- Decia "Empezamos por la escuela porque ahi empieza todo", que es
+               casi palabra por palabra el cierre del heroe dos pantallas antes.
+               La repeticion no agregaba nada; el ejemplo del examen medico si,
+               y ademas aterriza "no se agota en apps para niños" en algo que se
+               ve. Venia de la FAQ que se quito. -->
+          <p>Construimos herramientas que se ajustan a cada niño en vez de exigirle que se ajuste él. La escuela es por dónde partimos, no dónde termina: a un adulto le entregan su examen médico con los mismos rangos que a cualquiera, y tampoco le dicen qué significa para él.</p>
           <div class="halo" aria-hidden="true" style="background:radial-gradient(circle,rgba(95,227,180,.28),transparent 70%)"></div>
         </li>
       </ul>
@@ -1226,31 +1340,17 @@ a.estado:hover { color: #fff; }
       </div>
     </section>
 
-    <section id="preguntas" class="ancho preguntas" style="padding-block:clamp(72px,10vw,128px)">
-      <p class="rotulo" data-rise>04 — Preguntas frecuentes</p>
-      <h2 class="titulo" data-rise style="margin-bottom:44px">Lo que suelen preguntarnos.</h2>
-
-      <details data-rise open>
-        <summary>¿Van a hacer solo apps para niños?</summary>
-        <p>No. La idea no es sobre niños: es sobre personas a las que se les entrega algo hecho para un promedio. Eso pasa en la escuela y pasa igual en la salud, donde a cualquiera le entregan el mismo informe con los mismos rangos, sin decirle qué significa para él. Ahí también estamos trabajando.</p>
-      </details>
-      <details data-rise>
-        <summary>¿Por qué empezaron por la educación?</summary>
-        <p>Porque es donde el daño se acumula. Un niño que queda atrás a los siete arrastra eso una década, y a nadie le alcanza el tiempo para corregirlo uno por uno. Es el lugar donde una herramienta que se adapta cambia más cosas por menos plata.</p>
-      </details>
-      <details data-rise>
-        <summary>¿Usan inteligencia artificial?</summary>
-        <p>Donde aporta y donde se puede sostener. Pero una app infantil que necesita mandar lo que hace un niño a un servidor para funcionar no nos parece un buen intercambio: las nuestras deciden dentro del teléfono. La pregunta no es si usarla, es qué se entrega a cambio.</p>
-      </details>
-      <details data-rise>
-        <summary>¿Qué los hace distintos de otra app educativa?</summary>
-        <p>Que no competimos por tiempo de pantalla. No hay anuncios que financiar ni una métrica de retención que cumplir, así que no hay ningún motivo para estirar una lección que ya se entendió.</p>
-      </details>
-      <details data-rise>
-        <summary>¿Trabajan con colegios o instituciones?</summary>
-        <p>Todavía no, pero es el camino natural. Lo que hoy resuelve un teléfono en una casa resuelve lo mismo en una sala con treinta niños de treinta niveles distintos.</p>
-      </details>
-    </section>
+    <!-- ═══ LAS PREGUNTAS FRECUENTES, FUERA ═══
+         Eran cinco y cuatro repetian argumentos que ya estan mas arriba y mejor
+         dichos: "deciden dentro del telefono" es el punto 01 de "En que se
+         nota", "no competimos por tiempo de pantalla" es el 02, y las dos sobre
+         por que empezamos por la educacion son la seccion 02 entera. La quinta
+         -si trabajamos con colegios- abria con "todavia no", que le resta
+         justo al visitante que mas vale.
+         Lo unico que aportaba y no estaba en ningun otro lado -el examen medico
+         con los mismos rangos para cualquiera- se rescato al punto 03 de la
+         tesis. Si algun dia vuelve una FAQ, que sea con preguntas que se haga
+         quien va a INSTALAR la app, no la compania sobre si misma. -->
 
     <!-- SECCION DE CONTACTO, EN ESPERA.
          Fuera hasta que hola@gusmarstudios.com exista de verdad: se crea como
@@ -1276,7 +1376,36 @@ a.estado:hover { color: #fff; }
 
   </main>
 
-  <footer class="pie">
+  <footer class="pie" id="pie">
+    <div class="pie-halo" aria-hidden="true"></div>
+
+    <!-- El cierre repite la promesa del h1 en vez de inventar una frase nueva:
+         quien llego hasta abajo se va con la misma idea con la que entro. -->
+    <div class="pie-cierre">
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <g transform="translate(32 32)">
+          <g transform="translate(-11 1) rotate(-11)"><rect x="-12" y="-12" width="24" height="24" rx="6.8" fill="#C08B0A" stroke="#0A0B14" stroke-width="3"/></g>
+          <g transform="translate(11 1) rotate(11)"><rect x="-12" y="-12" width="24" height="24" rx="6.8" fill="#12A0AC" stroke="#0A0B14" stroke-width="3"/></g>
+          <g transform="translate(0 -2)"><rect x="-13" y="-13" width="26" height="26" rx="7.4" fill="#7C80FF" stroke="#0A0B14" stroke-width="3"/></g>
+        </g>
+      </svg>
+      <p class="pie-frase">Tecnología que se adapta a <span class="degradado">cada persona</span>.</p>
+
+      <!-- Play es la UNICA accion real que hay hoy: sin correo publicado, un pie
+           lleno de enlaces que no llevan a ninguna parte se nota. -->
+      <div class="pie-acciones">
+        <a class="pie-play" href="https://play.google.com/store/apps/developer?id=GusMar+Studios" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M3.6 1.8a1 1 0 0 0-.5.9v18.6a1 1 0 0 0 .5.9l10-10.2zM15 8.9 5.4 1.3l11.2 6.4zM5.4 22.7 15 15.1l1.6 1.2zM17.9 8.4l3.4 1.9a1.4 1.4 0 0 1 0 2.5l-3.4 1.9L16 12z"/></svg>
+          Nuestras apps en Google Play
+        </a>
+        <div class="pie-sep">
+          <a href="#apps">El ecosistema</a>
+          <a href="#principios">La tesis</a>
+          <a href="#proceso">Cómo se nota</a>
+        </div>
+      </div>
+    </div>
+
     <div class="pie-fila">
       <div class="pie-marca">
         <svg viewBox="0 0 64 64" aria-hidden="true">
@@ -1288,9 +1417,11 @@ a.estado:hover { color: #fff; }
         </svg>
         GusMar Studios
       </div>
-      <p>Santiago, Chile · Publicado en Google Play como <strong style="color:#A7ACC6">GusMar Studios</strong></p>
+      <p>Santiago, Chile</p>
       <p class="sello">© 2026 gusmarstudios.com</p>
     </div>
+
+    <div class="pie-firma" aria-hidden="true"><span>GusMar Studios</span></div>
   </footer>
 
 </div>
@@ -1527,6 +1658,30 @@ a.estado:hover { color: #fff; }
   video.addEventListener('error', cerrar);
   // Y un tope duro: si por lo que sea el video se cuelga, no secuestra la visita.
   setTimeout(cerrar, 26000);
+})();
+
+/* El halo del pie sigue al puntero.
+   Solo donde hay raton de verdad y solo mientras el puntero esta DENTRO del
+   pie: escuchar el mousemove de toda la pagina para pintar una luz que no se ve
+   es trabajo tirado. Y se pinta en un rAF, no en cada evento, porque el
+   mousemove dispara mucho mas rapido de lo que la pantalla refresca. */
+(function () {
+  const pie = document.getElementById('pie');
+  if (!pie || !matchMedia('(hover: hover)').matches) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  let x = 0, y = 0, pedido = 0;
+  const pintar = () => {
+    pedido = 0;
+    pie.style.setProperty('--mx', x + 'px');
+    pie.style.setProperty('--my', y + 'px');
+  };
+  pie.addEventListener('pointermove', e => {
+    const caja = pie.getBoundingClientRect();
+    x = e.clientX - caja.left;
+    y = e.clientY - caja.top;
+    if (!pedido) pedido = requestAnimationFrame(pintar);
+  }, { passive: true });
 })();
 </script>
 </body>
