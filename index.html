@@ -803,7 +803,7 @@ a.estado:hover { color: #fff; }
    en un telefono no hay puntero que seguir y seria pintar por pintar. */
 .pie-halo {
   position: absolute; inset: 0; z-index: 0; pointer-events: none;
-  background: radial-gradient(460px circle at var(--mx,50%) var(--my,55%), rgba(110,114,255,.15), transparent 68%);
+  background: radial-gradient(560px circle at var(--mx,50%) var(--my,55%), rgba(110,114,255,.22), rgba(95,227,180,.05) 42%, transparent 70%);
   opacity: 0; transition: opacity .6s ease;
 }
 @media (hover: hover) { .pie:hover .pie-halo { opacity: 1; } }
@@ -862,6 +862,15 @@ a.estado:hover { color: #fff; }
   -webkit-mask-image: linear-gradient(to bottom, #000 38%, transparent 94%);
           mask-image: linear-gradient(to bottom, #000 38%, transparent 94%);
 }
+/* El resplandor que se enciende detras del nombre cuando entra. Nace del borde
+   de abajo, como si la marca estuviera saliendo de ahi. */
+.pie-firma::before {
+  content: ''; position: absolute; inset: -20% 0 -30%; z-index: -1;
+  background: radial-gradient(ellipse 62% 96% at 50% 92%, rgba(124,128,255,.24), rgba(95,227,180,.07) 48%, transparent 72%);
+  opacity: 0; transition: opacity 1.6s ease .25s; pointer-events: none;
+}
+.pie-firma[data-visible]::before { opacity: 1; }
+
 .pie-firma span {
   display: block; text-align: center; white-space: nowrap;
   font-family: var(--display); font-weight: 800;
@@ -873,20 +882,46 @@ a.estado:hover { color: #fff; }
   font-size: clamp(40px, 13.9vw, 280px);
   line-height: .82; letter-spacing: -.045em;
   margin-bottom: -.16em;              /* el remate de las letras cae fuera */
-  /* La luz que barre: un degradado ancho moviendose bajo el texto recortado.
-     Los tonos son casi el fondo, para que sea un brillo y no un cartel. */
-  background: linear-gradient(100deg, #171B33 0%, #171B33 32%, #333B7E 47%, #4A54A8 52%, #333B7E 57%, #171B33 72%, #171B33 100%);
-  background-size: 260% 100%;
+  /* La luz que barre. El destello lleva los dos colores de la marca -acento y
+     menta- sobre un base casi del color del fondo: de lejos es el nombre
+     apagado y cada tantos segundos lo cruza la marca encendida. */
+  /* 🚨 El tono base tiene que LEERSE solo: con #1A1F3D sobre el fondo #0A0B14 el
+     nombre desaparecia salvo el segundo en que pasaba el destello, o sea que
+     diez de cada once segundos ahi no habia nada. */
+  background: linear-gradient(100deg,
+    #262E5C 0%, #262E5C 22%,
+    #5A64D8 38%, #9BA0FF 47%, #6FE9C2 56%, #4650B0 66%,
+    #262E5C 82%, #262E5C 100%);
+  background-size: 230% 100%;
   -webkit-background-clip: text; background-clip: text; color: transparent;
+  /* El parallax lo escribe el JS en `--desliz`. Va en `transform` y el reveal
+     en `clip-path`, a proposito: si compartieran propiedad se pisarian. */
+  transform: translateY(var(--desliz, 0px));
   animation: pie-barrido 11s linear infinite;
+}
+
+/* 🚨 El nombre se ve SIEMPRE por defecto, y es el JS el que lo tapa (`data-armado`)
+   un instante antes de ponerse a mirar cuando entra. Al reves -tapado en el CSS
+   y destapado por JS- una animacion rota deja el nombre invisible para siempre.
+   Una animacion no puede ser el motivo por el que falte un contenido. */
+.pie-firma[data-armado] span { clip-path: inset(105% 0 0 0); }
+.pie-firma[data-armado][data-visible] span {
+  animation: pie-barrido 11s linear infinite, firma-sube 1.2s cubic-bezier(.16,1,.3,1) both;
 }
 @keyframes pie-barrido {
   from { background-position: 130% 0; }
   to   { background-position: -130% 0; }
 }
+/* Se revela de abajo hacia arriba, como si emergiera del borde de la pagina. */
+@keyframes firma-sube {
+  from { clip-path: inset(105% 0 0 0); }
+  to   { clip-path: inset(-12% 0 0 0); }
+}
 @media (prefers-reduced-motion: reduce) {
-  /* Sin barrido: queda el texto quieto en su tono base. */
-  .pie-firma span { animation: none; background-position: 200% 0; }
+  /* Ni barrido ni reveal ni halo: el nombre quieto en su tono base. */
+  .pie-firma span,
+  .pie-firma[data-visible] span { animation: none; background-position: 200% 0; clip-path: none; transform: none; }
+  .pie-firma::before { transition: none; }
   .pie-halo { display: none; }
 }
 .pie-marca { display: flex; align-items: center; gap: 11px; font-weight: 600; letter-spacing: -.02em; }
@@ -1682,6 +1717,61 @@ a.estado:hover { color: #fff; }
     y = e.clientY - caja.top;
     if (!pedido) pedido = requestAnimationFrame(pintar);
   }, { passive: true });
+})();
+
+/* La firma del pie: se destapa al llegar y hace parallax mientras sube.
+   El nombre se ve por defecto; aqui se TAPA para poder revelarlo. Si algo de
+   esto falla, lo peor que pasa es que aparezca sin animacion. */
+(function () {
+  const firma = document.querySelector('.pie-firma');
+  if (!firma) return;
+
+  // Sin observador o con menos movimiento: ni se tapa, se deja como esta.
+  if (!('IntersectionObserver' in window) ||
+      matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  firma.setAttribute('data-armado', '');
+
+  const destapar = () => firma.setAttribute('data-visible', '');
+
+  // Una sola vez: se destapa y no se vuelve a tapar al pasar de nuevo.
+  const ojo = new IntersectionObserver((entradas, obs) => {
+    entradas.forEach(e => {
+      if (!e.isIntersecting) return;
+      destapar();
+      obs.unobserve(e.target);
+    });
+  }, { threshold: .2 });
+  ojo.observe(firma);
+
+  // Red de seguridad: si el observador no llegara a disparar nunca, el nombre
+  // aparece igual. Sin animacion, pero aparece.
+  setTimeout(destapar, 8000);
+
+  /* El parallax solo se calcula mientras el pie esta en pantalla: sin esto el
+     listener de scroll trabajaria durante toda la pagina para mover algo que
+     esta a cuatro pantallas de distancia. */
+  /* 🚨 El avance se mide contra lo que FALTA para el fondo de la pagina, no
+     contra la posicion de la firma en la ventana. La firma es lo ultimo que
+     hay: nunca termina de subir, asi que midiendola a ella el parallax se
+     quedaba clavado a 58 de 70px y el nombre no llegaba nunca a su sitio.
+     Asi recorre sus 70px en los ultimos 600px de scroll y aterriza en 0 justo
+     cuando la pagina se acaba. */
+  const TRAMO = 600;
+  let dentro = false, pedido = 0;
+  const mover = () => {
+    pedido = 0;
+    const tope = document.documentElement.scrollHeight - innerHeight;
+    const falta = Math.max(0, tope - window.scrollY);
+    const avance = 1 - Math.min(1, falta / TRAMO);
+    firma.style.setProperty('--desliz', ((1 - avance) * 70).toFixed(1) + 'px');
+  };
+  const pedir = () => { if (!pedido && dentro) pedido = requestAnimationFrame(mover); };
+
+  new IntersectionObserver(es => { dentro = es[0].isIntersecting; pedir(); }).observe(firma);
+  addEventListener('scroll', pedir, { passive: true });
+  addEventListener('resize', pedir, { passive: true });
+  mover();
 })();
 </script>
 </body>
