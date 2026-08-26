@@ -408,6 +408,20 @@ html:not(.js) .cortinilla { display: none; }
   background-repeat: no-repeat;
   -webkit-background-clip: text; background-clip: text; color: transparent;
   animation: marca-luz 8s cubic-bezier(.35,0,.25,1) .7s infinite;
+  transition: opacity .45s ease, transform .45s ease;
+}
+/* Mientras el nombre grande abre la pagina, el de la cabecera se aparta: si no,
+   "GusMar Studios" aparece dos veces en la misma pantalla. Entra deslizandose
+   desde el logo en cuanto el titulo queda atras.
+   🚨 `opacity` y no `display:none` ni `visibility`: el enlace de la cabecera
+   toma su nombre accesible de este texto, y ocultandolo de verdad el logo se
+   queda sin nombre para un lector de pantalla. */
+/* 🚨 Se aparta RAPIDO y vuelve lento, igual que el eco: con los mismos 0,45 s en
+   los dos sentidos, al subir el titulo entraba mientras la cabecera seguia
+   desvaneciendose y hubo un instante medido con el nombre repetido. */
+.logotipo-nombre[data-eclipsado] {
+  opacity: 0; transform: translateX(-10px);
+  transition: opacity .15s ease, transform .15s ease;
 }
 @keyframes marca-luz {
   0%   { background-position: 0% 0; }
@@ -416,8 +430,11 @@ html:not(.js) .cortinilla { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   /* Sin barrido, pero el nombre tiene que seguir viendose: se le devuelve el
-     color plano en vez de dejarlo con `color: transparent`. */
-  .logotipo-nombre { animation: none; background: none; color: var(--texto); }
+     color plano en vez de dejarlo con `color: transparent`. Y sin eclipse: sin
+     transicion que lo suavice, aparecer y desaparecer de golpe es peor que
+     estar dos veces. */
+  .logotipo-nombre { animation: none; background: none; color: var(--texto); transition: none; }
+  .logotipo-nombre[data-eclipsado] { opacity: 1; transform: none; }
 }
 .espaciador { flex: 1; }
 .enlaces { display: flex; align-items: center; gap: 26px; font-size: 14px; }
@@ -1784,14 +1801,23 @@ a.estado:hover { color: #fff; }
     setTimeout(destapar, 8000);
   }
 
-  if (!eco || !hayOjo) return;
+  if (!hayOjo) return;
 
-  /* El relevo. `threshold: 0` = basta con que asome un pixel del titulo para
-     que el eco se apague: asi al subir se apaga ANTES de que el titulo termine
-     de entrar, y no hay ningun momento con los dos encendidos. */
+  const nombreCab = document.querySelector('.logotipo-nombre');
+
+  /* El relevo, en las dos direcciones y con un solo observador: mientras el
+     titulo grande esta a la vista se apaga el eco Y se aparta el nombre de la
+     cabecera; en cuanto sale, los dos vuelven.
+     🚨 El `rootMargin` de abajo ADELANTA el relevo 160 px: sin el, subiendo, el
+     cambio arranca cuando el titulo ya asoma y quedaba un instante -medido, 90
+     ms- con el nombre repetido. Con el margen, para cuando el titulo se ve, la
+     cabecera ya se aparto y el eco ya se apago. */
   new IntersectionObserver(es => {
-    es.forEach(e => eco.toggleAttribute('data-visible', !e.isIntersecting));
-  }, { threshold: 0 }).observe(firma);
+    es.forEach(e => {
+      if (eco) eco.toggleAttribute('data-visible', !e.isIntersecting);
+      if (nombreCab) nombreCab.toggleAttribute('data-eclipsado', e.isIntersecting);
+    });
+  }, { threshold: 0, rootMargin: '0px 0px 160px 0px' }).observe(firma);
 })();
 </script>
 </body>
