@@ -240,6 +240,7 @@ img { max-width: 100%; }
   opacity: 0; pointer-events: none; transition: opacity .5s ease;
 }
 #cortinilla-saltar[data-visible] { opacity: 1; pointer-events: auto; }
+
 .cortinilla-btns button {
   font: inherit; font-size: 13px; color: #C9CDE4;
   background: rgba(10,11,20,.62); border: 1px solid rgba(200,205,230,.28);
@@ -248,6 +249,22 @@ img { max-width: 100%; }
   transition: background .2s, color .2s, border-color .2s;
 }
 .cortinilla-btns button:hover { background: rgba(10,11,20,.85); color: #fff; border-color: rgba(200,205,230,.5); }
+
+/* Si el navegador nos bloqueo el audio, el boton late suave: sin esto el
+   visitante no tiene forma de saber que hay sonido esperando. Se apaga solo en
+   cuanto suena.
+   🚨 Va DESPUES del bloque de arriba a proposito: aquel usa el atajo `border`,
+   que reescribe el color entero; puesto antes, este `border-color` se perdia. */
+#cortinilla-sonido[data-mudo] {
+  animation: sonido-late 2.2s ease-in-out infinite;
+  /* `border` entero y no `border-color`: el bloque de arriba usa el atajo, que
+     reescribe el color aunque tenga menos especificidad en la practica. */
+  border: 1px solid rgba(124,128,255,.55);
+}
+@keyframes sonido-late {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(124,128,255,0); }
+  50%      { box-shadow: 0 0 0 7px rgba(124,128,255,.16); }
+}
 /* El foco tiene que verse: la cortinilla tapa la pagina y el teclado es la unica
    salida para quien no usa raton. */
 .cortinilla-btns button:focus-visible { outline: 2px solid #7C80FF; outline-offset: 3px; }
@@ -1350,6 +1367,8 @@ a.estado:hover { color: #fff; }
   const pintarSonido = () => {
     bSon.textContent = video.muted ? '🔇 Sonido' : '🔊 Sonido';
     bSon.setAttribute('aria-pressed', String(!video.muted));
+    // `data-mudo` es lo que hace latir el boton: solo mientras haya algo que encender.
+    bSon.toggleAttribute('data-mudo', video.muted);
   };
   bSon.addEventListener('click', () => { video.muted = !video.muted; pintarSonido(); });
 
@@ -1364,11 +1383,33 @@ a.estado:hover { color: #fff; }
     arrancar.then(pintarSonido).catch(() => {
       video.muted = true;
       pintarSonido();
+      rescatarSonido();                 // ver abajo
       const segundo = video.play();
       if (segundo && segundo.catch) segundo.catch(cerrar);
     });
   }
   pintarSonido();
+
+  /* Cuando Chrome nos bloqueo el audio, basta CUALQUIER gesto del visitante para
+     que deje de bloquearlo. Se aprovecha el primero que llegue -mover el raton,
+     una tecla, un toque- para encender el sonido sin que tenga que buscar el
+     boton. El puntero se toma UNA vez y con `once`, para no quedar escuchando.
+     (El bloqueo depende del Media Engagement Index del dominio: por eso a veces
+     suena de entrada y a veces no.) */
+  function rescatarSonido() {
+    const ev = ['pointerdown', 'keydown', 'touchstart', 'pointermove', 'wheel'];
+    const encender = () => {
+      ev.forEach(n => removeEventListener(n, encender));
+      if (cerrada || !video.muted) return;
+      video.muted = false;
+      pintarSonido();
+      // Si aun asi lo rechaza, se vuelve a mudo y no se molesta mas.
+      const r = video.play();
+      if (r && r.catch) r.catch(() => { video.muted = true; pintarSonido(); });
+    };
+    ev.forEach(n => addEventListener(n, encender, { once: true, passive: true }));
+  }
+
   video.addEventListener('error', cerrar);
   // Y un tope duro: si por lo que sea el video se cuelga, no secuestra la visita.
   setTimeout(cerrar, 26000);
