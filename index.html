@@ -193,13 +193,48 @@ img { max-width: 100%; }
 }
 .cortinilla[hidden] { display: none; }
 .cortinilla.saliendo { opacity: 0; pointer-events: none; }
-.cortinilla video {
+/* 🚨 `position:absolute` y no un hijo del grid: con `place-items:center` la fila
+   es `auto`, asi que el `height:100%` del video se resolvia contra la altura del
+   CONTENIDO y no la del viewport. En horizontal salia bien de casualidad; en
+   vertical el video llegaba al 63% de la pantalla y el resto quedaba negro. */
+#cortinilla-video {
+  position: absolute; inset: 0;
   width: 100%; height: 100%; object-fit: cover;
   /* El clip nace de un fundido desde negro: sin esto se ve el salto del primer
      fotograma contra el fondo. */
   animation: cortinilla-entra 1s ease both;
 }
 @keyframes cortinilla-entra { from { opacity: 0 } to { opacity: 1 } }
+
+/* El clip es 16:9 y la pantalla vertical es 9:16. Llenarla con `cover` recorta
+   el 63% del ancho: el vuelo queda mirado por un tubo y las apps de los lados se
+   pierden. Se muestra entero (`contain`) con un zoom suave que come solo el aire
+   de los bordes, y los costados los rellena el propio clip desenfocado. */
+#cortinilla-fondo { display: none; }
+
+@media (max-aspect-ratio: 1 / 1) {
+  #cortinilla-video {
+    object-fit: contain;
+    /* 1.34 sube la banda del 26% al 35% de la pantalla y recorta un 13% por
+       lado, que en estas laminas es aire. Se probaron 1.0, 1.34 y 1.7 sobre los
+       seis momentos del clip: a 1.7 el borde derecho se come el numero de Matibu
+       y la pieza de puzzle. 1.34 es lo mas grande que no corta nada. */
+    transform: scale(1.34);
+  }
+  #cortinilla-fondo {
+    display: block;
+    position: absolute; top: 50%; left: 50%;
+    /* 🚨 Chico y luego escalado, no grande de entrada: asi el blur trabaja sobre
+       una superficie pequeña. A pantalla completa un blur de 28px arrastra en
+       cualquier celular de gama media. El scale multiplica tambien el radio.
+       El 4,4 (y no 4) tapa el borde que el propio blur deja translucido. */
+    width: 26%; height: 26%; object-fit: cover;
+    transform: translate(-50%, -50%) scale(4.4);
+    filter: blur(6px) saturate(1.45) brightness(.6);
+    pointer-events: none;
+    animation: cortinilla-entra 1.6s ease both;
+  }
+}
 
 /* La marca, encima del destello final. */
 .cortinilla-marca {
@@ -214,12 +249,26 @@ img { max-width: 100%; }
   to   { opacity: 1; transform: none;       filter: none; }
 }
 .cortinilla-bloque { display: flex; align-items: center; gap: clamp(14px, 2.4vw, 30px); }
-.cortinilla-bloque svg { width: clamp(64px, 11vw, 138px); height: auto; flex: none; }
+/* 🚨 `aspect-ratio` y no solo `height:auto`: apilado en columna el SVG salia
+   aplastado, ancho y bajo. El viewBox es cuadrado, se dice y punto. */
+.cortinilla-bloque svg { width: clamp(64px, 11vw, 138px); height: auto; aspect-ratio: 1; flex: none; }
 .cortinilla-bloque strong {
   font-family: 'Bricolage Grotesque', system-ui, sans-serif;
   font-weight: 800; font-size: clamp(30px, 6.4vw, 76px);
   letter-spacing: -.02em; color: #F4F5FB; white-space: nowrap;
 }
+/* Vertical y estrecho: el nombre a 30px al lado del logo no cabe en 375px sin
+   apretarse contra los bordes, y el logo a 11vw se queda en nada. Se apila y
+   crece.
+   🚨 Va DESPUES de las reglas de arriba: mismas dos clases, misma
+   especificidad, gana la ultima. Puesto antes, el `11vw` se imponia y el logo
+   salia diminuto. */
+@media (max-aspect-ratio: 1 / 1) and (max-width: 560px) {
+  .cortinilla-bloque { flex-direction: column; gap: clamp(10px, 3vw, 18px); }
+  .cortinilla-bloque svg { width: clamp(96px, 30vw, 150px); }
+  .cortinilla-bloque strong { font-size: clamp(32px, 10vw, 58px); }
+}
+
 /* El nombre necesita despegarse del destello dorado que tiene detras: sin esta
    sombra los bordes de las letras se comen contra la luz. */
 .cortinilla-bloque strong { text-shadow: 0 2px 24px rgba(10,11,20,.75), 0 1px 3px rgba(10,11,20,.9); }
@@ -760,6 +809,11 @@ a.estado:hover { color: #fff; }
      depender del orden de apilado del resto. `hidden` de salida: el script la
      enciende solo si corresponde mostrarla (ver el bloque al final). -->
 <div class="cortinilla" id="cortinilla" hidden>
+  <!-- Relleno de los costados en vertical: el propio clip pintado a 64x36 y
+       estirado. 🚨 Un segundo <video> era lo obvio, pero vuelve a pedir los
+       11,4 MB (datos moviles) y decodifica un stream mas; esto no descarga ni
+       decodifica nada: copia el fotograma que ya esta en pantalla. -->
+  <canvas id="cortinilla-fondo" width="64" height="36" aria-hidden="true"></canvas>
   <video id="cortinilla-video" muted playsinline preload="auto" poster="media/intro-poster.jpg" aria-label="Presentación de GusMar Studios">
     <source src="media/intro.mp4" type="video/mp4">
   </video>
@@ -1408,6 +1462,32 @@ a.estado:hover { color: #fff; }
       if (r && r.catch) r.catch(() => { video.muted = true; pintarSonido(); });
     };
     ev.forEach(n => addEventListener(n, encender, { once: true, passive: true }));
+  }
+
+  /* 6) El relleno desenfocado de los costados (solo en vertical).
+     Se copia el fotograma actual a un canvas de 64x36 y el CSS lo estira: como
+     va a salir desenfocado, esa resolucion sobra. A 12 fps y sin decodificar
+     nada, cuesta lo que un icono animado; en horizontal ni se enciende. */
+  const fondo = document.getElementById('cortinilla-fondo');
+  const esVertical = matchMedia('(max-aspect-ratio: 1 / 1)');
+  if (fondo && fondo.getContext) {
+    const pincel = fondo.getContext('2d');
+    let ultimo = 0, pedido = 0;
+    const pintarFondo = ahora => {
+      if (cerrada) return;
+      pedido = requestAnimationFrame(pintarFondo);
+      if (!esVertical.matches || ahora - ultimo < 83) return;   // ~12 fps
+      ultimo = ahora;
+      // readyState < 2 = todavia no hay fotograma: drawImage tiraria.
+      if (video.readyState < 2) return;
+      try { pincel.drawImage(video, 0, 0, fondo.width, fondo.height); } catch (e) {
+        cancelAnimationFrame(pedido);
+        fondo.remove();                       // sin fondo se ve igual, solo mas sobrio
+      }
+    };
+    // El bucle se apaga solo: al cerrar, `cerrada` corta antes de pedir el
+    // siguiente fotograma, asi que no queda un rAF vivo tras quitar la caja.
+    pedido = requestAnimationFrame(pintarFondo);
   }
 
   video.addEventListener('error', cerrar);
