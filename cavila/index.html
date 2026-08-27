@@ -156,6 +156,25 @@
   </section>
 
   <section class="ancho seccion">
+    <p class="rotulo" data-rise>En movimiento</p>
+    <h2 data-rise>Así abre la app.</h2>
+    <p class="intro" data-rise>
+      El mismo viaje que ve el niño cuando la abre por primera vez: Gus sale del árbol,
+      cruza las islas y llega al faro.
+    </p>
+    <!-- El clip es el de `assets/video/intro.mp4` de la app, el que termina con la
+         marca. NO el de `tienda/video-fuente/`, que es el mismo vuelo sin ese
+         cierre. El botón "Saltar" que se ve en el teléfono lo dibuja la app
+         encima en tiempo de ejecución: no está quemado en el video. -->
+    <div class="cine" data-rise>
+      <video src="intro.mp4" poster="intro-poster.jpg" muted loop playsinline preload="none"
+             width="720" height="1280" aria-label="Intro de Cavila: Gus vuela por las cinco islas"></video>
+      <button type="button" class="cine-son" aria-pressed="false">🔇 Sonido</button>
+    </div>
+    <p class="cine-pie">Arranca en silencio para no sorprender a nadie. El sonido se enciende arriba.</p>
+  </section>
+
+  <section class="ancho seccion">
     <p class="rotulo" data-rise>Por dentro</p>
     <h2 data-rise>Así se ve.</h2>
     <!-- 🚨 Estas capturas NO van dentro del marco de teléfono: son las láminas de

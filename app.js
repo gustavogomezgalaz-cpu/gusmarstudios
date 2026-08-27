@@ -57,3 +57,58 @@
   // pestaña en segundo plano rAF no dispara nunca y nada se vería.
   setTimeout(() => { if (pendientes.length) barrer(); }, 2500);
 })();
+
+/* La intro de la app: se reproduce sola al entrar en pantalla, MUDA, y el botón
+   enciende el sonido.
+   🚨 Muda no es un detalle de estilo: un video con audio que se lanza solo lo
+   bloquean todos los navegadores, y si el `play()` lo rechazan queda un cuadro
+   negro donde debía haber una intro.
+   🚨 `preload="none"` en el HTML y carga al entrar: son 2 MB, y quien no baja
+   hasta acá no tiene por qué pagarlos en datos móviles. */
+(() => {
+  const cine = document.querySelector('.cine');
+  if (!cine) return;
+  const video = cine.querySelector('video');
+  const boton = cine.querySelector('.cine-son');
+  if (!video) return;
+
+  const pintar = () => {
+    if (!boton) return;
+    boton.textContent = video.muted ? '🔇 Sonido' : '🔊 Sonido';
+    boton.setAttribute('aria-pressed', String(!video.muted));
+    boton.toggleAttribute('data-mudo', video.muted);
+  };
+
+  if (boton) {
+    boton.addEventListener('click', () => {
+      video.muted = !video.muted;
+      pintar();
+      // 🚨 Quitar el mute a un video que el navegador solo autorizó MUDO lo PAUSA.
+      // Sin este play() el botón de sonido dejaría la intro congelada.
+      const r = video.play();
+      if (r && r.catch) r.catch(() => { video.muted = true; pintar(); video.play().catch(() => {}); });
+    });
+    pintar();
+  }
+
+  const quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!('IntersectionObserver' in window)) {
+    // Sin observador se deja a mano: los controles nativos del <video> siguen ahí.
+    cine.setAttribute('data-visible', '');
+    return;
+  }
+
+  new IntersectionObserver((entradas) => {
+    entradas.forEach((e) => {
+      if (e.isIntersecting) {
+        cine.setAttribute('data-visible', '');
+        if (quieto) return;                 // quien pide menos movimiento, le da play a mano
+        const r = video.play();
+        if (r && r.catch) r.catch(() => {});
+      } else if (!video.paused) {
+        video.pause();                      // fuera de pantalla no gasta batería
+      }
+    });
+  }, { threshold: 0.35 }).observe(cine);
+})();
