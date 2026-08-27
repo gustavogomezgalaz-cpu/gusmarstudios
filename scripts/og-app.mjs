@@ -46,6 +46,14 @@ const APPS = [
     tono: '#5E9DF0',
     hondo: '#2A6FCC',
   },
+  {
+    dir: 'dilojugando',
+    nombre: 'Dilo Jugando',
+    bajada: 'Practicar a hablar, jugando',
+    detalle: '8 juegos de pronunciación · 6 a 12 años',
+    tono: '#35B5C0',
+    hondo: '#0E7C86',
+  },
 ];
 
 /** Los `&` y `<` de un texto rompen el SVG en silencio: se escapan siempre. */
