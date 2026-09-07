@@ -103,16 +103,31 @@ h1{margin:22px 0 0;font-family:var(--display);font-weight:800;font-size:clamp(38
 
 /* Boton principal */
 .acciones{display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:34px}
+/* 🚨 Los dos colores salen de la PAGINA, no estan escritos aca.
+   Estuvieron: el degradado era el indigo de Matibu a mano, y mientras Matibu fue
+   la unica app en produccion no se noto, porque era la unica pagina con boton.
+   El dia que Cavila paso a produccion salio un boton indigo en una pagina azul.
+
+   Y el arreglo NO es `var(--acento)`: el acento es el color de marca, elegido
+   para leerse sobre el fondo oscuro, no para llevar letra blanca encima. Medido
+   con `scripts/boton-contraste.mjs`, blanco sobre el acento da 3.29:1 en Matibu
+   y 2.78:1 en Cavila; AA pide 4.5. Por eso el extremo claro es `--boton-claro`,
+   que cada pagina define con su acento oscurecido lo justo, y el oscuro es
+   `--acento-hondo`, que en las cinco paletas ya pasa AA de sobra. */
 .boton{
   display:inline-flex;align-items:center;justify-content:center;gap:10px;
   padding:16px 34px;border-radius:999px;font-weight:600;font-size:16px;
-  /* Medido: con #7C80FF de inicio, la letra blanca daba 3.29:1 en el extremo
-     claro del degradado y no llegaba a AA. #6669D1 da 4.66:1 y se ve igual. */
-  background:linear-gradient(140deg,#6669D1,#4247D6);color:#fff;
-  box-shadow:0 14px 38px rgba(66,71,214,.5);
+  background:linear-gradient(140deg,var(--boton-claro,#6669D1),var(--acento-hondo,#4247D6));color:#fff;
+  /* La primera es el respaldo para quien no tenga color-mix; la segunda manda. */
+  box-shadow:0 14px 38px rgba(0,0,0,.45);
+  box-shadow:0 14px 38px color-mix(in srgb,var(--acento-hondo) 50%,transparent);
   transition:transform .25s ease,box-shadow .25s ease;
 }
-.boton:hover{transform:translateY(-3px);box-shadow:0 20px 50px rgba(66,71,214,.62);color:#fff}
+.boton:hover{
+  transform:translateY(-3px);color:#fff;
+  box-shadow:0 20px 50px rgba(0,0,0,.55);
+  box-shadow:0 20px 50px color-mix(in srgb,var(--acento-hondo) 62%,transparent);
+}
 
 /* El destello que cruza el botón.
    Pasa RÁPIDO y después descansa —cruza en dos segundos y espera otros dos—
