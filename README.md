@@ -45,9 +45,14 @@ en "Proximamente".
 - `/store/apps/details` es la ficha publica. **Devuelve 404 mientras la app este solo
   en prueba cerrada.**
 
-Al 2026-08-07 tienen prueba cerrada: Matibu, Lunabu, Anticipa, Cavila y Dilo Jugando.
+Al 2026-09-07 estan en **produccion**: Matibu (desde el 13-08) y Cavila (desde el
+07-09). Siguen en **prueba cerrada**: Lunabu, Anticipa y Dilo Jugando.
 Cronobu esta como **borrador** en Play Console, asi que no le sirve ninguno de los dos.
 Silabu, Palabu y Terrabu ni siquiera estan creadas.
+
+🚨 Esta linea envejece sola y no la vigila nadie. Lo que manda es la ficha: antes
+de fiarse de ella, comprobarla con `node scripts/app-a-produccion.mjs <app>`, que
+consulta Play y no toca nada si todavia da 404.
 
 ### Al pasar una app a produccion
 

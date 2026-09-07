@@ -80,5 +80,26 @@ if (t === antes) { console.error('No se aplico ningun cambio.'); process.exit(1)
 
 writeFileSync(HTML, t, 'utf8');
 console.log(`\nListo: la tarjeta de ${app} apunta a la ficha publica.`);
-console.log('Revisa el diff y publica:');
-console.log(`  git add index.html && git commit -m "${app} ya esta en produccion" && git push`);
+
+/* 🚨 ESTO SOLO CAMBIA LA PORTADA. Falta la pagina propia, y olvidarlo deja el
+   sitio diciendo dos cosas distintas: la tarjeta manda a Play y la pagina sigue
+   avisando de que la app "todavia no esta en Google Play". Paso con Cavila el
+   07-09-2026. Se avisa aca porque este es el mensaje que se lee, no el README. */
+const pagina = join(RAIZ, app, 'index.html');
+let aviso = false;
+try {
+  const p = readFileSync(pagina, 'utf8');
+  aviso = p.includes('aviso-tienda');
+  if (aviso) {
+    console.log(`\n🚨 FALTA la pagina propia: ${app}/index.html todavia tiene el aviso`);
+    console.log('   de "todavia no esta en Google Play". Cambiar cada `p.aviso-tienda`');
+    console.log('   por el boton, copiando el patron de matibu/index.html:');
+    console.log(`     <a class="boton" href="${fichaPublica}">Descargar en Google Play</a>`);
+    console.log('   🚨 Y comprobar que la pagina declare `--boton-claro`: sin eso el boton');
+    console.log('   sale con el indigo de Matibu. El valor sale de');
+    console.log(`     node scripts/boton-contraste.mjs ${app}`);
+  }
+} catch { /* la app puede no tener pagina propia todavia */ }
+
+console.log('\nRevisa el diff y publica:');
+console.log(`  git add index.html${aviso ? ` ${app}/index.html` : ''} && git commit -m "${app} ya esta en produccion" && git push`);
