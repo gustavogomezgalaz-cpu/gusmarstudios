@@ -991,6 +991,11 @@ a.estado:hover { color: #fff; }
   .pie-fila { justify-content: flex-start; gap: 10px 20px; }
 }
 </style>
+<style>
+/* ---------- Océano detrás de la portada (prototipo) ---------- */
+.oceano-escena { position: relative; isolation: isolate; }
+.oceano { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+</style>
 </head>
 <body>
 
@@ -1080,6 +1085,8 @@ a.estado:hover { color: #fff; }
          en el pie; para un lector de pantalla esto seria repetirlo tres veces. -->
     <div class="firma-apertura" aria-hidden="true"><span>GusMar Studios</span></div>
 
+    <div class="oceano-escena">
+    <canvas class="oceano" aria-hidden="true"></canvas>
     <section id="inicio" class="ancho heroe">
       <div class="heroe-rejilla">
         <div>
@@ -1162,6 +1169,7 @@ a.estado:hover { color: #fff; }
         </div>
       </div>
     </section>
+    </div>
 
     <div class="marquesina" aria-hidden="true">
       <div class="cinta">
@@ -1829,5 +1837,6 @@ a.estado:hover { color: #fff; }
   }, { threshold: 0, rootMargin: '0px 0px 160px 0px' }).observe(firma);
 })();
 </script>
+<script src="oceano.js" defer></script>
 </body>
 </html>
