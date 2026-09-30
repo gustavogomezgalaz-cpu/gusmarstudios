@@ -24,6 +24,7 @@ const PAQUETES = {
   lunabu: 'cl.lunabu.preescolar',
   anticipa: 'cl.anticipa.rutinas',
   dilojugando: 'cl.dilojugando.pronunciacion',
+  cronobu: 'cl.cronobu.historia',
 };
 
 const app = (process.argv[2] || '').toLowerCase();
@@ -61,20 +62,65 @@ if (!forzar) {
 let t = readFileSync(HTML, 'utf8');
 const antes = t;
 
+const estadoPublico =
+  `<a class="estado" href="${fichaPublica}" rel="noopener"><span class="punto" aria-hidden="true"></span>Google Play</a>`;
+
+/* Una app puede llegar a produccion desde DOS estados, y el salto no es el mismo:
+ *
+ *   a) "Prueba cerrada"  -> un <a class="estado"> al enlace /apps/testing/.
+ *      Se cambia el href y listo. Es el caso de Matibu, Cavila y Lunabu.
+ *
+ *   b) "En desarrollo"   -> un <span class="estado"> (no es enlace, no hay a
+ *      donde mandar a nadie) MAS un <span class="proximo"> que hace de boton
+ *      apagado, para que la fila de abajo se vea igual en las diez tarjetas.
+ *      Hay que encender las dos cosas. Paso con Cronobu el 30-09-2026: nunca
+ *      tuvo prueba cerrada abierta al publico, saltó de borrador a produccion,
+ *      y el guion solo sabia hacer (a), asi que decia "no la encontre".
+ *
+ * Para (b) hay que trabajar DENTRO de la tarjeta de esta app y no en todo el
+ * archivo: "En desarrollo" lo dicen varias, y un replace global las encendería
+ * todas de una. La tarjeta se reconoce por su icono, que lleva el nombre.
+ */
 const testing = `https://play.google.com/apps/testing/${paquete}`;
 const viejo = new RegExp(
   '<a class="estado" href="' + testing.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') +
   '"[^>]*>.*?</a>'
 );
 
-if (!viejo.test(t)) {
-  console.error(`No encontre la tarjeta de ${app} en estado de prueba cerrada.`);
-  console.error('Puede que ya este en produccion, o que el enlace haya cambiado.');
-  process.exit(1);
+if (viejo.test(t)) {
+  t = t.replace(viejo, estadoPublico);
+} else {
+  const trozos = t.split('<li class="app"');
+  /* Se busca desde 1 y por `alt="Icono`: el icono de cada app sale TAMBIEN en el
+     abanico del heroe y en la cinta que corre, las dos cosas antes de la primera
+     tarjeta, o sea dentro de trozos[0]. Buscando de 0 la primera coincidencia es
+     siempre esa y el guion decia "no encontre la tarjeta" teniendola delante. */
+  const i = trozos.findIndex((x, n) => n > 0 && x.includes(`iconos/${app}.webp" alt="Icono`));
+  if (i < 1) {
+    console.error(`No encontre la tarjeta de ${app} en index.html.`);
+    console.error('Se reconoce por su icono: iconos/' + app + '.webp');
+    process.exit(1);
+  }
+  let tarjeta = trozos[i];
+  if (!/<span class="estado">[\s\S]*?En desarrollo<\/span>/.test(tarjeta)) {
+    console.error(`La tarjeta de ${app} no esta en "prueba cerrada" ni en "En desarrollo".`);
+    console.error('Puede que ya este en produccion, o que el enlace haya cambiado.');
+    process.exit(1);
+  }
+  tarjeta = tarjeta.replace(/<span class="estado">[\s\S]*?En desarrollo<\/span>/, estadoPublico);
+  /* El boton apagado pasa a ser el enlace de verdad. Va con el mismo href que la
+     etiqueta de al lado a proposito: el que tiene pagina propia usa la pastilla
+     para ir a ella, y el que no la tiene la usa para ir a la ficha. Una tarjeta
+     con el hueco vacio se lee como una app de segunda. */
+  tarjeta = tarjeta.replace(
+    /<span class="proximo"[\s\S]*?<\/span>\s*\n(\s*)/,
+    `<a class="ficha" href="${fichaPublica}" rel="noopener">\n` +
+    `              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 3.4v17.2a1 1 0 0 0 1.52.86l14.2-8.6a1 1 0 0 0 0-1.72L6.52 2.54A1 1 0 0 0 5 3.4z"/></svg>\n` +
+    `              Descargar\n            </a>\n$1`
+  );
+  trozos[i] = tarjeta;
+  t = trozos.join('<li class="app"');
 }
-
-t = t.replace(viejo,
-  `<a class="estado" href="${fichaPublica}" rel="noopener"><span class="punto" aria-hidden="true"></span>Google Play</a>`);
 
 if (t === antes) { console.error('No se aplico ningun cambio.'); process.exit(1); }
 

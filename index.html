@@ -1214,6 +1214,13 @@ a.estado:hover { color: #fff; }
                "https://play.google.com/store/apps/details?id=PAQUETE"
            Tiene que dar 200. En prueba cerrada da 404.
 
+           🚨 Y un 200 NO alcanza: Play devuelve 200 con una pagina de error.
+           Hay que mirar el og:title y que nombre la app. Cronobu, ademas, salto
+           de "En desarrollo" derecho a produccion sin pasar por prueba cerrada:
+           no todas recorren los tres estados en orden.
+
+           Todo esto lo hace `node scripts/app-a-produccion.mjs <app>`, que
+           conoce los dos saltos y no toca nada si la ficha todavia no responde.
            Los paquetes estan en el README.
            ═══════════════════════════════════════════════════════════════════ -->
       <ul class="catalogo">
@@ -1300,11 +1307,11 @@ a.estado:hover { color: #fff; }
           </div>
           <p>Historia: el tiempo, el mundo y tu país. Empieza por qué es el tiempo.</p>
           <div class="app-enlaces">
-            <span class="estado"><span class="punto" aria-hidden="true"></span>En desarrollo</span>
-            <span class="proximo" aria-disabled="true">
+            <a class="estado" href="https://play.google.com/store/apps/details?id=cl.cronobu.historia" rel="noopener"><span class="punto" aria-hidden="true"></span>Google Play</a>
+            <a class="ficha" href="https://play.google.com/store/apps/details?id=cl.cronobu.historia" rel="noopener">
               <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 3.4v17.2a1 1 0 0 0 1.52.86l14.2-8.6a1 1 0 0 0 0-1.72L6.52 2.54A1 1 0 0 0 5 3.4z"/></svg>
-              Próximamente en Google Play
-            </span>
+              Descargar
+            </a>
           </div>
         </li>
 
@@ -1323,7 +1330,7 @@ a.estado:hover { color: #fff; }
               Ver la app
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
             </a>
-            <a class="estado" href="https://play.google.com/apps/testing/cl.lunabu.preescolar" rel="noopener"><span class="punto" aria-hidden="true"></span>Prueba cerrada · solo testers</a>
+            <a class="estado" href="https://play.google.com/store/apps/details?id=cl.lunabu.preescolar" rel="noopener"><span class="punto" aria-hidden="true"></span>Google Play</a>
           </div>
         </li>
 

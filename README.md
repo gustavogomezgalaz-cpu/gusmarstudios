@@ -45,14 +45,21 @@ en "Proximamente".
 - `/store/apps/details` es la ficha publica. **Devuelve 404 mientras la app este solo
   en prueba cerrada.**
 
-Al 2026-09-07 estan en **produccion**: Matibu (desde el 13-08) y Cavila (desde el
-07-09). Siguen en **prueba cerrada**: Lunabu, Anticipa y Dilo Jugando.
-Cronobu esta como **borrador** en Play Console, asi que no le sirve ninguno de los dos.
-Silabu, Palabu y Terrabu ni siquiera estan creadas.
+Al 2026-09-30 estan en **produccion**: Matibu (13-08), Cavila (07-09), y Lunabu y
+Cronobu (30-09). Siguen en **prueba cerrada**: Anticipa y Dilo Jugando.
 
 🚨 Esta linea envejece sola y no la vigila nadie. Lo que manda es la ficha: antes
 de fiarse de ella, comprobarla con `node scripts/app-a-produccion.mjs <app>`, que
 consulta Play y no toca nada si todavia da 404.
+
+🚨 **Cronobu no paso por prueba cerrada**: salto de borrador a produccion. Por eso
+su tarjeta venia de "En desarrollo" —un `<span>`, no un enlace— y el guion, que
+solo sabia cambiar el href de `/apps/testing/`, decia que no la encontraba. Ahora
+conoce los dos saltos. No todas las apps recorren los tres estados en orden.
+
+🚨 **Cronobu es la unica app en produccion sin pagina propia** en la landing. Su
+tarjeta manda derecho a Play y su `<h3>` no es enlace, que es lo honesto mientras
+la pagina no exista, pero es una diferencia con las otras tres y esta a la vista.
 
 ### Al pasar una app a produccion
 

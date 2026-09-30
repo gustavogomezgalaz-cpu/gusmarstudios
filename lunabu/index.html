@@ -74,18 +74,16 @@
   <span class="edad">2 a 5 años · Android</span>
 
   <div class="acciones">
-    <!-- ═══ AQUI NO VA EL BOTON DE PLAY ═══
-         Lunabu está en prueba cerrada: su ficha pública devuelve 404, así que un
-         botón de descarga llevaría a una puerta cerrada. Se enciende el día que
-         pase a producción, y antes se comprueba:
-         curl -s -o /dev/null -w "%{http_code}" "https://play.google.com/store/apps/details?id=cl.lunabu.preescolar"
+    <!-- ═══ EL BOTON SE ENCENDIO EL 2026-09-30 ═══
+         Lunabu pasó a producción y su ficha ya es pública. Comprobado mirando el
+         og:title, no solo el código: dice "Lunabu: Toddler Learning 2-5 - Apps on
+         Google Play". Un 200 de Play puede ser una página de error, así que el
+         código de estado por sí solo no alcanza para encender un botón.
+         curl -s "https://play.google.com/store/apps/details?id=cl.lunabu.preescolar" | grep og:title
     ═══ -->
-    <p class="aviso-tienda">
-      <span class="mini">Todavía no está en Google Play</span>
-      <span>Lunabu está en <b>prueba cerrada</b>: la usan los testers antes de que
-      salga a la tienda. Si estás en la lista,
-      <a href="https://play.google.com/apps/testing/cl.lunabu.preescolar" rel="noopener">entra por acá</a>.</span>
-    </p>
+    <a class="boton" href="https://play.google.com/store/apps/details?id=cl.lunabu.preescolar">
+      Descargar en Google Play</a>
+    <p class="firma">Una app de GusMar Studios</p>
   </div>
 
   <ul class="cifras">
@@ -272,11 +270,8 @@
       si lo que mira está bien elegido y quien lo nombra no se cansa nunca.
     </p>
     <div class="acciones">
-      <p class="aviso-tienda">
-        <span class="mini">Todavía no está en Google Play</span>
-        <span>Lunabu está en <b>prueba cerrada</b>. Cuando salga a la tienda, el botón
-        de descarga va acá.</span>
-      </p>
+      <a class="boton" href="https://play.google.com/store/apps/details?id=cl.lunabu.preescolar">
+        Descargar en Google Play</a>
     </div>
   </section>
 
