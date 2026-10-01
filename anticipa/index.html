@@ -88,8 +88,11 @@
   </div>
 
   <ul class="cifras">
-    <li class="cifra"><b>121</b><span>pictogramas</span></li>
-    <li class="cifra"><b>20</b><span>rutinas listas</span></li>
+    <!-- 🚨 Estos números salen de la app, no de la memoria: la pantalla "Todo
+         listo para empezar" los dice al terminar la bienvenida. Decían 121 y 20
+         desde agosto; al 01-10-2026 son 157 y 22. -->
+    <li class="cifra"><b>157</b><span>pictogramas</span></li>
+    <li class="cifra"><b>22</b><span>rutinas listas</span></li>
     <li class="cifra"><b>0</b><span>datos que salen</span></li>
     <li class="cifra"><b>3</b><span>idiomas</span></li>
   </ul>
@@ -140,38 +143,59 @@
         </div>
       </li>
     </ul>
+
+    <!-- El clip sale de `marketing/video/anticipa-promo-con-voz.mp4`, el creativo
+         de campaña, reducido a 720x1280 para la web: el original pesa 10 MB y
+         acá se sirve en 0,9, por debajo de los 1,6 del de Matibu.
+         🚨 Arranca MUDO y en bucle, como los otros dos, y el sonido se enciende
+         con el botón de arriba. Este lleva locución, así que autoarrancar con
+         voz le hablaría de golpe a quien abre la página en una sala de espera,
+         que es justo donde la abre el papá de un niño con TEA. -->
+    <div class="cine" data-rise>
+      <video src="intro.mp4" poster="intro-poster.jpg" muted loop playsinline preload="none"
+             width="720" height="1280" aria-label="Promo de Anticipa: pedir cinco veces los zapatos, y el día dibujado"></video>
+      <button type="button" class="cine-son" aria-pressed="false">🔇 Sonido</button>
+    </div>
+    <p class="cine-pie">Arranca en silencio para no sorprender a nadie. El sonido se enciende arriba.</p>
   </section>
 
   <section class="ancho seccion">
     <p class="rotulo" data-rise>Por dentro</p>
     <h2 data-rise>Así se ve.</h2>
+    <!-- 🚨 Estas ocho se sacaron de la app CORRIENDO el 01-10-2026, recorrida de
+         punta a punta. Las anteriores eran de agosto y mostraban pantallas que ya
+         no existen asi. Se rehacen cuando la app cambia, no cuando pasa tiempo. -->
     <div class="galeria">
       <figure data-rise>
-        <div class="tel"><img src="01-agenda.webp" alt="La agenda del día con lo que toca ahora y lo que viene después" width="721" height="1539" loading="lazy"></div>
-        <figcaption>El día entero: <strong>ahora</strong> y <strong>después</strong>.</figcaption>
+        <div class="tel"><img src="01-el-dia.webp" alt="La agenda del día de Sol, con la rutina de la mañana y las estrellas que faltan para el premio" width="488" height="875" loading="lazy"></div>
+        <figcaption>El día entero, y <strong>cuánto falta</strong> para el premio.</figcaption>
       </figure>
       <figure data-rise>
-        <div class="tel"><img src="04-ahora.webp" alt="Un paso de la rutina en grande, con su pictograma" width="721" height="1539" loading="lazy"></div>
+        <div class="tel"><img src="02-ahora-y-despues.webp" alt="Un paso de la rutina en grande: Ir al baño, con su pictograma y el botón Listo" width="488" height="875" loading="lazy"></div>
         <figcaption>Un paso a la vez, <strong>en grande</strong>.</figcaption>
       </figure>
       <figure data-rise>
-        <div class="tel"><img src="08-espera.webp" alt="El tablero de espera y calma" width="721" height="1539" loading="lazy"></div>
-        <figcaption>Un sitio para <strong>esperar</strong> sin que se desarme.</figcaption>
+        <div class="tel"><img src="03-como-lo-hago.webp" alt="«¿Cómo lo hago?» desglosa ir al baño en cinco gestos ilustrados" width="488" height="875" loading="lazy"></div>
+        <figcaption>Si el paso cuesta, lo <strong>explica en gestos</strong>.</figcaption>
       </figure>
       <figure data-rise>
-        <div class="tel"><img src="07-quiero.webp" alt="El tablero de elección para pedir sin hablar" width="721" height="1539" loading="lazy"></div>
-        <figcaption>Para <strong>pedir</strong>, aunque todavía no hable.</figcaption>
+        <div class="tel"><img src="04-estamos-esperando.webp" alt="El reloj de espera que se va vaciando, con el botón Respirar juntos" width="488" height="875" loading="lazy"></div>
+        <figcaption>Esperar <strong>se ve</strong>, no se explica.</figcaption>
       </figure>
       <figure data-rise>
-        <div class="tel"><img src="05-voz.webp" alt="La pantalla para editar un paso de la rutina" width="721" height="1539" loading="lazy"></div>
-        <figcaption>Cada paso se <strong>edita</strong>: el dibujo, el texto y cuánto dura.</figcaption>
+        <div class="tel"><img src="05-preguntas-que-adaptan.webp" alt="Una de las nueve preguntas que ajustan la app al niño, con lo que pasa si no se elige" width="488" height="875" loading="lazy"></div>
+        <figcaption>Nueve preguntas, y <strong>dice qué hace si no contestas</strong>.</figcaption>
       </figure>
       <figure data-rise>
-        <div class="tel"><img src="06-informe.webp" alt="La lámina imprimible con las rutinas del niño" width="721" height="1539" loading="lazy"></div>
-        <figcaption>La <strong>lámina para la pared</strong>, en imagen o PDF.</figcaption>
+        <div class="tel"><img src="06-zona-del-adulto.webp" alt="La zona del adulto: editar rutinas, crear una nueva y la agenda para el colegio" width="488" height="875" loading="lazy"></div>
+        <figcaption>Las rutinas <strong>se arman y se cambian</strong> acá.</figcaption>
       </figure>
       <figure data-rise>
-        <div class="tel"><img src="02-confianza.webp" alt="La pantalla que promete sin anuncios, sin internet y sin cobros sorpresa" width="721" height="1539" loading="lazy"></div>
+        <div class="tel"><img src="07-agenda-en-el-colegio.webp" alt="La agenda para el colegio: elegir qué rutinas van, si va el nombre y hasta cuándo sirve" width="488" height="875" loading="lazy"></div>
+        <figcaption>Se la pasas a <strong>quien lo cuida</strong>, sin cuenta.</figcaption>
+      </figure>
+      <figure data-rise>
+        <div class="tel"><img src="08-lo-que-nunca-veras.webp" alt="La pantalla que promete sin anuncios, sin cuentas y sin compras que el niño pueda hacer" width="488" height="875" loading="lazy"></div>
         <figcaption>Lo que <strong>no</strong> tiene, dicho al abrir.</figcaption>
       </figure>
     </div>
