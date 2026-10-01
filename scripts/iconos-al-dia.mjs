@@ -1,6 +1,17 @@
 /* Compara los iconos de la landing con el icono REAL de cada app y, si cambio,
  * lo rehace.
  *
+ * 🚨 CADA APP TIENE SU ICONO EN DOS SITIOS, y el segundo es el que se olvida:
+ *   · `iconos/<app>.webp` (256) — la tarjeta de la portada y el mosaico
+ *   · `<app>/icono.webp`  (320) — el heroe de su propia pagina
+ * Son archivos distintos y envejecen por separado. El 01-10-2026 se arreglaron
+ * los de la portada y los de las paginas de Lunabu y Dilo Jugando se quedaron
+ * viejos: la portada mostraba el icono nuevo y la pagina de al lado el viejo.
+ *
+ * 🚨 Y hay un tercero que NO se arregla aca: `<app>/og.png` lleva el icono
+ * INCRUSTADO, asi que al cambiar `<app>/icono.webp` hay que volver a correr
+ * `node scripts/og-app.mjs`. Este guion lo recuerda al final.
+ *
  *   node scripts/iconos-al-dia.mjs              mira y cuenta, no toca nada
  *   node scripts/iconos-al-dia.mjs --escribir   rehace los que cambiaron
  *
@@ -55,12 +66,12 @@ const APPS = {
   dormibu: 'cuentos-dormir',
 };
 
-const LADO = 256;
+const COMPARA = 256; // el lado al que se igualan los dos para medir la diferencia
 const UMBRAL = 2; // diferencia media por canal que ya se ve a simple vista
 const escribir = process.argv.includes('--escribir');
 
 const aRaw = (buf) =>
-  sharp(buf).resize(LADO, LADO, { fit: 'fill' }).removeAlpha().raw().toBuffer();
+  sharp(buf).resize(COMPARA, COMPARA, { fit: 'fill' }).removeAlpha().raw().toBuffer();
 
 const cambios = [];
 const iguales = [];
@@ -71,27 +82,36 @@ for (const [app, repo] of Object.entries(APPS)) {
   const fuente = ['icon.png', 'icono.png', 'icon-base.png']
     .map((n) => join(carpeta, n))
     .find(existsSync);
-  const destino = join(RAIZ, 'iconos', `${app}.webp`);
-
   if (!fuente) { sinFuente.push(`${app} (no hay assets/icon.png en ${repo}/)`); continue; }
-  if (!existsSync(destino)) { cambios.push({ app, fuente, destino, dif: Infinity, nuevo: true }); continue; }
 
-  const [a, b] = await Promise.all([aRaw(readFileSync(fuente)), aRaw(readFileSync(destino))]);
-  let suma = 0;
-  for (let i = 0; i < a.length; i++) suma += Math.abs(a[i] - b[i]);
-  const dif = suma / a.length;
+  // Los dos sitios. El de la pagina propia solo existe si la app tiene pagina.
+  const sitios = [
+    { destino: join(RAIZ, 'iconos', `${app}.webp`), lado: 256, nombre: `iconos/${app}.webp`, siempre: true },
+    { destino: join(RAIZ, app, 'icono.webp'), lado: 320, nombre: `${app}/icono.webp`, siempre: false },
+  ];
 
-  if (dif > UMBRAL) cambios.push({ app, fuente, destino, dif });
-  else iguales.push(`${app} (dif ${dif.toFixed(2)})`);
+  for (const sitio of sitios) {
+    if (!existsSync(sitio.destino)) {
+      if (sitio.siempre) cambios.push({ app, fuente, ...sitio, dif: Infinity, nuevo: true });
+      continue;
+    }
+    const [a, b] = await Promise.all([aRaw(readFileSync(fuente)), aRaw(readFileSync(sitio.destino))]);
+    let suma = 0;
+    for (let i = 0; i < a.length; i++) suma += Math.abs(a[i] - b[i]);
+    const dif = suma / a.length;
+
+    if (dif > UMBRAL) cambios.push({ app, fuente, ...sitio, dif });
+    else iguales.push(`${sitio.nombre} (${dif.toFixed(2)})`);
+  }
 }
 
 console.log(`\nIguales (${iguales.length}): ${iguales.join(', ') || '—'}`);
 if (sinFuente.length) console.log(`\nSin fuente (${sinFuente.length}):\n  ${sinFuente.join('\n  ')}`);
 
-if (!cambios.length) { console.log('\nTodos los iconos de la portada son el icono real de su app.'); process.exit(0); }
+if (!cambios.length) { console.log('\nTodos los iconos del sitio son el icono real de su app.'); process.exit(0); }
 
 console.log(`\nCAMBIARON (${cambios.length}):`);
-for (const c of cambios) console.log(`  ${c.app.padEnd(12)} dif ${c.nuevo ? '(no estaba)' : c.dif.toFixed(2)}`);
+for (const c of cambios) console.log(`  ${c.nombre.padEnd(24)} dif ${c.nuevo ? '(no estaba)' : c.dif.toFixed(2)}`);
 
 if (!escribir) {
   console.log('\nNo se toco nada. Para rehacerlos:');
@@ -104,10 +124,17 @@ if (!escribir) {
 for (const c of cambios) {
   const antes = existsSync(c.destino) ? readFileSync(c.destino).length : 0;
   await sharp(readFileSync(c.fuente))
-    .resize(LADO, LADO, { fit: 'cover' })
+    .resize(c.lado, c.lado, { fit: 'cover' })
     .webp({ quality: 82 })
     .toFile(c.destino);
   const ahora = readFileSync(c.destino).length;
-  console.log(`  ${c.app.padEnd(12)} ${(antes / 1024).toFixed(1)} KB -> ${(ahora / 1024).toFixed(1)} KB`);
+  console.log(`  ${c.nombre.padEnd(24)} ${(antes / 1024).toFixed(1)} KB -> ${(ahora / 1024).toFixed(1)} KB`);
+}
+
+const conPagina = [...new Set(cambios.filter((c) => !c.siempre).map((c) => c.app))];
+if (conPagina.length) {
+  console.log(`\n🚨 ${conPagina.join(', ')} cambio el icono de su PAGINA, y su og.png lo lleva`);
+  console.log('   incrustado. Hay que rehacerlo o el enlace se comparte con el icono viejo:');
+  console.log('     node scripts/og-app.mjs');
 }
 console.log('\nListo. 🚨 Mirarlos antes de commitear.');
