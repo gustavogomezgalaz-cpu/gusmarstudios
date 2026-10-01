@@ -7,7 +7,8 @@ pagina se ve entera aunque no corra.
 
 ```
 /                     la vitrina del estudio (index.html)
-/matibu/              la pagina de una app — el patron para las otras ocho
+/matibu/              la pagina de una app — el patron. Ya hay seis: matibu, cavila,
+                      lunabu, cronobu, anticipa y dilojugando
 iconos/*.webp         los iconos reales de cada app
 fuentes/*.woff2       Bricolage Grotesque + IBM Plex Sans/Mono, subconjunto latino
 marca.svg             la marca; tambien favicon
@@ -45,8 +46,8 @@ en "Proximamente".
 - `/store/apps/details` es la ficha publica. **Devuelve 404 mientras la app este solo
   en prueba cerrada.**
 
-Al 2026-09-30 estan en **produccion**: Matibu (13-08), Cavila (07-09), y Lunabu y
-Cronobu (30-09). Siguen en **prueba cerrada**: Anticipa y Dilo Jugando.
+Al 2026-10-01 estan en **produccion** CINCO: Matibu (13-08), Cavila (07-09), y
+Lunabu, Cronobu y Anticipa (30-09). Sigue en **prueba cerrada**: Dilo Jugando.
 
 🚨 Esta linea envejece sola y no la vigila nadie. Lo que manda es la ficha: antes
 de fiarse de ella, comprobarla con `node scripts/app-a-produccion.mjs <app>`, que
@@ -57,9 +58,17 @@ su tarjeta venia de "En desarrollo" —un `<span>`, no un enlace— y el guion, 
 solo sabia cambiar el href de `/apps/testing/`, decia que no la encontraba. Ahora
 conoce los dos saltos. No todas las apps recorren los tres estados en orden.
 
-🚨 **Cronobu es la unica app en produccion sin pagina propia** en la landing. Su
-tarjeta manda derecho a Play y su `<h3>` no es enlace, que es lo honesto mientras
-la pagina no exista, pero es una diferencia con las otras tres y esta a la vista.
+### El orden de las tarjetas
+
+No es alfabetico y no es por fecha de creacion: **primero las que estan en Google
+Play**, en el orden en que llegaron; despues la que esta en prueba cerrada; al
+final las que no se pueden bajar, y la ultima Terrabu, que es la que mas lejos
+esta. Esta es la carta de presentacion del estudio, asi que lo primero que se ve
+tiene que ser lo que el visitante puede bajar HOY.
+
+🚨 El mismo orden va en **tres sitios** de `index.html`: el mosaico del heroe, la
+cinta que corre (DOS copias, que es como se hace el bucle) y el catalogo. Si se
+cambia en uno y no en los otros, el sitio se contradice solo.
 
 ### Al pasar una app a produccion
 

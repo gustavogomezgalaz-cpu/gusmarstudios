@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cronobu — Historia y geografía para niños de 6 a 12 años | GusMar Studios</title>
+<meta name="description" content="App de historia para niños de 6 a 12 años: el tiempo, el mundo y la historia de tu país, con doce países de América. Se juega sin saber leer y sin internet. Sin anuncios y sin compras del niño.">
+<link rel="canonical" href="https://gusmarstudios.com/cronobu/">
+<meta name="theme-color" content="#936900">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GusMar Studios">
+<meta property="og:title" content="Cronobu — Historia para niños de 6 a 12 años">
+<meta property="og:description" content="Empieza por qué es el tiempo. Después el mundo, y al final la historia de tu país — escrita para tu país, no traducida de otra parte.">
+<meta property="og:url" content="https://gusmarstudios.com/cronobu/">
+<meta property="og:locale" content="es_CL">
+<meta property="og:image" content="https://gusmarstudios.com/cronobu/og.png">
+<meta property="og:image:secure_url" content="https://gusmarstudios.com/cronobu/og.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Cronobu — Historia para niños de 6 a 12 años, de GusMar Studios">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cronobu — Historia para niños de 6 a 12 años">
+<meta name="twitter:description" content="El tiempo, el mundo y tu país. Doce países de América, y se juega sin saber leer.">
+<meta name="twitter:image" content="https://gusmarstudios.com/cronobu/og.png">
+<link rel="icon" href="/marca.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"MobileApplication",
+"name":"Cronobu: Historia y Geografía",
+"operatingSystem":"Android","applicationCategory":"EducationalApplication",
+"description":"Historia para niños de 6 a 12 años. Empieza por qué es el tiempo —antes y después, la línea de tiempo, los siglos y el a.C.—, sigue por el mundo de las cuevas a las máquinas y termina en la historia de tu país, con doce países de América. Se responde tocando una imagen y se juega sin internet.",
+"inLanguage":["es","en","pt"],
+"image":"https://gusmarstudios.com/cronobu/og.png",
+"author":{"@type":"Organization","name":"GusMar Studios","url":"https://gusmarstudios.com/"}}
+</script>
+
+<!-- Sin JavaScript no se esconde nada: la clase `js` es la que enciende el
+     revelado, así que la página nunca queda en blanco si el script no corre. -->
+<script>document.documentElement.classList.add('js')</script>
+
+<link rel="stylesheet" href="/app.css">
+<style>
+  /* Lo único propio de esta página: su color, el oro de su icono y de su tarjeta
+     en la portada. Todo lo demás vive en /app.css.
+
+     🚨 El oro es el color difícil de la familia. `--acento` es claro porque
+     tiene que leerse SOBRE EL FONDO OSCURO (9,16:1), y por eso mismo no puede
+     llevar letra blanca encima: daría 2,14:1 y AA pide 4,5. El botón usa
+     `--boton-claro` y `--acento-hondo`, que están medidos con
+     `node scripts/boton-contraste.mjs cronobu`. No cambiar ninguno a ojo. */
+  :root { --acento:#E0A82E; --acento-hondo:#936900; --boton-claro:#95701F; }
+</style>
+</head>
+<body>
+
+<div class="progreso" aria-hidden="true"></div>
+
+<div class="ancho">
+  <a class="volver" href="../">
+    <svg viewBox="0 0 64 64" aria-hidden="true">
+      <g transform="translate(32 32)">
+        <g transform="translate(-11 1) rotate(-11)"><rect x="-12" y="-12" width="24" height="24" rx="6.8" fill="#C08B0A" stroke="#0A0B14" stroke-width="3"/></g>
+        <g transform="translate(11 1) rotate(11)"><rect x="-12" y="-12" width="24" height="24" rx="6.8" fill="#12A0AC" stroke="#0A0B14" stroke-width="3"/></g>
+        <g transform="translate(0 -2)"><rect x="-13" y="-13" width="26" height="26" rx="7.4" fill="#7C80FF" stroke="#0A0B14" stroke-width="3"/></g>
+      </g>
+    </svg>
+    GusMar Studios
+  </a>
+</div>
+
+<header class="heroe ancho">
+  <img class="icono-app" src="icono.webp" alt="Icono de Cronobu" width="320" height="320">
+  <h1>Cronobu</h1>
+  <p class="bajada">Empieza por qué es el tiempo</p>
+  <span class="edad">6 a 12 años · Android</span>
+
+  <div class="acciones">
+    <!-- ═══ EL BOTON SE ENCENDIO EL 2026-10-01 ═══
+         Cronobu saltó de borrador a producción sin pasar por prueba cerrada.
+         Comprobado mirando el og:title, no solo el código: dice "Cronobu:
+         History for Kids - Apps on Google Play". Play devuelve 200 con una
+         página de error, así que el código de estado no alcanza.
+         curl -s "https://play.google.com/store/apps/details?id=cl.cronobu.historia" | grep og:title
+    ═══ -->
+    <a class="boton" href="https://play.google.com/store/apps/details?id=cl.cronobu.historia">
+      Descargar en Google Play</a>
+    <p class="firma">Una app de GusMar Studios</p>
+  </div>
+
+  <ul class="cifras">
+    <li class="cifra"><b>20</b><span>temas</span></li>
+    <li class="cifra"><b>162</b><span>actividades</span></li>
+    <li class="cifra"><b>12</b><span>países de América</span></li>
+    <li class="cifra"><b>5</b><span>temas gratis</span></li>
+  </ul>
+
+</header>
+
+<p class="sigue" aria-hidden="true">
+  Sigue bajando
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+</p>
+
+<main>
+
+  <section class="seccion">
+    <div class="ancho">
+      <p class="rotulo" data-rise>Qué aprende</p>
+      <h2 data-rise>Una fecha suelta no es historia.</h2>
+      <p class="intro" data-rise>
+        Casi todas las apps de historia empiezan por los hechos. Cronobu empieza por lo que
+        hace falta para entenderlos: qué es «antes», qué es un siglo, qué quiere decir a.C.
+        y cómo sabemos lo que sabemos. Recién después vienen las cuevas, Egipto, Roma y las
+        máquinas — y al final, tu país.
+      </p>
+    </div>
+
+    <!-- Los temas corren de lado, como en las otras páginas: una franja en vez de
+         un muro de veinte etiquetas. Los emojis y los nombres salen de
+         `historia/src/content` —metodo, universal y paises—, no se eligen a ojo:
+         son los que el niño ve dentro de la app. La primera fila es lo que se
+         abre sin pagar, y por eso va primera y en su propia cinta. -->
+    <ul class="rios" data-rise>
+      <li class="rio" style="--tono:#E0A82E;--tinte:rgba(224,168,46,.15);--borde:rgba(224,168,46,.38)">
+        <div class="rio-pista" style="animation-duration:30s">
+          <div class="rio-grupo"><span class="rio-isla"><span class="rio-emoji" aria-hidden="true">🎁</span>Gratis para siempre<span class="rio-cuenta">5 temas enteros</span></span><span class="chip"><span class="chip-emoji" aria-hidden="true">🔎</span>¿Cómo lo sabemos?</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🔗</span>Por qué pasó, y a la vez</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🦴</span>Antes de las ciudades</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🏺</span>Las primeras ciudades</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🏹</span>Los primeros pueblos</span></div>
+          <div class="rio-grupo" aria-hidden="true"><span class="rio-isla"><span class="rio-emoji" aria-hidden="true">🎁</span>Gratis para siempre<span class="rio-cuenta">5 temas enteros</span></span><span class="chip"><span class="chip-emoji" aria-hidden="true">🔎</span>¿Cómo lo sabemos?</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🔗</span>Por qué pasó, y a la vez</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🦴</span>Antes de las ciudades</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🏺</span>Las primeras ciudades</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🏹</span>Los primeros pueblos</span></div>
+        </div>
+      </li>
+      <li class="rio al-reves" style="--tono:#C08B0A;--tinte:rgba(192,139,10,.15);--borde:rgba(192,139,10,.38)">
+        <div class="rio-pista" style="animation-duration:34s">
+          <div class="rio-grupo"><span class="rio-isla"><span class="rio-emoji" aria-hidden="true">⏳</span>El tiempo<span class="rio-cuenta">las herramientas, primero</span></span><span class="chip"><span class="chip-emoji" aria-hidden="true">⏳</span>Antes y después</span><span class="chip"><span class="chip-emoji" aria-hidden="true">📏</span>La línea de tiempo</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🔢</span>Años, siglos y el a.C.</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🗺️</span>Mapas y lugares</span></div>
+          <div class="rio-grupo" aria-hidden="true"><span class="rio-isla"><span class="rio-emoji" aria-hidden="true">⏳</span>El tiempo<span class="rio-cuenta">las herramientas, primero</span></span><span class="chip"><span class="chip-emoji" aria-hidden="true">⏳</span>Antes y después</span><span class="chip"><span class="chip-emoji" aria-hidden="true">📏</span>La línea de tiempo</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🔢</span>Años, siglos y el a.C.</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🗺️</span>Mapas y lugares</span></div>
+        </div>
+      </li>
+      <li class="rio" style="--tono:#C97B3C;--tinte:rgba(201,123,60,.15);--borde:rgba(201,123,60,.38)">
+        <div class="rio-pista" style="animation-duration:38s">
+          <div class="rio-grupo"><span class="rio-isla"><span class="rio-emoji" aria-hidden="true">🌍</span>El mundo<span class="rio-cuenta">de las cuevas a las máquinas</span></span><span class="chip"><span class="chip-emoji" aria-hidden="true">🔺</span>Egipto</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🏛️</span>Grecia</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🏟️</span>Roma</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🏰</span>La Edad Media</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🚢</span>Cuando los mundos se encontraron</span><span class="chip"><span class="chip-emoji" aria-hidden="true">💡</span>Inventos que cambiaron la vida</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🏭</span>Cuando llegaron las máquinas</span></div>
+          <div class="rio-grupo" aria-hidden="true"><span class="rio-isla"><span class="rio-emoji" aria-hidden="true">🌍</span>El mundo<span class="rio-cuenta">de las cuevas a las máquinas</span></span><span class="chip"><span class="chip-emoji" aria-hidden="true">🔺</span>Egipto</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🏛️</span>Grecia</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🏟️</span>Roma</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🏰</span>La Edad Media</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🚢</span>Cuando los mundos se encontraron</span><span class="chip"><span class="chip-emoji" aria-hidden="true">💡</span>Inventos que cambiaron la vida</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🏭</span>Cuando llegaron las máquinas</span></div>
+        </div>
+      </li>
+      <li class="rio al-reves" style="--tono:#8FA86B;--tinte:rgba(143,168,107,.15);--borde:rgba(143,168,107,.38)">
+        <div class="rio-pista" style="animation-duration:32s">
+          <div class="rio-grupo"><span class="rio-isla"><span class="rio-emoji" aria-hidden="true">🗺️</span>Tu país<span class="rio-cuenta">uno de doce, completo</span></span><span class="chip"><span class="chip-emoji" aria-hidden="true">🏹</span>Los primeros pueblos</span><span class="chip"><span class="chip-emoji" aria-hidden="true">⛵</span>Dos mundos se encuentran</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🎗️</span>La independencia</span><span class="chip"><span class="chip-emoji" aria-hidden="true">📕</span>Nace la república</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🏔️</span>Mi país hoy</span></div>
+          <div class="rio-grupo" aria-hidden="true"><span class="rio-isla"><span class="rio-emoji" aria-hidden="true">🗺️</span>Tu país<span class="rio-cuenta">uno de doce, completo</span></span><span class="chip"><span class="chip-emoji" aria-hidden="true">🏹</span>Los primeros pueblos</span><span class="chip"><span class="chip-emoji" aria-hidden="true">⛵</span>Dos mundos se encuentran</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🎗️</span>La independencia</span><span class="chip"><span class="chip-emoji" aria-hidden="true">📕</span>Nace la república</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🏔️</span>Mi país hoy</span></div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="ancho seccion">
+    <p class="rotulo" data-rise>Por dentro</p>
+    <h2 data-rise>Así se ve.</h2>
+    <div class="galeria">
+      <figure data-rise>
+        <div class="tel"><img src="01-empecemos-por-aqui.webp" alt="La pantalla de inicio de Cronobu con Tato y el tema por el que empezar" width="488" height="875" loading="lazy"></div>
+        <figcaption>Una sola cosa que hacer: <strong>la de hoy</strong>.</figcaption>
+      </figure>
+      <figure data-rise>
+        <div class="tel"><img src="03-vive-no-vivia.webp" alt="Tato corrige: decimos vive, no vivía, porque hay más de un millón de personas mapuche hoy" width="488" height="875" loading="lazy"></div>
+        <figcaption>Dice <strong>«vive», no «vivía»</strong>. Y explica por qué.</figcaption>
+      </figure>
+      <figure data-rise>
+        <div class="tel"><img src="02-el-eje-de-temas.webp" alt="El eje de temas de Cronobu, con los gratis y los que abre un adulto" width="488" height="875" loading="lazy"></div>
+        <figcaption>Los temas en un <strong>hilo</strong>, no en una lista.</figcaption>
+      </figure>
+      <figure data-rise>
+        <div class="tel"><img src="04-equivocarse-esta-bien.webp" alt="Tato explica que equivocarse está bien y que no se pierde nada" width="488" height="875" loading="lazy"></div>
+        <figcaption>Sin reloj, sin vidas y <strong>sin rojo</strong>.</figcaption>
+      </figure>
+      <figure data-rise>
+        <div class="tel"><img src="05-doce-paises.webp" alt="Los doce países de América entre los que se elige, cada uno ilustrado" width="488" height="875" loading="lazy"></div>
+        <figcaption>Doce países, y <strong>se elige el tuyo</strong>.</figcaption>
+      </figure>
+      <figure data-rise>
+        <div class="tel"><img src="06-el-mapa.webp" alt="El mapa de América pintado a mano, para entrar a la historia de cada país" width="488" height="875" loading="lazy"></div>
+        <figcaption>Y los otros once <strong>están ahí al lado</strong>.</figcaption>
+      </figure>
+      <figure data-rise>
+        <div class="tel"><img src="07-zona-de-papas.webp" alt="La Zona de Papás con el tiempo de la semana y las tres promesas" width="488" height="875" loading="lazy"></div>
+        <figcaption>Cuánto usó, en qué anda flojo y <strong>qué no tiene</strong>.</figcaption>
+      </figure>
+      <figure data-rise>
+        <div class="tel"><img src="08-la-puerta-del-adulto.webp" alt="La puerta de adultos: tocar el número mayor, dos veces" width="488" height="875" loading="lazy"></div>
+        <figcaption>Lo que se paga vive <strong>detrás de esta puerta</strong>.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="ancho seccion">
+    <p class="rotulo" data-rise>Cómo se cuenta</p>
+    <h2 data-rise>En historia, las decisiones difíciles hay que tomarlas.</h2>
+    <p class="intro" data-rise>
+      Una app de matemáticas no tiene que decidir cómo contar una suma. Una de historia sí
+      tiene que decidir cómo contar una conquista. Acá están tomadas, y escritas, para que
+      un adulto sepa qué va a oír su hijo antes de que lo oiga.
+    </p>
+    <ul class="promesas">
+      <li class="promesa" data-rise>
+        <h3>Los pueblos originarios, en presente</h3>
+        <p>Los mapuche, los mexicas, los guaraní y los aymara no son un capítulo que terminó. Hay más de un millón de personas mapuche hoy, y cuando el niño responde, Cronobu se lo dice con esas palabras.</p>
+      </li>
+      <li class="promesa" data-rise>
+        <h3>El encuentro, desde los dos lados</h3>
+        <p>No es el descubrimiento de nadie: dos mundos que no se conocían se encontraron, y a uno le costó muchísimo más que al otro. Lo que dolió se dice una vez, con claridad y sin escena.</p>
+      </li>
+      <li class="promesa" data-rise>
+        <h3>Se detiene antes de la política de hoy</h3>
+        <p>El relato de cada país llega hasta la república y para. Nada de partidos ni de gobiernos de los últimos cincuenta años: un niño de ocho años no necesita que una app le diga qué pensar de eso.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="ancho seccion">
+    <p class="rotulo" data-rise>Para el papá o la mamá</p>
+    <h2 data-rise>Lo que no vas a encontrar.</h2>
+    <ul class="promesas">
+      <li class="promesa" data-rise>
+        <h3>Sin publicidad</h3>
+        <p>Ninguna, en ninguna parte, ni siquiera de las otras apps nuestras dentro de la pantalla del niño. No hay identificador de publicidad.</p>
+      </li>
+      <li class="promesa" data-rise>
+        <h3>Sin internet y sin datos</h3>
+        <p>Funciona en modo avión y el avance se guarda en el teléfono. La red no se usa nunca para el contenido. Sin micrófono, sin cámara, sin ubicación y sin registro.</p>
+      </li>
+      <li class="promesa" data-rise>
+        <h3>Sin compras del niño</h3>
+        <p>En la pantalla del niño no aparece nunca un precio. La suscripción la abre un adulto, detrás de una puerta que se cruza tocando dos veces el número mayor.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="ancho seccion">
+    <p class="rotulo" data-rise>Lo que sí vas a encontrar</p>
+    <h2 data-rise>Sabes en qué anda flojo, y la app insiste ahí.</h2>
+    <p class="intro" data-rise>
+      Cada día hay un reto distinto, y no es el mismo para todos: se arma con lo que a tu
+      hijo le costó. Vos ves qué terminó, en qué habilidad va atrasado y cuánto tiempo usó
+      — sin notas y sin comparaciones con nadie.
+    </p>
+    <ul class="promesas">
+      <li class="promesa" data-rise>
+        <h3>Una meta en minutos, no en lecciones</h3>
+        <p>Vos fijás cuántos minutos por día, y cuando se cumplen la app celebra que toca parar. También podés ponerle un horario de estudio: un solo aviso al día, a la hora que elijas, nunca de noche.</p>
+      </li>
+      <li class="promesa" data-rise>
+        <h3>Varios hijos, cada uno con su avance</h3>
+        <p>Y si cambiás de país, no se pierde nada: el avance de cada país se guarda aparte. Los doce están dentro de la app, no se descargan.</p>
+      </li>
+      <li class="promesa" data-rise>
+        <h3>Se juega sin saber leer</h3>
+        <p>Cada pregunta se dice en voz alta y se responde tocando una imagen. Las que necesitan verse se ven: la olla rota que hay que interpretar, el acueducto, el altar de Día de Muertos. Son 240 ilustraciones hechas a mano, una por lo que pregunta cada una.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="ancho seccion">
+    <p class="rotulo" data-rise>Cuánto cuesta</p>
+    <h2 data-rise>Cinco temas enteros, gratis.</h2>
+    <div class="plan" data-rise>
+      <h3>Gratis para siempre</h3>
+      <p>
+        <span class="destacado">Los cuatro primeros temas completos</span> —«¿Cómo lo
+        sabemos?», «Por qué pasó, y a la vez», «Antes de las ciudades» y «Las primeras
+        ciudades»— <span class="destacado">y el tema con que arranca la historia de tu
+        país</span>, también entero.
+        <br><br>
+        No son una muestra recortada: son temas terminados, con sus lecciones y sus
+        actividades. Es suficiente para saber si esta app es para ustedes antes de pagar
+        nada. Los quince restantes se abren con una suscripción que solo activa un adulto,
+        detrás de la puerta, y se cancela cuando quieras desde Google Play.
+      </p>
+    </div>
+  </section>
+
+  <section class="ancho cierre">
+    <h2 data-rise>Para que una fecha deje de ser un número suelto.</h2>
+    <p class="intro" style="margin-inline:auto;text-align:center">
+      Primero el tiempo, después el mundo, y al final tu país — escrito para tu país y no
+      traducido de otra parte.
+    </p>
+    <div class="acciones">
+      <a class="boton" href="https://play.google.com/store/apps/details?id=cl.cronobu.historia">
+        Descargar en Google Play</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p><a href="../">GusMar Studios</a> · Santiago, Chile</p>
+</footer>
+
+<script src="/app.js"></script>
+</body>
+</html>

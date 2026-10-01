@@ -47,6 +47,14 @@ const APPS = [
     hondo: '#2A6FCC',
   },
   {
+    dir: 'cronobu',
+    nombre: 'Cronobu',
+    bajada: 'Empieza por qué es el tiempo',
+    detalle: 'Historia y geografía · 12 países · 6 a 12 años',
+    tono: '#E0A82E',
+    hondo: '#936900',
+  },
+  {
     dir: 'dilojugando',
     nombre: 'Dilo Jugando',
     bajada: 'Practicar a hablar, jugando',
