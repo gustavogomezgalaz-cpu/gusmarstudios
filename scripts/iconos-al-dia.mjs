@@ -67,13 +67,31 @@ const APPS = {
 };
 
 const COMPARA = 256; // el lado al que se igualan los dos para medir la diferencia
-const UMBRAL = 2; // diferencia media por canal que ya se ve a simple vista
+
+/* 🚨 HAY TRES BANDAS, NO DOS, Y LA DE EN MEDIO SE GANO A GOLPES.
+ *
+ * Con un solo umbral en 2 el guion daba por CAMBIADOS a Dilo Jugando (2,42 y
+ * 2,38) y a Dormibu (4,31), y el 04-10-2026 se miraron los dos puestos uno al
+ * lado del otro: son el MISMO dibujo. Lo que mide ahi no es arte distinto, es
+ * el remuestreo —1024 px a 256— y la recompresion a webp. Los que de verdad son
+ * iguales caen entre 1,20 y 1,95, asi que el margen es estrecho y un umbral
+ * seco en 2 convierte ruido en tarea.
+ *
+ * Pero subirlo sin mas esconderia un cambio de verdad pequeño. Por eso se parte
+ * en tres y la de en medio se MIRA, que es lo unico que decide:
+ *   < 2    iguales
+ *   2 a 6  sospechoso: se mira, no se reescribe solo
+ *   > 6    cambio de verdad
+ */
+const UMBRAL = 6; // diferencia media por canal que ya es otro dibujo
+const SOSPECHA = 2; // de aqui hasta UMBRAL: mirarlos antes de tocar
 const escribir = process.argv.includes('--escribir');
 
 const aRaw = (buf) =>
   sharp(buf).resize(COMPARA, COMPARA, { fit: 'fill' }).removeAlpha().raw().toBuffer();
 
 const cambios = [];
+const sospechosos = [];
 const iguales = [];
 const sinFuente = [];
 
@@ -101,6 +119,7 @@ for (const [app, repo] of Object.entries(APPS)) {
     const dif = suma / a.length;
 
     if (dif > UMBRAL) cambios.push({ app, fuente, ...sitio, dif });
+    else if (dif > SOSPECHA) sospechosos.push({ app, fuente, ...sitio, dif });
     else iguales.push(`${sitio.nombre} (${dif.toFixed(2)})`);
   }
 }
@@ -108,7 +127,15 @@ for (const [app, repo] of Object.entries(APPS)) {
 console.log(`\nIguales (${iguales.length}): ${iguales.join(', ') || '—'}`);
 if (sinFuente.length) console.log(`\nSin fuente (${sinFuente.length}):\n  ${sinFuente.join('\n  ')}`);
 
-if (!cambios.length) { console.log('\nTodos los iconos del sitio son el icono real de su app.'); process.exit(0); }
+if (sospechosos.length) {
+  console.log(`\nSOSPECHOSOS (${sospechosos.length}) — entre ${SOSPECHA} y ${UMBRAL}:`);
+  for (const s of sospechosos) console.log(`  ${s.nombre.padEnd(24)} dif ${s.dif.toFixed(2)}`);
+  console.log('  A esta altura casi siempre es el remuestreo y la recompresion, no otro');
+  console.log('  dibujo. MIRARLOS uno al lado del otro antes de reescribir nada; con');
+  console.log('  --escribir NO se tocan.');
+}
+
+if (!cambios.length) { console.log('\nNingun icono del sitio es un dibujo distinto al de su app.'); process.exit(0); }
 
 console.log(`\nCAMBIARON (${cambios.length}):`);
 for (const c of cambios) console.log(`  ${c.nombre.padEnd(24)} dif ${c.nuevo ? '(no estaba)' : c.dif.toFixed(2)}`);

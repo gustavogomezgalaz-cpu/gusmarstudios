@@ -25,6 +25,20 @@ const PAQUETES = {
   anticipa: 'cl.anticipa.rutinas',
   dilojugando: 'cl.dilojugando.pronunciacion',
   cronobu: 'cl.cronobu.historia',
+  palabu: 'cl.palabu.lenguaje',
+};
+
+/* Con que palabra tiene que empezar el og:title para creerle a Play. Ver el
+   paso 1: el nombre de la ficha no siempre es el de la tarjeta —Lunabu se llama
+   "Lunabu: Toddler Learning 2-5"— asi que se compara el principio. */
+const NOMBRES = {
+  matibu: 'Matibu',
+  cavila: 'Cavila',
+  lunabu: 'Lunabu',
+  anticipa: 'Anticipa',
+  dilojugando: 'Dilo Jugando',
+  cronobu: 'Cronobu',
+  palabu: 'Palabu',
 };
 
 const app = (process.argv[2] || '').toLowerCase();
@@ -38,13 +52,24 @@ if (!paquete) {
 
 const fichaPublica = `https://play.google.com/store/apps/details?id=${paquete}`;
 
-// ── 1) ¿La ficha ya es publica? ─────────────────────────────────────────────
+/* ── 1) ¿La ficha ya es publica? ─────────────────────────────────────────────
+ *
+ * 🚨 UN 200 NO ALCANZA, Y ESTA ES LA TRAMPA QUE MAS VECES SE PISO. Play
+ * responde 200 con una PAGINA DE ERROR —"no encontramos la aplicacion"— y
+ * tambien con la ficha de otra cosa. El codigo de estado dice que el servidor
+ * contesto, no que la app exista. Lo que lo distingue es el og:title: en una
+ * ficha de verdad dice "<Nombre> - Apps on Google Play", y en la de error no
+ * dice nada. Por eso se miran las DOS cosas antes de encender un boton que va a
+ * la portada del estudio.
+ */
 if (!forzar) {
   process.stdout.write(`Comprobando la ficha de ${app}... `);
   let codigo = 0;
+  let cuerpo = '';
   try {
     const r = await fetch(fichaPublica, { redirect: 'follow' });
     codigo = r.status;
+    cuerpo = await r.text();
   } catch (e) {
     console.log('sin respuesta');
     console.error(`No se pudo consultar Play (${e.message}). No se cambio nada.`);
@@ -54,6 +79,17 @@ if (!forzar) {
   if (codigo !== 200) {
     console.error(`\nLa ficha todavia NO es publica (${codigo}). No se cambio nada.`);
     console.error('Volver a intentarlo cuando la version este publicada en produccion.');
+    process.exit(1);
+  }
+
+  const titulo = (/<meta property="og:title" content="([^"]*)"/.exec(cuerpo) || [, ''])[1];
+  const esperado = NOMBRES[app];
+  console.log(`  og:title: ${titulo || '(vacio)'}`);
+  if (!titulo.startsWith(esperado)) {
+    console.error(`\n🚨 Da 200 pero el og:title NO empieza por "${esperado}".`);
+    console.error('   Play devuelve 200 con una pagina de error: esto NO es la ficha.');
+    console.error('   Aprobada en Play no es lo mismo que publicada; el despliegue tarda.');
+    console.error('   No se cambio nada.');
     process.exit(1);
   }
 }
@@ -111,7 +147,15 @@ if (viejo.test(t)) {
   /* El boton apagado pasa a ser el enlace de verdad. Va con el mismo href que la
      etiqueta de al lado a proposito: el que tiene pagina propia usa la pastilla
      para ir a ella, y el que no la tiene la usa para ir a la ficha. Una tarjeta
-     con el hueco vacio se lee como una app de segunda. */
+     con el hueco vacio se lee como una app de segunda.
+
+     🚨 Y hay un tercer caso que NO necesita este reemplazo: la app que ya tiene
+     PAGINA PROPIA pero todavia no tiene ficha. Su tarjeta trae un <a class=
+     "ficha"> a su pagina y NINGUN <span class="proximo">, asi que esto no
+     encuentra nada y no hace nada — que es exactamente lo correcto: la pastilla
+     tiene que seguir llevando a la pagina, y lo unico que cambia es el estado.
+     Es el caso de Palabu el 04-10-2026. Si algun dia esto empieza a fallar por
+     "no se aplico ningun cambio", mirar primero si el estado si se cambio. */
   tarjeta = tarjeta.replace(
     /<span class="proximo"[\s\S]*?<\/span>\s*\n(\s*)/,
     `<a class="ficha" href="${fichaPublica}" rel="noopener">\n` +

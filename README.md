@@ -46,8 +46,14 @@ en "Proximamente".
 - `/store/apps/details` es la ficha publica. **Devuelve 404 mientras la app este solo
   en prueba cerrada.**
 
-Al 2026-10-01 estan en **produccion** CINCO: Matibu (13-08), Cavila (07-09), y
-Lunabu, Cronobu y Anticipa (30-09). Sigue en **prueba cerrada**: Dilo Jugando.
+Al 2026-10-04 estan en **produccion** SEIS: Matibu (13-08), Cavila (07-09),
+Lunabu, Cronobu y Anticipa (30-09), y Dilo Jugando (04-10). Ninguna en prueba
+cerrada. **Palabu esta en revision**: aprobada todavia no es publicada, su ficha
+da 404, y por eso su tarjeta sigue diciendo "En desarrollo" aunque ya tenga
+pagina propia.
+
+Tienen **pagina propia** siete: matibu, cavila, lunabu, cronobu, anticipa,
+dilojugando y palabu.
 
 🚨 Esta linea envejece sola y no la vigila nadie. Lo que manda es la ficha: antes
 de fiarse de ella, comprobarla con `node scripts/app-a-produccion.mjs <app>`, que
@@ -61,9 +67,9 @@ conoce los dos saltos. No todas las apps recorren los tres estados en orden.
 ### El orden de las tarjetas
 
 No es alfabetico y no es por fecha de creacion: **primero las que estan en Google
-Play**, en el orden en que llegaron; despues la que esta en prueba cerrada; al
-final las que no se pueden bajar, y la ultima Terrabu, que es la que mas lejos
-esta. Esta es la carta de presentacion del estudio, asi que lo primero que se ve
+Play**, en el orden en que llegaron; despues las que estan en prueba cerrada —hoy
+ninguna—; al final las que no se pueden bajar, y la ultima Terrabu, que es la que
+mas lejos esta. Esta es la carta de presentacion del estudio, asi que lo primero que se ve
 tiene que ser lo que el visitante puede bajar HOY.
 
 🚨 El mismo orden va en **tres sitios** de `index.html`: el mosaico del heroe, la
@@ -103,8 +109,23 @@ Paquetes de las nueve:
 
 **Antes de poner un enlace, comprobar que la ficha responde 200**, no 404:
 
-```
+```bash
 curl -s -o /dev/null -w "%{http_code}" "https://play.google.com/store/apps/details?id=PAQUETE"
+```
+
+🚨 **Y un 200 NO alcanza**: Play responde 200 con una pagina de error. Hay que
+mirar el `og:title` y que nombre la app — en una ficha de verdad dice
+`<Nombre> - Apps on Google Play`, y en la de error viene vacio. Aprobada en Play
+no es lo mismo que publicada: el despliegue tarda, y en ese rato la ficha da 404.
+
+```bash
+curl -s "https://play.google.com/store/apps/details?id=PAQUETE" | grep og:title
+```
+
+Las dos comprobaciones las hace, y no toca nada si alguna falla:
+
+```bash
+node scripts/app-a-produccion.mjs <app>
 ```
 
 ## Pendiente: la seccion de contacto
@@ -120,8 +141,13 @@ pagina va a recibir trafico pagado.
 
 - **`iconos/*.webp`** — los iconos REALES de cada app, sacados de su `assets/icon.png` y
   reducidos a 256 px con `sharp`: **21 KB los siete**, contra 730 KB los originales.
-  Palabu y Terrabu no tienen icono todavia (estan en desarrollo) y se quedan con su letra,
-  lo que ademas dice honestamente que faltan.
+  Las diez tienen el suyo. Que sigan siendo el de verdad lo vigila
+  `node scripts/iconos-al-dia.mjs`, que compara PIXELES y no fechas: la fecha miente en
+  las dos direcciones, una copia mas nueva puede ser el mismo dibujo recomprimido y una
+  mas vieja puede seguir siendo la buena.
+  🚨 Cada icono vive en **dos** archivos que envejecen por separado —`iconos/<app>.webp`
+  para la portada y `<app>/icono.webp` para su pagina— y hay un tercero que los lleva
+  incrustados: `<app>/og.png`, que se rehace con `node scripts/og-app.mjs`.
 - **`marca.svg`** — la marca del estudio: tres fichas en abanico, no una inicial en un
   cuadrado. Cada `rect` nace centrado en el origen para poder rotarlo sobre SU centro y
   recien despues moverlo; al reves las encima a las tres y solo se ve una. Verificada

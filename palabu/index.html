@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Palabu — Lenguaje para niños de 6 a 12 años | GusMar Studios</title>
+<meta name="description" content="App de lenguaje para niños de 6 a 12 años: de la palabra suelta al texto completo. Gramática, ortografía, vocabulario, comprensión lectora y escritura, en 55 temas. Sin anuncios, sin internet y sin compras del niño.">
+<link rel="canonical" href="https://gusmarstudios.com/palabu/">
+<meta name="theme-color" content="#8E1F1B">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GusMar Studios">
+<meta property="og:title" content="Palabu — Lenguaje para niños de 6 a 12 años">
+<meta property="og:description" content="De la palabra suelta al texto completo. Primero explica qué es, después lo practica, y cuando acierta le dice por qué era esa.">
+<meta property="og:url" content="https://gusmarstudios.com/palabu/">
+<meta property="og:locale" content="es_CL">
+<meta property="og:image" content="https://gusmarstudios.com/palabu/og.png">
+<meta property="og:image:secure_url" content="https://gusmarstudios.com/palabu/og.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Palabu — Lenguaje para niños de 6 a 12 años, de GusMar Studios">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Palabu — Lenguaje para niños de 6 a 12 años">
+<meta name="twitter:description" content="Gramática, ortografía, comprensión y escritura en 55 temas. Y comprender un texto, que es lo que casi nadie cubre.">
+<meta name="twitter:image" content="https://gusmarstudios.com/palabu/og.png">
+<link rel="icon" href="/marca.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"MobileApplication",
+"name":"Palabu: Lenguaje",
+"operatingSystem":"Android","applicationCategory":"EducationalApplication",
+"description":"Lenguaje para niños de 6 a 12 años. Seis mundos que van de la palabra suelta al texto completo: qué es cada palabra, cómo se arma una oración, cómo se escribe, qué significan, leer de verdad y escribir. Son 55 temas y 220 lecciones, con explicación antes de practicar y sin internet.",
+"inLanguage":["es","en","pt"],
+"image":"https://gusmarstudios.com/palabu/og.png",
+"author":{"@type":"Organization","name":"GusMar Studios","url":"https://gusmarstudios.com/"}}
+</script>
+
+<!-- Sin JavaScript no se esconde nada: la clase `js` es la que enciende el
+     revelado, así que la página nunca queda en blanco si el script no corre. -->
+<script>document.documentElement.classList.add('js')</script>
+
+<link rel="stylesheet" href="/app.css">
+<style>
+  /* El rojo de lenguaje. No es un color elegido acá: sale tal cual de
+     lenguaje/src/theme/index.ts (primary #C62F2A, primaryDark #8E1F1B), y en la
+     familia el rojo es el color de la asignatura, como el azul es el de
+     matemáticas.
+
+     🚨 Y OJO con el rojo de esta app: dentro, el rojo de marca NUNCA significa
+     «mal». El error es ámbar, a propósito, porque el rojo castiga. Si alguna vez
+     se pinta de rojo algo de esta página que signifique equivocarse, se está
+     contradiciendo a la app.
+
+     Este rojo es de los pocos de la familia que aguanta letra blanca sin
+     oscurecerlo: 5,47:1, y AA pide 4,5. Por eso `--boton-claro` es el acento
+     mismo. Medido con `node scripts/boton-contraste.mjs palabu`. */
+  :root { --acento:#C62F2A; --acento-hondo:#8E1F1B; --boton-claro:#C62F2A; }
+</style>
+</head>
+<body>
+
+<div class="progreso" aria-hidden="true"></div>
+
+<div class="ancho">
+  <a class="volver" href="../">
+    <svg viewBox="0 0 64 64" aria-hidden="true">
+      <g transform="translate(32 32)">
+        <g transform="translate(-11 1) rotate(-11)"><rect x="-12" y="-12" width="24" height="24" rx="6.8" fill="#C08B0A" stroke="#0A0B14" stroke-width="3"/></g>
+        <g transform="translate(11 1) rotate(11)"><rect x="-12" y="-12" width="24" height="24" rx="6.8" fill="#12A0AC" stroke="#0A0B14" stroke-width="3"/></g>
+        <g transform="translate(0 -2)"><rect x="-13" y="-13" width="26" height="26" rx="7.4" fill="#7C80FF" stroke="#0A0B14" stroke-width="3"/></g>
+      </g>
+    </svg>
+    GusMar Studios
+  </a>
+</div>
+
+<header class="heroe ancho">
+  <img class="icono-app" src="icono.webp" alt="Icono de Palabu" width="320" height="320">
+  <h1>Palabu</h1>
+  <p class="bajada">De la palabra suelta al texto completo</p>
+  <span class="edad">6 a 12 años · Android</span>
+
+  <div class="acciones">
+    <!-- ═══ AQUI NO VA EL BOTON DE PLAY ═══
+         El 04-10-2026 Palabu está EN REVISIÓN para producción, y aprobada no es
+         lo mismo que publicada: su ficha pública todavía devuelve 404. Encender
+         el botón antes de tiempo manda a todo el que llegue a un error de Play.
+         Se enciende cuando la ficha responda 200 Y su og:title diga Palabu:
+           curl -s "https://play.google.com/store/apps/details?id=cl.palabu.lenguaje" | grep og:title
+         Lo hace, y comprueba las dos cosas, `node scripts/app-a-produccion.mjs palabu`.
+         🚨 Hay DOS avisos en esta página: este y el del cierre.
+    ═══ -->
+    <p class="aviso-tienda">
+      <span class="mini">Todavía no está en Google Play</span>
+      <span>Palabu está <b>en revisión</b>. El botón de descarga aparece acá el día que
+      Google abra su ficha.</span>
+    </p>
+  </div>
+
+  <ul class="cifras">
+    <!-- 🚨 Estos números salen de la PANTALLA DE INICIO de la app, que los arma
+         sola desde su temario: ahí están los seis mundos con «0 de 36», «0 de
+         20», «0 de 56», «0 de 36», «0 de 44» y «0 de 28». Suman 220, y 220 son
+         55 temas por cuatro lecciones. Si alguna vez entra un tema nuevo, la
+         app se actualiza sola y esta página NO: hay que volver a mirarla. -->
+    <li class="cifra"><b>6</b><span>mundos</span></li>
+    <li class="cifra"><b>55</b><span>temas</span></li>
+    <li class="cifra"><b>220</b><span>lecciones</span></li>
+    <li class="cifra"><b>0</b><span>anuncios</span></li>
+  </ul>
+
+</header>
+
+<p class="sigue" aria-hidden="true">
+  Sigue bajando
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+</p>
+
+<main>
+
+  <section class="seccion">
+    <div class="ancho">
+      <p class="rotulo" data-rise>Qué aprende</p>
+      <h2 data-rise>Casi todas se quedan en la ortografía.</h2>
+      <p class="intro" data-rise>
+        Buscar «lenguaje» en la tienda devuelve tildes y palabras con b o con v. Eso acá es
+        un mundo de seis. Los otros cinco son de qué es cada palabra, cómo se arma una
+        oración, qué significan, cómo se entiende un texto de verdad y cómo se escribe uno.
+        El orden no es alfabético ni cómodo: va de la palabra suelta al texto completo, que
+        es como lo ordenan los currículos de Chile, México, Colombia y España.
+      </p>
+    </div>
+
+    <!-- Los temas corren de lado, como en las otras páginas: una franja en vez de
+         un muro de cincuenta y cinco etiquetas. Los nombres, los emojis y los
+         colores NO se escribieron acá: los arma `scripts/palabu-rios.mjs` desde
+         `lenguaje/src/content` —mundos.ts, temario.ts e i18n/es.ts—, así que son
+         exactamente los que el niño ve dentro de la app. Si entra un tema nuevo,
+         se vuelve a correr el guion. -->
+    <ul class="rios" data-rise>
+      <li class="rio" style="--tono:#C62F2A;--tinte:rgba(198,47,42,.15);--borde:rgba(198,47,42,.38)">
+        <div class="rio-pista" style="animation-duration:30s">
+          <div class="rio-grupo"><span class="rio-isla"><span class="rio-emoji" aria-hidden="true">🔤</span>Las palabras<span class="rio-cuenta">9 temas · 36 lecciones</span></span><span class="chip"><span class="chip-emoji" aria-hidden="true">📛</span>Sustantivos</span><span class="chip"><span class="chip-emoji" aria-hidden="true">⚖️</span>Género y número</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🎨</span>Adjetivos</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🔖</span>Artículos</span><span class="chip"><span class="chip-emoji" aria-hidden="true">👤</span>Pronombres</span><span class="chip"><span class="chip-emoji" aria-hidden="true">⚡</span>El verbo</span><span class="chip"><span class="chip-emoji" aria-hidden="true">⏳</span>Los tres tiempos</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🧭</span>Adverbios</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🔗</span>Preposiciones y nexos</span></div>
+          <div class="rio-grupo" aria-hidden="true"><span class="rio-isla"><span class="rio-emoji" aria-hidden="true">🔤</span>Las palabras<span class="rio-cuenta">9 temas · 36 lecciones</span></span><span class="chip"><span class="chip-emoji" aria-hidden="true">📛</span>Sustantivos</span><span class="chip"><span class="chip-emoji" aria-hidden="true">⚖️</span>Género y número</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🎨</span>Adjetivos</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🔖</span>Artículos</span><span class="chip"><span class="chip-emoji" aria-hidden="true">👤</span>Pronombres</span><span class="chip"><span class="chip-emoji" aria-hidden="true">⚡</span>El verbo</span><span class="chip"><span class="chip-emoji" aria-hidden="true">⏳</span>Los tres tiempos</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🧭</span>Adverbios</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🔗</span>Preposiciones y nexos</span></div>
+        </div>
+      </li>
+      <li class="rio al-reves" style="--tono:#B0540F;--tinte:rgba(176,84,15,.15);--borde:rgba(176,84,15,.38)">
+        <div class="rio-pista" style="animation-duration:34s">
+          <div class="rio-grupo"><span class="rio-isla"><span class="rio-emoji" aria-hidden="true">🧩</span>La oración<span class="rio-cuenta">5 temas · 20 lecciones</span></span><span class="chip"><span class="chip-emoji" aria-hidden="true">🔀</span>Orden de la oración</span><span class="chip"><span class="chip-emoji" aria-hidden="true">❓</span>Tipos de oración</span><span class="chip"><span class="chip-emoji" aria-hidden="true">✂️</span>Sujeto y predicado</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🤝</span>Concordancia</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🪢</span>Conectores</span></div>
+          <div class="rio-grupo" aria-hidden="true"><span class="rio-isla"><span class="rio-emoji" aria-hidden="true">🧩</span>La oración<span class="rio-cuenta">5 temas · 20 lecciones</span></span><span class="chip"><span class="chip-emoji" aria-hidden="true">🔀</span>Orden de la oración</span><span class="chip"><span class="chip-emoji" aria-hidden="true">❓</span>Tipos de oración</span><span class="chip"><span class="chip-emoji" aria-hidden="true">✂️</span>Sujeto y predicado</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🤝</span>Concordancia</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🪢</span>Conectores</span></div>
+        </div>
+      </li>
+      <li class="rio" style="--tono:#6C4AB6;--tinte:rgba(108,74,182,.15);--borde:rgba(108,74,182,.38)">
+        <div class="rio-pista" style="animation-duration:38s">
+          <div class="rio-grupo"><span class="rio-isla"><span class="rio-emoji" aria-hidden="true">✏️</span>Cómo se escribe<span class="rio-cuenta">14 temas · 56 lecciones</span></span><span class="chip"><span class="chip-emoji" aria-hidden="true">🔠</span>Mayúsculas</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🧱</span>Sílabas</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🌊</span>Diptongo e hiato</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🎯</span>Agudas, graves y esdrújulas</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🪄</span>Tilde diacrítica</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🫐</span>b / v</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🌀</span>g / j</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🐍</span>c / s / z</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🤫</span>La h muda</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🌽</span>ll / y</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🥁</span>r / rr</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🧲</span>m antes de p y b</span><span class="chip"><span class="chip-emoji" aria-hidden="true">⏸️</span>Punto y coma</span><span class="chip"><span class="chip-emoji" aria-hidden="true">❗</span>¿? y ¡!</span></div>
+          <div class="rio-grupo" aria-hidden="true"><span class="rio-isla"><span class="rio-emoji" aria-hidden="true">✏️</span>Cómo se escribe<span class="rio-cuenta">14 temas · 56 lecciones</span></span><span class="chip"><span class="chip-emoji" aria-hidden="true">🔠</span>Mayúsculas</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🧱</span>Sílabas</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🌊</span>Diptongo e hiato</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🎯</span>Agudas, graves y esdrújulas</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🪄</span>Tilde diacrítica</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🫐</span>b / v</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🌀</span>g / j</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🐍</span>c / s / z</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🤫</span>La h muda</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🌽</span>ll / y</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🥁</span>r / rr</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🧲</span>m antes de p y b</span><span class="chip"><span class="chip-emoji" aria-hidden="true">⏸️</span>Punto y coma</span><span class="chip"><span class="chip-emoji" aria-hidden="true">❗</span>¿? y ¡!</span></div>
+        </div>
+      </li>
+      <li class="rio al-reves" style="--tono:#007A81;--tinte:rgba(0,122,129,.15);--borde:rgba(0,122,129,.38)">
+        <div class="rio-pista" style="animation-duration:32s">
+          <div class="rio-grupo"><span class="rio-isla"><span class="rio-emoji" aria-hidden="true">💡</span>Lo que significan<span class="rio-cuenta">9 temas · 36 lecciones</span></span><span class="chip"><span class="chip-emoji" aria-hidden="true">🔁</span>Sinónimos</span><span class="chip"><span class="chip-emoji" aria-hidden="true">↔️</span>Antónimos</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🎭</span>Palabras con dos sentidos</span><span class="chip"><span class="chip-emoji" aria-hidden="true">👯</span>Homófonas</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🌳</span>Familias de palabras</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🧩</span>Prefijos y sufijos</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🔧</span>Palabras compuestas</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🌈</span>Sentido figurado</span><span class="chip"><span class="chip-emoji" aria-hidden="true">📔</span>Usar el diccionario</span></div>
+          <div class="rio-grupo" aria-hidden="true"><span class="rio-isla"><span class="rio-emoji" aria-hidden="true">💡</span>Lo que significan<span class="rio-cuenta">9 temas · 36 lecciones</span></span><span class="chip"><span class="chip-emoji" aria-hidden="true">🔁</span>Sinónimos</span><span class="chip"><span class="chip-emoji" aria-hidden="true">↔️</span>Antónimos</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🎭</span>Palabras con dos sentidos</span><span class="chip"><span class="chip-emoji" aria-hidden="true">👯</span>Homófonas</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🌳</span>Familias de palabras</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🧩</span>Prefijos y sufijos</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🔧</span>Palabras compuestas</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🌈</span>Sentido figurado</span><span class="chip"><span class="chip-emoji" aria-hidden="true">📔</span>Usar el diccionario</span></div>
+        </div>
+      </li>
+      <li class="rio" style="--tono:#2F5DA8;--tinte:rgba(47,93,168,.15);--borde:rgba(47,93,168,.38)">
+        <div class="rio-pista" style="animation-duration:36s">
+          <div class="rio-grupo"><span class="rio-isla"><span class="rio-emoji" aria-hidden="true">📖</span>Leer de verdad<span class="rio-cuenta">11 temas · 44 lecciones</span></span><span class="chip"><span class="chip-emoji" aria-hidden="true">🔍</span>Comprensión literal</span><span class="chip"><span class="chip-emoji" aria-hidden="true">📶</span>Qué pasó primero</span><span class="chip"><span class="chip-emoji" aria-hidden="true">💬</span>Vocabulario en contexto</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🕵️</span>Inferencia</span><span class="chip"><span class="chip-emoji" aria-hidden="true">⚙️</span>Causa y efecto</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🎈</span>Idea principal</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🎬</span>Para qué se escribió</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🗂️</span>Tipos de texto</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🧾</span>Hecho y opinión</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🤔</span>Argumentación</span><span class="chip"><span class="chip-emoji" aria-hidden="true">📊</span>Tablas y carteles</span></div>
+          <div class="rio-grupo" aria-hidden="true"><span class="rio-isla"><span class="rio-emoji" aria-hidden="true">📖</span>Leer de verdad<span class="rio-cuenta">11 temas · 44 lecciones</span></span><span class="chip"><span class="chip-emoji" aria-hidden="true">🔍</span>Comprensión literal</span><span class="chip"><span class="chip-emoji" aria-hidden="true">📶</span>Qué pasó primero</span><span class="chip"><span class="chip-emoji" aria-hidden="true">💬</span>Vocabulario en contexto</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🕵️</span>Inferencia</span><span class="chip"><span class="chip-emoji" aria-hidden="true">⚙️</span>Causa y efecto</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🎈</span>Idea principal</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🎬</span>Para qué se escribió</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🗂️</span>Tipos de texto</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🧾</span>Hecho y opinión</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🤔</span>Argumentación</span><span class="chip"><span class="chip-emoji" aria-hidden="true">📊</span>Tablas y carteles</span></div>
+        </div>
+      </li>
+      <li class="rio al-reves" style="--tono:#44763F;--tinte:rgba(68,118,63,.15);--borde:rgba(68,118,63,.38)">
+        <div class="rio-pista" style="animation-duration:33s">
+          <div class="rio-grupo"><span class="rio-isla"><span class="rio-emoji" aria-hidden="true">📝</span>Escribir<span class="rio-cuenta">7 temas · 28 lecciones</span></span><span class="chip"><span class="chip-emoji" aria-hidden="true">✍️</span>Ordenar palabras</span><span class="chip"><span class="chip-emoji" aria-hidden="true">📑</span>Ordenar párrafos</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🕳️</span>Completar la oración</span><span class="chip"><span class="chip-emoji" aria-hidden="true">➿</span>El conector que falta</span><span class="chip"><span class="chip-emoji" aria-hidden="true">❔</span>El signo que falta</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🩹</span>Corregir la oración</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🏷️</span>Elegir el título</span></div>
+          <div class="rio-grupo" aria-hidden="true"><span class="rio-isla"><span class="rio-emoji" aria-hidden="true">📝</span>Escribir<span class="rio-cuenta">7 temas · 28 lecciones</span></span><span class="chip"><span class="chip-emoji" aria-hidden="true">✍️</span>Ordenar palabras</span><span class="chip"><span class="chip-emoji" aria-hidden="true">📑</span>Ordenar párrafos</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🕳️</span>Completar la oración</span><span class="chip"><span class="chip-emoji" aria-hidden="true">➿</span>El conector que falta</span><span class="chip"><span class="chip-emoji" aria-hidden="true">❔</span>El signo que falta</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🩹</span>Corregir la oración</span><span class="chip"><span class="chip-emoji" aria-hidden="true">🏷️</span>Elegir el título</span></div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="ancho seccion">
+    <p class="rotulo" data-rise>Por dentro</p>
+    <h2 data-rise>Así se ve.</h2>
+    <div class="galeria">
+      <figure data-rise>
+        <div class="tel"><img src="01-lo-de-hoy.webp" alt="La pantalla de inicio de Palabu con Tinta y la lección por la que seguir" width="488" height="1057" loading="lazy"></div>
+        <figcaption>Una sola cosa que hacer: <strong>seguir donde quedó</strong>.</figcaption>
+      </figure>
+      <figure data-rise>
+        <div class="tel"><img src="02-los-seis-mundos.webp" alt="Los seis mundos de Palabu, cada uno con su color y cuántas lecciones tiene" width="488" height="1057" loading="lazy"></div>
+        <figcaption>Seis mundos, y <strong>la ortografía es uno</strong>.</figcaption>
+      </figure>
+      <figure data-rise>
+        <div class="tel"><img src="06-la-escuelita.webp" alt="La escuelita explica qué es un sustantivo antes de preguntarlo, con ejemplos y un truco para reconocerlo" width="488" height="1057" loading="lazy"></div>
+        <figcaption>Primero <strong>explica qué es</strong>. Después pregunta.</figcaption>
+      </figure>
+      <figure data-rise>
+        <div class="tel"><img src="03-el-camino.webp" alt="El camino del mundo Las palabras, con los temas uno detrás de otro" width="488" height="1057" loading="lazy"></div>
+        <figcaption>Los temas en un <strong>camino</strong>, no en una lista.</figcaption>
+      </figure>
+      <figure data-rise>
+        <div class="tel"><img src="04-una-pregunta.webp" alt="Una pregunta de Palabu: cuál de estas palabras es el sustantivo, sobre una oración" width="488" height="1057" loading="lazy"></div>
+        <figcaption>Se responde <strong>tocando la palabra</strong>, en su oración.</figcaption>
+      </figure>
+      <figure data-rise>
+        <div class="tel"><img src="05-por-que-es-esa.webp" alt="Tras acertar, Tinta explica que el sustantivo es la palabra que nombra personas, animales, cosas o lugares" width="488" height="1057" loading="lazy"></div>
+        <figcaption>Y cuando acierta, <strong>le dice por qué era esa</strong>.</figcaption>
+      </figure>
+      <figure data-rise>
+        <div class="tel"><img src="07-la-sala-de-juegos.webp" alt="La sala de juegos de Palabu: contrarreloj, emparejar y sin fin" width="488" height="1057" loading="lazy"></div>
+        <figcaption>Para repasar <strong>sin estrellas y sin apuro</strong>.</figcaption>
+      </figure>
+      <figure data-rise>
+        <div class="tel"><img src="08-zona-de-papas.webp" alt="La Zona de Papás con el tiempo de la semana y cómo va cada uno de los seis mundos" width="488" height="1057" loading="lazy"></div>
+        <figcaption>Cuánto usó y <strong>en qué mundo va flojo</strong>.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="ancho seccion">
+    <p class="rotulo" data-rise>Cómo enseña</p>
+    <h2 data-rise>Acertar sin saber por qué no sirve de nada.</h2>
+    <p class="intro" data-rise>
+      Una app de lenguaje que solo marca bien o mal entrena a adivinar. Esta hace tres cosas
+      distintas, y las tres están en las capturas de arriba.
+    </p>
+    <ul class="promesas">
+      <li class="promesa" data-rise>
+        <h3>La escuelita va antes</h3>
+        <p>Cada tema empieza por qué es, contado corto, con ejemplos y un truco para reconocerlo —«si le puedes poner “el” o “la” delante, es un sustantivo»—. Recién después viene «ahora practícalo».</p>
+      </li>
+      <li class="promesa" data-rise>
+        <h3>La explicación llega al acertar, no al fallar</h3>
+        <p>Al responder bien aparece por qué era esa. Es el momento en que el niño está mirando, y no el castigo de haberse equivocado.</p>
+      </li>
+      <li class="promesa" data-rise>
+        <h3>El error nunca es rojo</h3>
+        <p>Aunque el rojo sea el color de esta app, equivocarse se pinta de ámbar y viene con la mascota, un icono y la explicación. El rojo de Palabu significa «seguir», nunca «mal».</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="ancho seccion">
+    <p class="rotulo" data-rise>Lo que casi nadie cubre</p>
+    <h2 data-rise>Entender un texto, no pasarle los ojos por encima.</h2>
+    <p class="intro" data-rise>
+      «Leer de verdad» y «Escribir» son los dos últimos mundos porque necesitan todo lo
+      anterior, y son los dos que la competencia no trae. Ahí están la idea principal, la
+      inferencia, la causa y el efecto, para qué se escribió un texto, qué es un hecho y qué
+      es una opinión, y cómo se pesa una razón. Después, escribir: ordenar, completar,
+      arreglar lo que está mal escrito y elegir el título.
+    </p>
+  </section>
+
+  <section class="ancho seccion">
+    <p class="rotulo" data-rise>Para el papá o la mamá</p>
+    <h2 data-rise>Lo que no vas a encontrar.</h2>
+    <ul class="promesas">
+      <li class="promesa" data-rise>
+        <h3>Sin publicidad</h3>
+        <p>Ninguna, en ninguna parte, ni siquiera de las otras apps nuestras dentro de la pantalla del niño. No hay identificador de publicidad.</p>
+      </li>
+      <li class="promesa" data-rise>
+        <h3>Sin internet y sin cuenta</h3>
+        <p>Funciona en modo avión y el avance se guarda en el teléfono. No pide correo, ni nombre de usuario, ni fecha de nacimiento. Sin micrófono, sin cámara y sin ubicación.</p>
+      </li>
+      <li class="promesa" data-rise>
+        <h3>Sin compras del niño</h3>
+        <p>En la pantalla del niño no aparece nunca un precio. Lo que se paga lo abre un adulto, detrás de una puerta que se cruza tocando dos veces el número mayor.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="ancho seccion">
+    <p class="rotulo" data-rise>Lo que sí vas a encontrar</p>
+    <h2 data-rise>Sabes en qué mundo va flojo.</h2>
+    <p class="intro" data-rise>
+      La Zona de Papás muestra cuánto usó esta semana y cómo va cada uno de los seis mundos,
+      uno por uno — sin notas y sin comparaciones con nadie. Y el niño tiene a Tinta, que se
+      cambia de color, y un rincón que se llena con lo que va ganando: es lo que lo trae de
+      vuelta mañana.
+    </p>
+  </section>
+
+  <section class="ancho seccion">
+    <p class="rotulo" data-rise>Cuánto cuesta</p>
+    <h2 data-rise>Los tres primeros días, todo abierto.</h2>
+    <div class="plan" data-rise>
+      <h3>Gratis para siempre</h3>
+      <p>
+        <span class="destacado">La primera lección de cada uno de los 55 temas</span>, en los
+        seis mundos — para que un adulto decida mirando y no imaginando. Más el reto del día
+        y una tanda de repaso cada día.
+        <br><br>
+        Y al instalarla, <span class="destacado">los tres primeros días está todo
+        abierto</span>: la app entera, sin pagar nada. Después, lo demás se abre una sola
+        vez y queda para siempre, desde la Zona de Papás y nunca desde la pantalla del niño.
+      </p>
+    </div>
+  </section>
+
+  <section class="ancho cierre">
+    <h2 data-rise>Leer bien no es leer rápido.</h2>
+    <p class="intro" style="margin-inline:auto;text-align:center">
+      Es saber qué dice cada palabra, cómo se juntan y qué queda cuando se juntan bien.
+    </p>
+    <div class="acciones">
+      <p class="aviso-tienda">
+        <span class="mini">Todavía no está en Google Play</span>
+        <span>Palabu está <b>en revisión</b>. Cuando Google abra su ficha, el botón de
+        descarga va acá.</span>
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p><a href="../">GusMar Studios</a> · Santiago, Chile</p>
+</footer>
+
+<script src="/app.js"></script>
+</body>
+</html>

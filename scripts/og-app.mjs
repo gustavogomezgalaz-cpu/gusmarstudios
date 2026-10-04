@@ -57,10 +57,22 @@ const APPS = [
   {
     dir: 'dilojugando',
     nombre: 'Dilo Jugando',
+    // 🚨 Decia 8 juegos, y son 16. El numero vivia en TRES sitios —la cifra del
+    // heroe, este detalle y la ficha de Play— y el 01-10-2026 se arreglo solo el
+    // primero, asi que la imagen que se ve al compartir el enlace siguio
+    // contando ocho. Al tocar una cifra de una pagina, mirar tambien aca.
     bajada: 'Practicar a hablar, jugando',
-    detalle: '8 juegos de pronunciación · 6 a 12 años',
+    detalle: '16 juegos de pronunciación · 6 a 12 años',
     tono: '#35B5C0',
     hondo: '#0E7C86',
+  },
+  {
+    dir: 'palabu',
+    nombre: 'Palabu',
+    bajada: 'De la palabra suelta al texto completo',
+    detalle: '55 temas de lenguaje · 6 a 12 años',
+    tono: '#C62F2A',
+    hondo: '#8E1F1B',
   },
 ];
 
