@@ -45,9 +45,23 @@
 
 <link rel="stylesheet" href="/app.css">
 <style>
-  /* El azul de su icono. Y una excepción de esta página: la galería NO usa el
-     marco de teléfono. Ver el comentario de `.lamina` en /app.css. */
-  :root { --acento:#5E9DF0; --acento-hondo:#2A6FCC; --boton-claro:#4878B8; }
+  /* 🚨 ACÁ HAY DOS COLORES A PROPÓSITO, Y NO ES UN DESCUIDO.
+     El azul es el de la app por dentro: sale tal cual de
+     el-profe-gus/src/theme/colors.ts (primary #4DA3FF, primaryDark #2A6FCC),
+     que es el color de los caminos, las islas y los botones que el niño toca.
+     Pero el ICONO es un búho DORADO sobre noche —app.json pinta el splash
+     #E09A18 y src/marca/gus.mjs define dorado #FFC23C—, así que el visitante
+     llega y ve un botón azul pegado a un búho dorado. Eso chirriaba.
+     El botón se pasó al dorado del icono con letra noche #181833: 7,23:1 en el
+     extremo hondo y 10,71:1 en el claro, bastante más que el 4,5 de AA. Con
+     letra blanca el mismo dorado da 2,39:1, y oscurecerlo hasta que pase lo
+     deja en el dorado de Cronobu. La letra oscura es lo que hace la app.
+     Y una excepción de esta página: la galería NO usa el marco de teléfono.
+     Ver el comentario de `.lamina` en /app.css. */
+  :root {
+    --acento:#5E9DF0; --acento-hondo:#2A6FCC;
+    --boton-claro:#FFC23C; --boton-hondo:#E09A18; --boton-letra:#181833;
+  }
 </style>
 </head>
 <body>

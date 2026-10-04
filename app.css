@@ -113,20 +113,37 @@ h1{margin:22px 0 0;font-family:var(--display);font-weight:800;font-size:clamp(38
    con `scripts/boton-contraste.mjs`, blanco sobre el acento da 3.29:1 en Matibu
    y 2.78:1 en Cavila; AA pide 4.5. Por eso el extremo claro es `--boton-claro`,
    que cada pagina define con su acento oscurecido lo justo, y el oscuro es
-   `--acento-hondo`, que en las cinco paletas ya pasa AA de sobra. */
+   `--acento-hondo`, que en las cinco paletas ya pasa AA de sobra.
+
+   🚨 Y HAY PALETAS DONDE OSCURECER NO ES LA SALIDA. El boton no tiene por que
+   llevar letra blanca: puede llevarla oscura, y entonces el color no se toca.
+   Pasa con las doradas. Cavila tiene el icono dorado y la pagina azul, y el
+   boton azul al lado del buho dorado chirria; pero el dorado con letra blanca
+   da 2.39:1 y para llegar a 4.5 hay que oscurecerlo hasta #95701F, que ya es
+   el de Cronobu —dos apps con el mismo boton es peor que el problema—. Con
+   letra oscura el mismo dorado da 7.23:1 en el extremo hondo y 10.71:1 en el
+   claro, que es lo que hace la propia app: colors.ts avisa que el blanco no va
+   encima de varios colores de marca.
+   Por eso son TRES variables y no una, y las tres traen su respaldo:
+     --boton-claro  extremo claro del degradado
+     --boton-hondo  extremo oscuro Y el color del halo (si no, un boton dorado
+                    con un halo azul debajo)
+     --boton-letra  #fff salvo que la pagina diga otra cosa
+   Una pagina que solo defina --boton-claro sigue funcionando igual que antes. */
 .boton{
   display:inline-flex;align-items:center;justify-content:center;gap:10px;
   padding:16px 34px;border-radius:999px;font-weight:600;font-size:16px;
-  background:linear-gradient(140deg,var(--boton-claro,#6669D1),var(--acento-hondo,#4247D6));color:#fff;
+  background:linear-gradient(140deg,var(--boton-claro,#6669D1),var(--boton-hondo,var(--acento-hondo,#4247D6)));
+  color:var(--boton-letra,#fff);
   /* La primera es el respaldo para quien no tenga color-mix; la segunda manda. */
   box-shadow:0 14px 38px rgba(0,0,0,.45);
-  box-shadow:0 14px 38px color-mix(in srgb,var(--acento-hondo) 50%,transparent);
+  box-shadow:0 14px 38px color-mix(in srgb,var(--boton-hondo,var(--acento-hondo)) 50%,transparent);
   transition:transform .25s ease,box-shadow .25s ease;
 }
 .boton:hover{
-  transform:translateY(-3px);color:#fff;
+  transform:translateY(-3px);color:var(--boton-letra,#fff);
   box-shadow:0 20px 50px rgba(0,0,0,.55);
-  box-shadow:0 20px 50px color-mix(in srgb,var(--acento-hondo) 62%,transparent);
+  box-shadow:0 20px 50px color-mix(in srgb,var(--boton-hondo,var(--acento-hondo)) 62%,transparent);
 }
 
 /* El destello que cruza el botón.

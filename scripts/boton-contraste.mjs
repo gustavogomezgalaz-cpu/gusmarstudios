@@ -22,6 +22,14 @@
  * script dice cuanto. El oscurecido se hace en el espacio sRGB por un factor
  * unico a los tres canales, que conserva el tono: el color sigue siendo el de
  * la marca, mas apagado.
+ *
+ * 🚨 PERO OSCURECER NO ES LA UNICA SALIDA, Y A VECES ES LA MALA. La letra del
+ * boton no tiene por que ser blanca. Con letra OSCURA el acento no se toca, y
+ * en las paletas claras —las doradas— es la unica salida razonable: el dorado
+ * de Cavila con blanco da 2,39:1 y para llegar a 4,5 hay que oscurecerlo hasta
+ * #95701F, que ya es el boton de Cronobu; con letra noche el mismo dorado da
+ * 7,23:1. Por eso cada linea trae LAS DOS medidas, y la pagina elige con
+ * `--boton-letra` (ver el comentario de `.boton` en app.css).
  */
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -45,7 +53,17 @@ function luz([r, g, b]) {
   return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
 }
 
-/** Contraste contra el blanco, que es el color de la letra del boton. */
+/** La letra oscura de la familia: el fondo noche de las apps. */
+const NOCHE = '#181833';
+
+/** Contraste entre dos colores, en cualquier orden. */
+function entre(a, b) {
+  const [x, y] = [luz(a), luz(b)].sort((p, q) => q - p);
+  return (x + 0.05) / (y + 0.05);
+}
+
+/** Contraste contra el blanco, que es la letra del boton salvo que la pagina
+ *  declare `--boton-letra`. Es el que usa la busqueda de abajo. */
 const contraste = (c) => 1.05 / (luz(c) + 0.05);
 
 /**
@@ -77,13 +95,35 @@ for (const p of paginas) {
   const [, acento, hondo] = m;
   const usa = /class="boton"/.test(html);
 
-  const cAcento = contraste(aRgb(acento));
-  const cHondo = contraste(aRgb(hondo));
-  const claro = oscurecerHasta(acento, MINIMO);
+  // Lo que la pagina ya decidio, si decidio algo.
+  const letra = (/--boton-letra:\s*(#[0-9A-Fa-f]{6})/.exec(html) || [, '#FFFFFF'])[1];
+  const puesto = (n) => {
+    const x = new RegExp(`--boton-${n}:\\s*(#[0-9A-Fa-f]{6})`).exec(html);
+    return x ? x[1] : null;
+  };
 
-  console.log(`${p}${usa ? '' : '  (todavia sin boton)'}`);
-  console.log(`  --acento       ${acento}  blanco encima: ${cAcento.toFixed(2)}:1  ${cAcento >= MINIMO ? 'OK' : '🚨 no llega a AA'}`);
-  console.log(`  --acento-hondo ${hondo}  blanco encima: ${cHondo.toFixed(2)}:1  ${cHondo >= MINIMO ? 'OK' : '🚨 no llega a AA'}`);
-  console.log(`  extremo claro  ${claro.hex}  ${claro.ratio.toFixed(2)}:1   (el acento al ${(claro.k * 100).toFixed(0)}%)`);
+  const fila = (nombre, hex) => {
+    const cb = entre(aRgb(hex), aRgb('#FFFFFF'));
+    const cn = entre(aRgb(hex), aRgb(NOCHE));
+    const marca = (c) => (c >= MINIMO ? 'OK' : '🚨');
+    return `  ${nombre.padEnd(14)} ${hex}  blanca ${cb.toFixed(2)}:1 ${marca(cb)}   noche ${cn.toFixed(2)}:1 ${marca(cn)}`;
+  };
+
+  console.log(`${p}${usa ? '' : '  (todavia sin boton)'}   letra de hoy: ${letra}`);
+  console.log(fila('--acento', acento));
+  console.log(fila('--acento-hondo', hondo));
+  for (const n of ['claro', 'hondo']) {
+    const hex = puesto(n);
+    if (hex) console.log(fila(`--boton-${n}`, hex));
+  }
+  /* Las dos salidas solo se ofrecen a quien no haya elegido todavia: en una
+     pagina que ya puso su letra noche serian ruido, no aviso. */
+  if (letra.toUpperCase() === '#FFFFFF') {
+    const claro = oscurecerHasta(acento, MINIMO);
+    console.log(`  con letra blanca, el extremo claro es ${claro.hex}  ${claro.ratio.toFixed(2)}:1   (el acento al ${(claro.k * 100).toFixed(0)}%)`);
+    if (entre(aRgb(acento), aRgb(NOCHE)) >= MINIMO) {
+      console.log(`  con letra noche el acento #${acento.slice(1)} sirve TAL CUAL, sin oscurecer: --boton-letra:${NOCHE}`);
+    }
+  }
   console.log();
 }

@@ -239,3 +239,32 @@ la letra blanca encima no llegaba al minimo AA de 4.5:1 — medido, no estimado:
 - El gris tenue de los textos secundarios `#767c9a` -> `#696e89` (daba 4.10:1)
 
 Los nueve colores y los ocho pares de texto pasan AA en modo claro y oscuro.
+
+### El boton de "Descargar en Google Play"
+
+Vive en `app.css` y lo comparten todas las paginas de app, pero sus colores salen de
+**la pagina**, con tres variables que traen respaldo:
+
+| variable | que es | si no esta |
+|---|---|---|
+| `--boton-claro` | extremo claro del degradado | el indigo de Matibu |
+| `--boton-hondo` | extremo oscuro **y el halo de abajo** | `--acento-hondo` |
+| `--boton-letra` | color de la letra | `#fff` |
+
+Una pagina que solo declare `--boton-claro` funciona igual que siempre.
+
+🚨 **Oscurecer el acento no es la unica salida, y en las paletas claras es la mala.**
+El acento puro casi nunca aguanta letra blanca (esta elegido para leerse *sobre* el
+fondo oscuro, no para llevar letra encima), y lo que se hacia era oscurecerlo hasta
+los 4,5:1 de AA. Con una paleta dorada eso no sirve: el dorado de Cavila con blanco da
+2,39:1 y para llegar hay que bajarlo a `#95701F`, que **ya es el boton de Cronobu** —
+dos apps con el mismo boton es peor que el problema. La otra salida es no tocar el
+color y poner la letra oscura: el mismo dorado con `#181833` da 7,23:1 y 10,71:1, y es
+lo que hace la propia app. Cavila es la primera que lo usa, y por eso su boton es
+dorado como el icono aunque la pagina siga azul como la app por dentro.
+
+Lo mide, con las dos letras y las dos salidas:
+
+```
+node scripts/boton-contraste.mjs [app]
+```
