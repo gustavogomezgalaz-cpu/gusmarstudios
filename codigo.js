@@ -47,6 +47,7 @@
     '<p class="codigo-qr-etiqueta"></p>' +
     '<h2 class="codigo-qr-titulo"></h2>' +
     '<div class="codigo-qr-boleto"><span class="codigo-qr-codigo"></span></div>' +
+    '<button type="button" class="codigo-qr-copiar" aria-live="polite"></button>' +
     '<p class="codigo-qr-cuerpo"></p>' +
     '<a class="boton codigo-qr-abrir"></a>' +
     '<p class="codigo-qr-nota"></p>';
@@ -54,6 +55,22 @@
   tarjeta.querySelector('.codigo-qr-titulo').textContent = textos.titulo;
   tarjeta.querySelector('.codigo-qr-codigo').textContent = codigo;
   tarjeta.querySelector('.codigo-qr-cuerpo').textContent = textos.cuerpo;
+  // Copiar el código: si instala Matibu buscándola en Google Play, lo pega en la app.
+  var copiar = tarjeta.querySelector('.codigo-qr-copiar');
+  copiar.textContent = 'Copiar código';
+  copiar.addEventListener('click', function () {
+    var listo = function () {
+      copiar.textContent = '¡Copiado!';
+      copiar.classList.add('copiado');
+      setTimeout(function () { copiar.textContent = 'Copiar código'; copiar.classList.remove('copiado'); }, 2200);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(codigo).then(listo, function () {});
+    else {
+      var t = document.createElement('textarea'); t.value = codigo; document.body.appendChild(t); t.select();
+      try { document.execCommand('copy'); listo(); } catch (e) {}
+      document.body.removeChild(t);
+    }
+  });
   var abrir = tarjeta.querySelector('.codigo-qr-abrir');
   abrir.textContent = 'Abrir ' + APP.nombre;
   abrir.href = android ? intent : playUrl;

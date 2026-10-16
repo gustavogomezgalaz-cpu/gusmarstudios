@@ -404,3 +404,13 @@ footer a:hover{color:#fff}
 /* Con la tarjeta del código, la pista de «sigue bajando» quedaba encima del botón de Google
    Play: ahí lo importante está arriba, no abajo. */
 .con-codigo .sigue{display:none}
+/* «Copiar código»: discreto bajo el boleto. Si el papá instala buscándola a mano en Google Play,
+   el código lo tiene copiado para pegarlo en la app. */
+.codigo-qr-copiar{
+  display:inline-flex;align-items:center;gap:8px;margin:-6px auto 18px;padding:9px 18px;border-radius:999px;
+  font:600 14px/1 'IBM Plex Sans',system-ui,sans-serif;color:var(--texto);cursor:pointer;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);
+  transition:background .2s,border-color .2s,color .2s;
+}
+.codigo-qr-copiar:hover{background:rgba(255,255,255,.1)}
+.codigo-qr-copiar.copiado{color:#5EE7C6;border-color:color-mix(in srgb,#5EE7C6 55%,transparent)}
