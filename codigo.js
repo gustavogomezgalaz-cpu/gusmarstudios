@@ -31,7 +31,7 @@
     pagar: {
       etiqueta: 'Pago para otro aparato',
       titulo: 'Paga aquí, y el otro aparato se abre solo',
-      cuerpo: 'Abre ' + APP.nombre + ' en este teléfono y paga con tu cuenta de Google: tarjeta, efectivo o saldo. En cuanto termines, el aparato que te mostró el código queda con la versión completa. Y este teléfono también.',
+      cuerpo: 'Abre ' + APP.nombre + ' en este teléfono y paga ahí, dentro de la app, con Google Play: tarjeta, efectivo o saldo. En cuanto termines, el aparato que te mostró el código queda con la versión completa. Y este teléfono también.',
     },
     canjear: {
       etiqueta: 'Código de activación',
