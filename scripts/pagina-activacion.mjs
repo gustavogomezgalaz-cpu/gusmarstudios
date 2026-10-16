@@ -1,12 +1,13 @@
-// Genera /a/<app>/index.html: la página que abre el QR de «Paga desde tu celular» (y el de
-// «Abrir en otro aparato»). Abre la app si está instalada; si no, la Play Store con el código en el
-// install referrer, para que la app lo reciba al abrirse. Funcional, no de vitrina: sin índice.
+// Genera /a/<app>/index.html: para ESCRIBIR a mano el código del QR («¿No te funciona la
+// cámara?»). Con el estilo del sitio (/app.css) y el color de cada app. Al completar el código
+// lleva a la página de la app con ?c=…&m=pagar, que muestra la tarjeta y abre la app (codigo.js).
+// Si llega con ?c= (enlaces viejos), redirige directo. Sin índice: es una herramienta, no vitrina.
 import fs from 'node:fs';
 import path from 'node:path';
 
 const APPS = [
-  { clave: 'matibu', nombre: 'Matibu', paquete: 'cl.matibu.matematicas', esquema: 'matibu', color: '#5B5FEF' },
-  { clave: 'anticipa', nombre: 'Anticipa', paquete: 'cl.anticipa.rutinas', esquema: 'anticipa', color: '#2F9E8F' },
+  { clave: 'matibu', nombre: 'Matibu', acento: '#7C80FF', hondo: '#4247D6', claro: '#6669D1' },
+  { clave: 'anticipa', nombre: 'Anticipa', acento: '#5A9DBA', hondo: '#2C5464', claro: '#487D94' },
 ];
 
 const html = (a) => `<!doctype html>
@@ -15,87 +16,58 @@ const html = (a) => `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>${a.nombre} · Código</title>
+<title>${a.nombre} · Escribe tu código</title>
+<meta name="theme-color" content="${a.hondo}">
+<link rel="icon" href="/marca.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/app.css">
 <style>
-  :root { --marca: ${a.color}; --tinta: #1d1d2b; --suave: #5b5b70; --fondo: #f6f6fb; }
-  * { box-sizing: border-box; }
-  body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--fondo); color: var(--tinta); }
-  main { max-width: 440px; margin: 0 auto; padding: 32px 20px 48px; display: flex; flex-direction: column; gap: 16px; }
-  h1 { font-size: 26px; line-height: 1.2; margin: 0; text-wrap: balance; }
-  p { margin: 0; color: var(--suave); line-height: 1.5; }
-  .codigo { font-size: 30px; font-weight: 800; letter-spacing: 3px; text-align: center; background: #fff; border-radius: 14px; padding: 14px; }
-  .boton { display: block; text-align: center; background: var(--marca); color: #fff; font-weight: 800; font-size: 18px; padding: 16px; border-radius: 14px; text-decoration: none; border: 0; width: 100%; cursor: pointer; }
-  .boton:focus-visible, input:focus-visible { outline: 3px solid var(--tinta); outline-offset: 2px; }
-  .secundario { background: #fff; color: var(--tinta); border: 2px solid #dcdcea; }
-  input { font-size: 26px; font-weight: 800; letter-spacing: 3px; text-align: center; text-transform: uppercase; padding: 12px; border-radius: 14px; border: 2px solid #dcdcea; width: 100%; }
-  .oculto { display: none; }
+  :root { --acento:${a.acento}; --acento-hondo:${a.hondo}; --boton-claro:${a.claro}; }
+  .escribir { min-height:100svh; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; padding:32px 22px; text-align:center; }
+  .escribir .icono-app { width:96px; height:96px; border-radius:24px; box-shadow:0 18px 50px rgba(0,0,0,.5); }
+  .escribir h1 { margin:0; font-family:var(--display); font-weight:700; font-size:clamp(26px,7vw,34px); text-wrap:balance; }
+  .escribir p { margin:0; color:var(--suave); line-height:1.6; max-width:34ch; }
+  .escribir form { width:100%; max-width:380px; display:flex; flex-direction:column; gap:14px; margin-top:6px; }
+  .escribir input {
+    width:100%; padding:16px 12px; border-radius:16px; text-align:center;
+    font-family:var(--mono); font-size:30px; letter-spacing:.16em; text-transform:uppercase; color:#fff;
+    background:var(--tarjeta); border:2px dashed color-mix(in srgb, var(--acento) 55%, transparent);
+  }
+  .escribir input:focus-visible { outline:2px solid var(--acento); outline-offset:3px; }
+  .escribir .boton { width:100%; }
+  .escribir .boton[aria-disabled="true"] { opacity:.45; pointer-events:none; }
+  .escribir .firma { color:var(--tenue); font-size:13px; }
 </style>
 </head>
 <body>
-<main>
-  <h1 id="titulo"></h1>
-  <p id="bajada"></p>
-  <div id="conCodigo" class="oculto">
-    <div class="codigo" id="codigo"></div>
-  </div>
-  <form id="sinCodigo" class="oculto">
-    <input id="entrada" maxlength="9" autocomplete="off" autocapitalize="characters" aria-label="Código">
+<main class="escribir">
+  <img class="icono-app" src="/${a.clave}/icono.webp" alt="" width="96" height="96">
+  <h1>Escribe el código de ${a.nombre}</h1>
+  <p>Son 8 letras y números, los que ves en el otro aparato debajo del QR.</p>
+  <form id="f" novalidate>
+    <input id="c" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="9" placeholder="ABCD-2345" aria-label="Código">
+    <a class="boton" id="ir" href="#" aria-disabled="true">Continuar</a>
   </form>
-  <a class="boton" id="abrir" href="#"></a>
-  <a class="boton secundario" id="play" href="#"></a>
-  <p id="nota"></p>
+  <p class="firma">Una app de GusMar Studios</p>
 </main>
 <script>
 (function () {
-  var APP = ${JSON.stringify({ nombre: a.nombre, paquete: a.paquete, esquema: a.esquema })};
-  var idioma = (navigator.language || 'es').slice(0, 2);
-  var D = {
-    es: { pagar: 'Paga aquí para el otro aparato', canjear: 'Abre ' + APP.nombre + ' con este código', bajadaPagar: 'Abre ' + APP.nombre + ' en este teléfono y paga con tu cuenta de Google. El otro aparato se abre solo.', bajadaCanjear: 'Abre ' + APP.nombre + ' en este aparato: quedará con la versión completa.', abrir: 'Abrir ' + APP.nombre, play: '¿No la tienes? Instalarla desde Google Play', escribe: 'Escribe el código que ves en el otro aparato', nota: 'Si no se abre sola, toca «Abrir ' + APP.nombre + '». Funciona en teléfonos Android.' },
-    en: { pagar: 'Pay here for the other device', canjear: 'Open ' + APP.nombre + ' with this code', bajadaPagar: 'Open ' + APP.nombre + ' on this phone and pay with your Google account. The other device unlocks by itself.', bajadaCanjear: 'Open ' + APP.nombre + ' on this device: it will get the full version.', abrir: 'Open ' + APP.nombre, play: "Don't have it? Install it from Google Play", escribe: 'Type the code you see on the other device', nota: 'If it does not open by itself, tap «Open ' + APP.nombre + '». Works on Android phones.' },
-    pt: { pagar: 'Pague aqui para o outro aparelho', canjear: 'Abra o ' + APP.nombre + ' com este código', bajadaPagar: 'Abra o ' + APP.nombre + ' neste celular e pague com sua conta do Google. O outro aparelho se abre sozinho.', bajadaCanjear: 'Abra o ' + APP.nombre + ' neste aparelho: ele ficará com a versão completa.', abrir: 'Abrir o ' + APP.nombre, play: 'Não tem? Instale pelo Google Play', escribe: 'Digite o código que aparece no outro aparelho', nota: 'Se não abrir sozinho, toque em «Abrir o ' + APP.nombre + '». Funciona em celulares Android.' }
-  };
-  var tx = D[idioma] || D.es;
-  function normalizar(c) {
-    var s = String(c || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+  var destino = '/${a.clave}/';
+  function normalizar(v) {
+    var s = String(v || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
     return s.length === 8 ? s.slice(0, 4) + '-' + s.slice(4) : null;
   }
   var q = new URLSearchParams(location.search);
-  var modo = q.get('m') === 'canjear' ? 'canjear' : 'pagar';
-  var $ = function (id) { return document.getElementById(id); };
-  $('titulo').textContent = modo === 'pagar' ? tx.pagar : tx.canjear;
-  $('bajada').textContent = modo === 'pagar' ? tx.bajadaPagar : tx.bajadaCanjear;
-  $('abrir').textContent = tx.abrir;
-  $('play').textContent = tx.play;
-  $('nota').textContent = tx.nota;
-
-  function enlaces(codigo) {
-    var params = 'c=' + encodeURIComponent(codigo) + '&m=' + modo;
-    var playUrl = 'https://play.google.com/store/apps/details?id=' + APP.paquete + '&referrer=' + encodeURIComponent(params + '&utm_source=qr');
-    var intent = 'intent://activar?' + params + '#Intent;scheme=' + APP.esquema + ';package=' + APP.paquete + ';S.browser_fallback_url=' + encodeURIComponent(playUrl) + ';end';
-    $('abrir').href = /android/i.test(navigator.userAgent) ? intent : playUrl;
-    $('play').href = playUrl;
-    return intent;
+  var ya = normalizar(q.get('c'));
+  if (ya) { location.replace(destino + '?c=' + ya + '&m=' + (q.get('m') === 'canjear' ? 'canjear' : 'pagar')); return; }
+  var c = document.getElementById('c'), ir = document.getElementById('ir');
+  function actualizar() {
+    var n = normalizar(c.value);
+    ir.setAttribute('aria-disabled', n ? 'false' : 'true');
+    ir.href = n ? destino + '?c=' + n + '&m=pagar' : '#';
   }
-
-  var codigo = normalizar(q.get('c'));
-  if (codigo) {
-    $('codigo').textContent = codigo;
-    $('conCodigo').classList.remove('oculto');
-    var intent = enlaces(codigo);
-    // En Android se intenta abrir la app de una; si no está, Chrome sigue a la Play Store.
-    if (/android/i.test(navigator.userAgent)) setTimeout(function () { location.href = intent; }, 400);
-  } else {
-    $('sinCodigo').classList.remove('oculto');
-    $('bajada').textContent = tx.escribe;
-    var entrada = $('entrada');
-    entrada.focus();
-    var listo = function () {
-      var c = normalizar(entrada.value);
-      if (c) { enlaces(c); $('abrir').click(); }
-    };
-    entrada.addEventListener('input', function () { var c = normalizar(entrada.value); if (c) enlaces(c); });
-    $('sinCodigo').addEventListener('submit', function (e) { e.preventDefault(); listo(); });
-  }
+  c.addEventListener('input', actualizar);
+  document.getElementById('f').addEventListener('submit', function (e) { e.preventDefault(); if (normalizar(c.value)) location.href = ir.href; });
+  c.focus();
 })();
 </script>
 </body>
