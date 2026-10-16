@@ -10,7 +10,7 @@
 (function () {
   var yo = document.currentScript;
   if (!yo) return;
-  var APP = { nombre: yo.dataset.app, paquete: yo.dataset.paquete, esquema: yo.dataset.esquema };
+  var APP = { nombre: yo.dataset.app, paquete: yo.dataset.paquete, esquema: yo.dataset.esquema, donde: yo.dataset.donde || 'la Zona de Papás' };
   var q = new URLSearchParams(location.search);
   var crudo = String(q.get('c') || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
   if (crudo.length !== 8) return;
@@ -75,7 +75,7 @@
   abrir.textContent = 'Abrir ' + APP.nombre;
   abrir.href = android ? intent : playUrl;
   tarjeta.querySelector('.codigo-qr-nota').textContent = android
-    ? '¿Todavía no tienes ' + APP.nombre + '? Descárgala con el botón de abajo y el código se aplica solo al abrirla. Si la instalas de otra forma, copia el código y pégalo en la app, en la Zona de Papás.'
+    ? '¿Todavía no tienes ' + APP.nombre + '? Descárgala con el botón de abajo y el código se aplica solo al abrirla. Si la instalas de otra forma, copia el código y pégalo en la app, en ' + APP.donde + '.'
     : 'Esto funciona en teléfonos Android: abre este enlace en tu teléfono.';
 
   var heroe = document.querySelector('.heroe');
