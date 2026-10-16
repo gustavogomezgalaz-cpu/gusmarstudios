@@ -75,7 +75,7 @@
   abrir.textContent = 'Abrir ' + APP.nombre;
   abrir.href = android ? intent : playUrl;
   tarjeta.querySelector('.codigo-qr-nota').textContent = android
-    ? '¿Todavía no tienes ' + APP.nombre + '? Descárgala con el botón de abajo: el código se aplica solo al abrirla.'
+    ? '¿Todavía no tienes ' + APP.nombre + '? Descárgala con el botón de abajo y el código se aplica solo al abrirla. Si la instalas de otra forma, copia el código y pégalo en la app, en la Zona de Papás.'
     : 'Esto funciona en teléfonos Android: abre este enlace en tu teléfono.';
 
   var heroe = document.querySelector('.heroe');
