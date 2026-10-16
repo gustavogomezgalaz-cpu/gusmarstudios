@@ -401,3 +401,6 @@ footer a:hover{color:#fff}
 .codigo-qr-nota{margin:14px 0 0;color:var(--tenue);font-size:13px;line-height:1.5}
 @keyframes codigo-entra{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion: reduce){.codigo-qr{animation:none}}
+/* Con la tarjeta del código, la pista de «sigue bajando» quedaba encima del botón de Google
+   Play: ahí lo importante está arriba, no abajo. */
+.con-codigo .sigue{display:none}
