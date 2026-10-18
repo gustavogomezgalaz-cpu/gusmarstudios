@@ -12,6 +12,7 @@
   if (!yo) return;
   var APP = { nombre: yo.dataset.app, paquete: yo.dataset.paquete, esquema: yo.dataset.esquema, donde: yo.dataset.donde || 'la Zona de Papás' };
   var q = new URLSearchParams(location.search);
+  if (q.get('f')) return regaloDeFamilia(APP, q);
   var crudo = String(q.get('c') || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
   if (crudo.length !== 8) return;
   var codigo = crudo.slice(0, 4) + '-' + crudo.slice(4);
@@ -86,4 +87,45 @@
 
   // En Android, se intenta abrir la app de una (una sola vez por visita).
   if (android) setTimeout(function () { location.href = intent; }, 700);
+
+  /* Regalo de familia (18-10): ?f=CODIGO&o=<app de origen>. Quien tiene el pase para siempre de
+     otra app de la familia compra el de esta con −70 %. El código NO abre la app: solo da el precio.
+     Llega a la app por <esquema>://familia?f=…&o=… o por el install referrer (f=…&o=…). */
+  function regaloDeFamilia(APP, q) {
+    var NOMBRES = { matibu: 'Matibu', anticipa: 'Anticipa', dilo: 'Dilo Jugando', palabu: 'Palabu', lunabu: 'Lunabu', cronobu: 'Cronobu', cavila: 'Cavila', dormibu: 'Dormibu', silabu: 'Silabu', terrabu: 'Terrabu' };
+    var crudo = String(q.get('f') || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+    if (crudo.length !== 8) return;
+    var codigo = crudo.slice(0, 4) + '-' + crudo.slice(4);
+    var origen = Object.prototype.hasOwnProperty.call(NOMBRES, q.get('o')) ? q.get('o') : '';
+    var params = 'f=' + encodeURIComponent(codigo) + (origen ? '&o=' + origen : '');
+    var playUrl = 'https://play.google.com/store/apps/details?id=' + APP.paquete + '&referrer=' + encodeURIComponent(params + '&utm_source=familia' + (origen ? '&utm_medium=' + origen : ''));
+    var intent = 'intent://familia?' + params + '#Intent;scheme=' + APP.esquema + ';package=' + APP.paquete + ';S.browser_fallback_url=' + encodeURIComponent(playUrl) + ';end';
+    var android = /android/i.test(navigator.userAgent);
+    document.querySelectorAll('a[href^="https://play.google.com/store/apps/details?id=' + APP.paquete + '"]').forEach(function (a) {
+      a.href = playUrl;
+    });
+    var tarjeta = document.createElement('section');
+    tarjeta.className = 'codigo-qr';
+    tarjeta.setAttribute('aria-label', 'Regalo de familia');
+    tarjeta.innerHTML =
+      '<p class="codigo-qr-etiqueta"></p><h2 class="codigo-qr-titulo"></h2><p class="codigo-qr-cuerpo"></p>' +
+      '<a class="boton codigo-qr-abrir"></a><p class="codigo-qr-nota"></p>';
+    tarjeta.querySelector('.codigo-qr-etiqueta').textContent = 'Regalo de familia';
+    tarjeta.querySelector('.codigo-qr-titulo').textContent = 'Tu pase para siempre de ' + APP.nombre + ' con −70 %';
+    tarjeta.querySelector('.codigo-qr-cuerpo').textContent =
+      'Como tienes ' + (origen ? NOMBRES[origen] : 'otra app de la familia') + ' para siempre, el pase para siempre de ' + APP.nombre +
+      ' te sale con −70 %. Abre ' + APP.nombre + ' en este teléfono: el descuento se aplica solo. Es un solo pago, sin cobros automáticos.';
+    var abrir = tarjeta.querySelector('.codigo-qr-abrir');
+    abrir.textContent = 'Abrir ' + APP.nombre + ' con −70 %';
+    abrir.href = android ? intent : playUrl;
+    tarjeta.querySelector('.codigo-qr-nota').textContent = android
+      ? '¿Todavía no tienes ' + APP.nombre + '? Descárgala con el botón y el descuento te espera al abrirla.'
+      : 'Esto funciona en teléfonos Android: abre este enlace en tu teléfono.';
+    var heroe = document.querySelector('.heroe');
+    var acciones = heroe && heroe.querySelector('.acciones');
+    if (acciones) heroe.insertBefore(tarjeta, acciones);
+    else document.body.insertBefore(tarjeta, document.body.firstChild);
+    document.documentElement.classList.add('con-codigo');
+    if (android) setTimeout(function () { location.href = intent; }, 700);
+  }
 })();
