@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terrabu · Ciencias naturales para niños</title>
+<meta name="description" content="El cuerpo, los seres vivos y el planeta, explorados jugando.">
+<meta name="theme-color" content="#0E4429">
+<link rel="icon" href="/marca.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/app.css">
+<style>
+  :root { --acento:#3FA36F; --acento-hondo:#0E4429; --boton-claro:#17603C; }
+  .sola { min-height:100svh; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; padding:32px 22px; text-align:center; }
+  .sola .icono-app { width:112px; height:112px; border-radius:28px; box-shadow:0 18px 50px rgba(0,0,0,.5); }
+  .sola h1 { margin:0; font-family:var(--display); font-weight:700; font-size:clamp(28px,7.5vw,40px); text-wrap:balance; }
+  .sola .titular { margin:0; font-size:clamp(18px,4.6vw,22px); font-weight:600; text-wrap:balance; max-width:28ch; }
+  .sola p { margin:0; color:var(--suave); line-height:1.6; max-width:36ch; }
+  .sola .acciones { display:flex; flex-direction:column; align-items:center; gap:12px; width:100%; max-width:380px; margin-top:6px; }
+  .sola .boton { width:100%; }
+  .sola .firma { color:var(--tenue); font-size:13px; }
+  .sola .firma a { color:inherit; }
+</style>
+</head>
+<body>
+<main class="sola heroe">
+  <img class="icono-app" src="/terrabu/icono.webp" alt="" width="112" height="112">
+  <h1>Terrabu</h1>
+  <p class="titular">Ciencias naturales para niños</p>
+  <p>El cuerpo, los seres vivos y el planeta, explorados jugando.</p>
+  <div class="acciones">
+    <a class="boton" href="https://play.google.com/store/apps/details?id=cl.terrabu.ciencias">Descargar en Google Play</a>
+  </div>
+  <p class="firma">Una app de <a href="/">GusMar Studios</a></p>
+</main>
+<!-- Código de activación (QR del otro aparato): ver /codigo.js. -->
+<script src="/codigo.js" data-app="Terrabu" data-paquete="cl.terrabu.ciencias" data-esquema="terrabu"></script>
+</body>
+</html>
