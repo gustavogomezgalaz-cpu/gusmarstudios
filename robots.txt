@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /correo/
 
 Sitemap: https://gusmarstudios.com/sitemap.xml
