@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gustavo Gómez Galaz — Portafolio técnico</title>
+<!-- Página para procesos de selección: se comparte por enlace y NO se indexa.
+     No va en sitemap.xml ni se enlaza desde el sitio. No bloquearla en robots.txt:
+     si Google no puede leerla, no ve el noindex y podría listar la URL igual. -->
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="description" content="Portafolio técnico de Gustavo Gómez Galaz: Líder Técnico full-stack y mobile, fundador de GusMar Studios.">
+<meta name="theme-color" content="#0A0B14">
+<meta property="og:title" content="Gustavo Gómez Galaz — Portafolio técnico">
+<meta property="og:description" content="Líder Técnico full-stack y mobile. Fundador y desarrollador de GusMar Studios: 10 apps educativas para Android.">
+<link rel="icon" href="/marca.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" href="/fuentes/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face { font-family:'Bricolage Grotesque'; src:url('/fuentes/bricolage-grotesque.woff2') format('woff2'); font-weight:400 800; font-display:swap; }
+@font-face { font-family:'IBM Plex Sans'; src:url('/fuentes/ibm-plex-sans-400.woff2') format('woff2'); font-weight:400; font-display:swap; }
+@font-face { font-family:'IBM Plex Sans'; src:url('/fuentes/ibm-plex-sans-500.woff2') format('woff2'); font-weight:500; font-display:swap; }
+@font-face { font-family:'IBM Plex Sans'; src:url('/fuentes/ibm-plex-sans-600.woff2') format('woff2'); font-weight:600; font-display:swap; }
+@font-face { font-family:'IBM Plex Mono'; src:url('/fuentes/ibm-plex-mono-400.woff2') format('woff2'); font-weight:400; font-display:swap; }
+
+:root {
+  --fondo:#0A0B14; --panel:#12142A; --borde:rgba(167,172,198,.16);
+  --texto:#EDEEF6; --suave:#A7ACC6; --tenue:#8890AD;
+  --acento:#6E72FF; --acento-claro:#A8ABFF; --menta:#5FE3B4;
+  --display:'Bricolage Grotesque', system-ui, sans-serif;
+  --cuerpo:'IBM Plex Sans', system-ui, sans-serif;
+  --mono:'IBM Plex Mono', ui-monospace, monospace;
+}
+* { box-sizing:border-box; }
+html { -webkit-text-size-adjust:100%; }
+body { margin:0; background:var(--fondo); color:var(--texto); font:400 16px/1.6 var(--cuerpo); }
+a { color:var(--acento-claro); }
+.envoltura { max-width:960px; margin:0 auto; padding:0 16px; }
+@media (min-width:720px) { .envoltura { padding:0 32px; } }
+
+header.barra { display:flex; align-items:center; justify-content:space-between; padding:20px 0; }
+header.barra a.marca { display:flex; align-items:center; gap:10px; color:var(--texto); text-decoration:none; font:600 15px var(--display); }
+header.barra img { width:28px; height:28px; }
+.etiqueta { font:400 12px var(--mono); letter-spacing:.08em; text-transform:uppercase; color:var(--tenue); }
+
+.heroe { padding-top:48px; padding-bottom:32px; }
+.heroe h1 { font:700 clamp(36px,7vw,64px)/1.02 var(--display); letter-spacing:-.02em; margin:12px 0 16px; }
+.heroe .rol { font:500 clamp(17px,2.4vw,21px)/1.4 var(--cuerpo); color:var(--suave); margin:0 0 20px; max-width:46ch; }
+.heroe .rol b { color:var(--texto); font-weight:600; }
+.fichas { display:flex; flex-wrap:wrap; gap:8px; margin:0; padding:0; list-style:none; }
+.fichas li { font:400 13px var(--mono); padding:5px 10px; border:1px solid var(--borde); border-radius:999px; color:var(--suave); }
+
+.cifras { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin:32px 0 8px; }
+@media (min-width:720px) { .cifras { grid-template-columns:repeat(4,1fr); } }
+.cifra { background:var(--panel); border:1px solid var(--borde); border-radius:16px; padding:18px; }
+.cifra b { display:block; font:700 34px/1 var(--display); color:var(--texto); }
+.cifra span { display:block; margin-top:8px; font-size:14px; color:var(--suave); line-height:1.35; }
+
+section { padding:48px 0 8px; }
+h2 { font:700 clamp(26px,4vw,36px)/1.1 var(--display); letter-spacing:-.01em; margin:8px 0 14px; }
+section > .envoltura > p.intro { color:var(--suave); max-width:62ch; margin:0 0 24px; }
+
+.apps { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; list-style:none; margin:0; padding:0; }
+@media (min-width:560px) { .apps { grid-template-columns:repeat(3,1fr); } }
+@media (min-width:860px) { .apps { grid-template-columns:repeat(5,1fr); } }
+.apps a { display:flex; flex-direction:column; gap:8px; height:100%; padding:14px; border:1px solid var(--borde); border-radius:14px; background:var(--panel); color:var(--texto); text-decoration:none; transition:border-color .2s, transform .2s; }
+.apps a:hover, .apps a:focus-visible { border-color:var(--acento); transform:translateY(-2px); }
+.apps img { width:48px; height:48px; border-radius:12px; }
+.apps strong { font:600 15px var(--display); }
+.apps small { font-size:13px; color:var(--suave); line-height:1.3; }
+.apps .estado { font:400 11px var(--mono); color:var(--menta); text-transform:uppercase; letter-spacing:.06em; }
+.apps .estado.dev { color:var(--tenue); }
+
+.decisiones { display:grid; gap:12px; grid-template-columns:1fr; list-style:none; margin:0; padding:0; }
+@media (min-width:720px) { .decisiones { grid-template-columns:1fr 1fr; } }
+.decisiones li { background:var(--panel); border:1px solid var(--borde); border-radius:16px; padding:20px; }
+.decisiones h3 { font:600 18px/1.25 var(--display); margin:0 0 8px; }
+.decisiones p { margin:0; color:var(--suave); font-size:15px; }
+.decisiones code { font:400 13px var(--mono); color:var(--acento-claro); }
+
+.pila { display:grid; gap:14px; grid-template-columns:1fr; }
+@media (min-width:720px) { .pila { grid-template-columns:repeat(3,1fr); } }
+.pila div { border-top:2px solid var(--acento); padding-top:12px; }
+.pila h3 { font:600 15px var(--display); margin:0 0 8px; }
+.pila p { margin:0; color:var(--suave); font-size:15px; }
+
+.linea { list-style:none; margin:0; padding:0; border-left:1px solid var(--borde); }
+.linea li { position:relative; padding:0 0 24px 22px; }
+.linea li::before { content:""; position:absolute; left:-5px; top:8px; width:9px; height:9px; border-radius:50%; background:var(--acento); }
+.linea .cuando { font:400 12px var(--mono); color:var(--tenue); letter-spacing:.04em; }
+.linea h3 { font:600 17px/1.3 var(--display); margin:2px 0 4px; }
+.linea p { margin:0; color:var(--suave); font-size:15px; max-width:66ch; }
+
+footer { margin-top:56px; padding:28px 0 40px; border-top:1px solid var(--borde); color:var(--tenue); font-size:14px; }
+footer p { margin:0 0 6px; }
+</style>
+</head>
+<body>
+<div class="envoltura">
+  <header class="barra">
+    <a class="marca" href="/"><img src="/marca.svg" alt="" width="28" height="28">GusMar Studios</a>
+    <span class="etiqueta">Portafolio técnico</span>
+  </header>
+</div>
+
+<main>
+  <div class="envoltura heroe">
+    <span class="etiqueta">Santiago, Chile · Remoto</span>
+    <h1>Gustavo Gómez Galaz</h1>
+    <p class="rol"><b>Líder Técnico full-stack y mobile</b> con más de nueve años en banca, seguros y salud. Fundador de <b>GusMar Studios</b>: diseño, construyo, publico, cobro y opero mis propias apps en producción, de la idea al pago del usuario.</p>
+    <ul class="fichas">
+      <li>Java · Spring Boot</li><li>Node.js · NestJS</li><li>.NET Core</li><li>Angular · Ionic</li>
+      <li>React Native · Expo</li><li>TypeScript</li><li>GCP · Azure · AWS</li><li>Docker · Kubernetes</li><li>Salesforce</li>
+    </ul>
+    <div class="cifras">
+      <div class="cifra"><b>9+</b><span>años en desarrollo de software</span></div>
+      <div class="cifra"><b>~7</b><span>años en nube: GCP, Azure y AWS</span></div>
+      <div class="cifra"><b>10</b><span>apps propias para Android</span></div>
+      <div class="cifra"><b>8</b><span>ya publicadas en Google Play</span></div>
+    </div>
+  </div>
+
+  <section aria-labelledby="t-apps">
+    <div class="envoltura">
+      <span class="etiqueta">01 — Lo construido</span>
+      <h2 id="t-apps">Diez apps propias, ocho en producción.</h2>
+      <p class="intro">Producto, diseño, código, publicación y operación: cada app la llevo yo de punta a punta. Comparten una base técnica y un mismo criterio, así que una mejora en una se porta a las demás.</p>
+      <ul class="apps">
+        <li><a href="/matibu/"><img src="/iconos/matibu.webp" alt="" width="48" height="48"><strong>Matibu</strong><small>Matemáticas de 1º a 6º básico</small><span class="estado">En Google Play</span></a></li>
+        <li><a href="/cavila/"><img src="/iconos/cavila.webp" alt="" width="48" height="48"><strong>Cavila</strong><small>Acertijos de lógica</small><span class="estado">En Google Play</span></a></li>
+        <li><a href="/lunabu/"><img src="/iconos/lunabu.webp" alt="" width="48" height="48"><strong>Lunabu</strong><small>Preescolar, por voz</small><span class="estado">En Google Play</span></a></li>
+        <li><a href="/cronobu/"><img src="/iconos/cronobu.webp" alt="" width="48" height="48"><strong>Cronobu</strong><small>Historia</small><span class="estado">En Google Play</span></a></li>
+        <li><a href="/anticipa/"><img src="/iconos/anticipa.webp" alt="" width="48" height="48"><strong>Anticipa</strong><small>Rutinas visuales, TDAH y TEA</small><span class="estado">En Google Play</span></a></li>
+        <li><a href="/dilojugando/"><img src="/iconos/dilojugando.webp" alt="" width="48" height="48"><strong>Dilo Jugando</strong><small>Pronunciación, jugando</small><span class="estado">En Google Play</span></a></li>
+        <li><a href="/palabu/"><img src="/iconos/palabu.webp" alt="" width="48" height="48"><strong>Palabu</strong><small>Lenguaje</small><span class="estado">En Google Play</span></a></li>
+        <li><a href="/silabu/"><img src="/iconos/silabu.webp" alt="" width="48" height="48"><strong>Silabu</strong><small>Aprender a leer</small><span class="estado dev">En desarrollo</span></a></li>
+        <li><a href="/dormibu/"><img src="/iconos/dormibu.webp" alt="" width="48" height="48"><strong>Dormibu</strong><small>Cuentos para dormir</small><span class="estado">En Google Play</span></a></li>
+        <li><a href="/terrabu/"><img src="/iconos/terrabu.webp" alt="" width="48" height="48"><strong>Terrabu</strong><small>Ciencias naturales</small><span class="estado dev">En desarrollo</span></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section aria-labelledby="t-dec">
+    <div class="envoltura">
+      <span class="etiqueta">02 — Decisiones técnicas</span>
+      <h2 id="t-dec">Lo que no se ve en la pantalla.</h2>
+      <p class="intro">Apps para niños bajo la Política de Familias de Google Play: cada decisión tiene que cumplir con ella, funcionar en teléfonos modestos y no costar por usuario.</p>
+      <ul class="decisiones">
+        <li><h3>Offline primero, todo en el dispositivo</h3><p>La personalización se decide dentro del teléfono, sin cuentas ni servidores propios. Estado con Zustand y persistencia local con AsyncStorage; la app funciona completa sin conexión.</p></li>
+        <li><h3>Cobro con Google Play Billing</h3><p>Compras dentro de la app y planes prepagos, con reintentos, recuperación de compras y manejo de errores de red. Verificado con compras reales en producción.</p></li>
+        <li><h3>Observabilidad sin datos del niño</h3><p>Firebase Analytics (GA4) y Crashlytics configurados en modo infantil, con eventos propios para medir embudos y diagnosticar cierres desde los reportes.</p></li>
+        <li><h3>Voz, audio y gráficos</h3><p>Síntesis de voz con <code>expo-speech</code> y audio con <code>expo-audio</code>; ejercicios dibujados en vectores con <code>react-native-svg</code>, nítidos en cualquier pantalla.</p></li>
+        <li><h3>Nativo cuando hace falta</h3><p>Módulos nativos y config plugins de Expo para lo que la capa JavaScript no cubre; builds AAB firmados, R8 y control del peso de cada versión.</p></li>
+        <li><h3>Publicación y operación en Google Play</h3><p>Ciclo completo en Play Console: firma, pistas de prueba cerrada y producción, revisiones, Política de Familias, Seguridad de los datos, fichas y respuesta a reseñas por la Play Developer API.</p></li>
+        <li><h3>Monetización y crecimiento</h3><p>Pase de pago y planes prepagos con RevenueCat y Google Play Billing, códigos promocionales, campañas de apps en Google Ads medidas con GA4, ASO de las fichas y landings propias con SEO técnico.</p></li>
+        <li><h3>Calidad automatizada</h3><p>Más de cien archivos de pruebas por app en TypeScript, incluidas guardas sobre textos de la ficha y reglas de la tienda, antes de cada versión.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <section aria-labelledby="t-pila">
+    <div class="envoltura">
+      <span class="etiqueta">03 — Herramientas</span>
+      <h2 id="t-pila">El stack, por capa.</h2>
+      <div class="pila">
+        <div><h3>Mobile y web</h3><p>React Native y Expo con TypeScript; Angular (4 a 15) e Ionic 4/5; Flutter. Sitio y landings en HTML y CSS propios, con SEO técnico, datos estructurados y Search Console.</p></div>
+        <div><h3>Backend</h3><p>Java 21 y Spring Boot sobre microservicios, Node.js con Express y NestJS, .NET Core. APIs REST, Apigee, Oracle, MongoDB y DynamoDB. Integraciones con Salesforce (Apex, LWC).</p></div>
+        <div><h3>Nube y entrega</h3><p>GCP, Azure y AWS; Docker y Kubernetes; CI/CD con Jenkins, Bamboo y GitHub; Firebase y Play Console. Desarrollo asistido por IA con revisión humana del código.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="t-tray">
+    <div class="envoltura">
+      <span class="etiqueta">04 — Trayectoria</span>
+      <h2 id="t-tray">Nueve años en sistemas críticos.</h2>
+      <ol class="linea">
+        <li><span class="cuando">2025 — hoy</span><h3>Ingeniero de Software · sector salud</h3><p>Modernización de sistemas sobre microservicios con Java 21 y Spring Boot, APIs RESTful, Docker en Azure y CI/CD.</p></li>
+        <li><span class="cuando">2019 — 2025</span><h3>Líder Técnico · TCS, cliente Banco de Chile</h3><p>Líder de célula ágil del sistema de valoración de tasaciones: portal Angular 7/11/15, app móvil con Ionic, React Native y Flutter, backend Spring Boot y .NET Core. Decisiones de arquitectura, calidad técnica e integraciones con Salesforce.</p></li>
+        <li><span class="cuando">2018 — 2019</span><h3>Desarrollador · Kibernum, cliente Banco Estado</h3><p>Portal de banca personal: Angular, Node.js/Express y Spring Boot sobre microservicios, Apigee, Jenkins y Docker.</p></li>
+        <li><span class="cuando">2016 — 2018</span><h3>Desarrollador · Advise, cliente Bice Vida</h3><p>Sucursal virtual: Angular y Spring Boot sobre microservicios, Oracle 12c, bajo Scrum.</p></li>
+        <li><span class="cuando">2016</span><h3>Desarrollador · Intellego, cliente Fonasa</h3><p>Portal web con Java JEE, JPA/Hibernate, Oracle 12c y WebLogic.</p></li>
+      </ol>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="envoltura">
+    <p>Ingeniería Informática, Duoc UC. Español nativo · inglés intermedio (B1).</p>
+    <p>Código: <a href="https://github.com/gustavogomezgalaz-cpu">github.com/gustavogomezgalaz-cpu</a> · Contacto por la plataforma desde la que llegaste a esta página.</p>
+  </div>
+</footer>
+</body>
+</html>
