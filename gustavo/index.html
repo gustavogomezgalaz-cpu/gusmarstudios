@@ -63,13 +63,15 @@ section > .envoltura > p.intro { color:var(--suave); max-width:62ch; margin:0 0 
 .apps { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; list-style:none; margin:0; padding:0; }
 @media (min-width:560px) { .apps { grid-template-columns:repeat(3,1fr); } }
 @media (min-width:860px) { .apps { grid-template-columns:repeat(5,1fr); } }
-.apps a { display:flex; flex-direction:column; gap:8px; height:100%; padding:14px; border:1px solid var(--borde); border-radius:14px; background:var(--panel); color:var(--texto); text-decoration:none; transition:border-color .2s, transform .2s; }
+.apps a, .apps .tarjeta { display:flex; flex-direction:column; gap:8px; height:100%; padding:14px; border:1px solid var(--borde); border-radius:14px; background:var(--panel); color:var(--texto); text-decoration:none; transition:border-color .2s, transform .2s; }
 .apps a:hover, .apps a:focus-visible { border-color:var(--acento); transform:translateY(-2px); }
 .apps img { width:48px; height:48px; border-radius:12px; }
 .apps strong { font:600 15px var(--display); }
 .apps small { font-size:13px; color:var(--suave); line-height:1.3; }
 .apps .estado { font:400 11px var(--mono); color:var(--menta); text-transform:uppercase; letter-spacing:.06em; }
 .apps .estado.dev { color:var(--tenue); }
+.apps .tarjeta { opacity:.72; }
+.apps .descargas { font:600 14px var(--display); color:var(--texto); }
 
 .decisiones { display:grid; gap:12px; grid-template-columns:1fr; list-style:none; margin:0; padding:0; }
 @media (min-width:720px) { .decisiones { grid-template-columns:1fr 1fr; } }
@@ -115,8 +117,8 @@ footer p { margin:0 0 6px; }
     <div class="cifras">
       <div class="cifra"><b>9+</b><span>años en desarrollo de software</span></div>
       <div class="cifra"><b>~7</b><span>años en nube: GCP, Azure y AWS</span></div>
-      <div class="cifra"><b>10</b><span>apps propias para Android</span></div>
-      <div class="cifra"><b>8</b><span>ya publicadas en Google Play</span></div>
+      <div class="cifra"><b>+13.500</b><span>descargas, solo entre Matibu y Anticipa</span></div>
+      <div class="cifra"><b>8</b><span>apps propias publicadas en Google Play</span></div>
     </div>
   </div>
 
@@ -126,16 +128,16 @@ footer p { margin:0 0 6px; }
       <h2 id="t-apps">Diez apps propias, ocho en producción.</h2>
       <p class="intro">Producto, diseño, código, publicación y operación: cada app la llevo yo de punta a punta. Comparten una base técnica y un mismo criterio, así que una mejora en una se porta a las demás.</p>
       <ul class="apps">
-        <li><a href="/matibu/"><img src="/iconos/matibu.webp" alt="" width="48" height="48"><strong>Matibu</strong><small>Matemáticas de 1º a 6º básico</small><span class="estado">En Google Play</span></a></li>
-        <li><a href="/cavila/"><img src="/iconos/cavila.webp" alt="" width="48" height="48"><strong>Cavila</strong><small>Acertijos de lógica</small><span class="estado">En Google Play</span></a></li>
-        <li><a href="/lunabu/"><img src="/iconos/lunabu.webp" alt="" width="48" height="48"><strong>Lunabu</strong><small>Preescolar, por voz</small><span class="estado">En Google Play</span></a></li>
-        <li><a href="/cronobu/"><img src="/iconos/cronobu.webp" alt="" width="48" height="48"><strong>Cronobu</strong><small>Historia</small><span class="estado">En Google Play</span></a></li>
-        <li><a href="/anticipa/"><img src="/iconos/anticipa.webp" alt="" width="48" height="48"><strong>Anticipa</strong><small>Rutinas visuales, TDAH y TEA</small><span class="estado">En Google Play</span></a></li>
-        <li><a href="/dilojugando/"><img src="/iconos/dilojugando.webp" alt="" width="48" height="48"><strong>Dilo Jugando</strong><small>Pronunciación, jugando</small><span class="estado">En Google Play</span></a></li>
-        <li><a href="/palabu/"><img src="/iconos/palabu.webp" alt="" width="48" height="48"><strong>Palabu</strong><small>Lenguaje</small><span class="estado">En Google Play</span></a></li>
-        <li><a href="/silabu/"><img src="/iconos/silabu.webp" alt="" width="48" height="48"><strong>Silabu</strong><small>Aprender a leer</small><span class="estado dev">En desarrollo</span></a></li>
-        <li><a href="/dormibu/"><img src="/iconos/dormibu.webp" alt="" width="48" height="48"><strong>Dormibu</strong><small>Cuentos para dormir</small><span class="estado">En Google Play</span></a></li>
-        <li><a href="/terrabu/"><img src="/iconos/terrabu.webp" alt="" width="48" height="48"><strong>Terrabu</strong><small>Ciencias naturales</small><span class="estado dev">En desarrollo</span></a></li>
+        <li><a href="https://play.google.com/store/apps/details?id=cl.matibu.matematicas" target="_blank" rel="noopener"><img src="/iconos/matibu.webp" alt="" width="48" height="48"><strong>Matibu</strong><small>Matemáticas de 1º a 6º básico</small><span class="descargas">+11.000 descargas</span><span class="estado">Google Play ↗</span></a></li>
+        <li><a href="https://play.google.com/store/apps/details?id=cl.anticipa.rutinas" target="_blank" rel="noopener"><img src="/iconos/anticipa.webp" alt="" width="48" height="48"><strong>Anticipa</strong><small>Rutinas visuales, TDAH y TEA</small><span class="descargas">+2.500 descargas</span><span class="estado">Google Play ↗</span></a></li>
+        <li><a href="https://play.google.com/store/apps/details?id=cl.cavila.app" target="_blank" rel="noopener"><img src="/iconos/cavila.webp" alt="" width="48" height="48"><strong>Cavila</strong><small>Acertijos de lógica</small><span class="estado">Google Play ↗</span></a></li>
+        <li><a href="https://play.google.com/store/apps/details?id=cl.lunabu.preescolar" target="_blank" rel="noopener"><img src="/iconos/lunabu.webp" alt="" width="48" height="48"><strong>Lunabu</strong><small>Preescolar, por voz</small><span class="estado">Google Play ↗</span></a></li>
+        <li><a href="https://play.google.com/store/apps/details?id=cl.cronobu.historia" target="_blank" rel="noopener"><img src="/iconos/cronobu.webp" alt="" width="48" height="48"><strong>Cronobu</strong><small>Historia</small><span class="estado">Google Play ↗</span></a></li>
+        <li><a href="https://play.google.com/store/apps/details?id=cl.dilojugando.pronunciacion" target="_blank" rel="noopener"><img src="/iconos/dilojugando.webp" alt="" width="48" height="48"><strong>Dilo Jugando</strong><small>Pronunciación, jugando</small><span class="estado">Google Play ↗</span></a></li>
+        <li><a href="https://play.google.com/store/apps/details?id=cl.palabu.lenguaje" target="_blank" rel="noopener"><img src="/iconos/palabu.webp" alt="" width="48" height="48"><strong>Palabu</strong><small>Lenguaje</small><span class="estado">Google Play ↗</span></a></li>
+        <li><a href="https://play.google.com/store/apps/details?id=cl.dormibu.cuentos" target="_blank" rel="noopener"><img src="/iconos/dormibu.webp" alt="" width="48" height="48"><strong>Dormibu</strong><small>Cuentos para dormir</small><span class="estado">Google Play ↗</span></a></li>
+        <li><div class="tarjeta"><img src="/iconos/silabu.webp" alt="" width="48" height="48"><strong>Silabu</strong><small>Aprender a leer</small><span class="estado dev">En desarrollo</span></div></li>
+        <li><div class="tarjeta"><img src="/iconos/terrabu.webp" alt="" width="48" height="48"><strong>Terrabu</strong><small>Ciencias naturales</small><span class="estado dev">En desarrollo</span></div></li>
       </ul>
     </div>
   </section>
